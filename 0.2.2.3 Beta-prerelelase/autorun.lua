@@ -1,1 +1,1 @@
-os.execute("OS.lua")
+os.execute("/OS.lua")
