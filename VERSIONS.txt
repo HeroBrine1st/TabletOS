@@ -1,0 +1,7 @@
+{
+  {
+  version = "0.2.2.3 Beta-prerelelase",
+  description{en = "A first version of TabletOS system.",ru="Первая версия TabletOS."}
+  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/filelist.txt",
+  },
+}
