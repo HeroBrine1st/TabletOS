@@ -46,7 +46,7 @@ core.languagePackages = {
 	}
 }
 core.languages = {"en","ru"}
-core.languagesFS = {"en" = "English","ru" = "Russiab"}
+core.languagesFS = {"en" = "English","ru" = "Russian"}
 core.language = "en"
 
 function core.getLanguage()
