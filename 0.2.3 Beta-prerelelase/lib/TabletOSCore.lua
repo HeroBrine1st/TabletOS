@@ -23,7 +23,8 @@ core.languagePackages = {
 	appsLauncher = "All apps",
 	appInstall = "Install",
 	appUninstall = "Uninstall",
-	appInstalled="Installed"
+	appInstalled="Installed",
+	receiveFile = "Receive file?",
 	},
 	ru={
 	settings="Настройки",
@@ -42,11 +43,12 @@ core.languagePackages = {
 	appsLauncher = "Все программы",
 	appInstall="Установить",
 	appUninstall="Удалить",
-	appInstalled="Установлено"
+	appInstalled="Установлено",
+	receiveFile="Принять файл?",
 	}
 }
 core.languages = {"en","ru"}
-core.languagesFS = {"en" = "English","ru" = "Russian"}
+core.languagesFS = {["en"] = "English",["ru"] = "Russian"}
 core.language = "en"
 
 function core.getLanguage()
