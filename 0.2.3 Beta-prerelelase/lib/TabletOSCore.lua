@@ -25,6 +25,7 @@ core.languagePackages = {
 	appUninstall = "Uninstall",
 	appInstalled="Installed",
 	receiveFile = "Receive file?",
+	enterPath = "Enter a path of file"
 	},
 	ru={
 	settings="Настройки",
@@ -45,6 +46,7 @@ core.languagePackages = {
 	appUninstall="Удалить",
 	appInstalled="Установлено",
 	receiveFile="Принять файл?",
+	enterPath="Введите путь к файлу"
 	}
 }
 core.languages = {"en","ru"}
