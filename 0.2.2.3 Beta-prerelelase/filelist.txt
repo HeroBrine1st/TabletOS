@@ -1,5 +1,4 @@
 {
---{url="",path=""},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/init.lua",path="/init.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/boot.lua",path="/boot.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/autorun.lua",path="/autorun.lua"},
