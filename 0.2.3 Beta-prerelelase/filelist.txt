@@ -1,5 +1,4 @@
 {
---{url="",path=""},
 {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Beta-prerelelase/apps/settings.lua",path="/apps/settings.lua"},
 {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Beta-prerelelase/lib/TabletOSCore.lua",path="/lib/TabletOSCore.lua"},
 }
