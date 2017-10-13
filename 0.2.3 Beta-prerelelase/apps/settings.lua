@@ -9,16 +9,17 @@ local program = {theme={0xCCCCCC,0xFFFFFF-0xCCCCCC}}
 local BT = require("bluetooth")
 local w,h = gpu.getResolution()
 local shell = require("shell")
-local forms = require("forms")
+local forms = require("zygote")
 local fs = require("filesystem")
 
 local function drawScreen(screen)
 	gui.setColors(table.unpack(program.theme))
 	gpu.fill(1,1,80,23)
 	local sET = {screen = screen}
+	local y = 2
 	for i = 1, #screen do
 		local e = screen[i]
-		local y = 2
+
 		if e.type == "Button" then
 			table.insert(sET,{type="Button",cT=GUI.drawButton(1,y,w,1,e.name(),program.theme[1],program.theme[2]),onClick=e.onClick})
 		elseif e.type == "Label" then
