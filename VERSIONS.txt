@@ -3,10 +3,12 @@
   version = "0.2.2.3 Beta-prerelelase",
   description={en = "A first version of TabletOS system.",ru="Первая версия TabletOS."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/filelist.txt",
+  exp=false,
   },
   {
   version = "0.2.3 Beta-prerelelase",
   description={en = "Setting moved to separate file, added bluetooth", ru = "Настройки перенесены в отдельный файл, добавлен блютуз"},
-  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Beta-prerelelase/filelist.txt"
+  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Beta-prerelelase/filelist.txt",
+  exp=true
   }
 }
