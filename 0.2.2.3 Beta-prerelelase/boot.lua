@@ -53,7 +53,7 @@ do
     component.invoke(gpu, "setForeground", 0xFFFFFF)
     component.invoke(gpu, "fill", 1, 1, w, h, " ")
   end
-  local y = 1s
+  local y = 1
   local function status(msg)
     if gpu and screen then
       local gpu = component.proxy(gpu)
