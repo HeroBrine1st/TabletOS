@@ -170,7 +170,7 @@ program.bluetoothScreen = function()
 	end
 	updateList()
 	list.W = 80
-	list.H = 23
+	list.H = 22
 	list.color = 0xCCCCCC
 	list.fontColor = (0xFFFFFF - 0xCCCCCC)
 	list.border = 0
