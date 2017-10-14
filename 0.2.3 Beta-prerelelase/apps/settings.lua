@@ -12,6 +12,7 @@ local shell = require("shell")
 local forms = require("zygote")
 local fs = require("filesystem")
 local gui = require("gui")
+local doa = false
 local function drawScreen(screen)
 	gui.setColors(table.unpack(program.theme))
 	gpu.fill(1,1,80,23," ")
@@ -32,6 +33,7 @@ local function drawScreen(screen)
 		end
 		y = y + 1
 	end
+	if not doa then OSAPI.init() doa = true end
 	return sET
 end
 
