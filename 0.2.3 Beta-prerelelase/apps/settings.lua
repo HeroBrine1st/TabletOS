@@ -148,7 +148,6 @@ program.bluetoothScreen = function()
 		windowForm.W = 20
 		windowForm.H = 2
 		windowButton1 = windowForm:addButton(1,1,"Send file",function()
-		oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
 		windowForm:addLabel(1,1,core.getLanguagePackages().enterPath)
 		local editor = windowForm:addEdit(1,2,function(view1)
 			local value = view1.text
@@ -161,7 +160,6 @@ program.bluetoothScreen = function()
 					gui.centerText(40,12,str)
 					gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,totalSize,size)
 				end)
-				ecs.drawOldPixels(oldFormPixels)
 				form:setActive()
 				updateList()
 				form:redraw()
