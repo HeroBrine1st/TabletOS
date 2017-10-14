@@ -153,9 +153,9 @@ program.bluetoothScreen = function()
 		local editor = windowForm:addEdit(1,2,function(view1)
 			local value = view1.text
 			if value and fs.exists(value) then
-				local str = "Sending file " .. tostring(totalSize) .. "/" .. tostring(size)
-				local len = str:len()
 				BT.sendFile(value,address,function(size,totalSize)
+					local str = "Sending file " .. tostring(totalSize) .. "/" .. tostring(size)
+					local len = str:len()
 					gui.setColors(0x333333,0xCCCCCC)
 					gpu.fill(len > 20 and 40 - len/2 or 30,10,len > 20 and len or 20,5," ")
 					gui.centerText(40,12,str)
