@@ -28,6 +28,7 @@ local function drawScreen(screen)
 			gui.centerText(w/2,y,e.name())
 		elseif e.type == "Event" then
 			table.insert(sET,{type="Event",listener=e.listener})
+			y = y - 1
 		elseif e.type == "Separator" then 
 			gpu.fill(1,y,w,1,"-")
 		end
@@ -124,8 +125,10 @@ program.bluetoothScreen = function()
 			list:insert(value.name,value.address)
 		end
 	end)
-	buttononoff.W = 20
-	buttonopenclose.W = 20
+	buttonon.W = 20
+	buttonoff.W = 20
+	buttonopen.W = 20
+	buttonclose.W = 20
 	buttonReceive.W = 20
 	buttonScan.W = 20
 	local list = form:addList(1,3,function(view)
