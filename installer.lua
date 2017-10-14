@@ -138,7 +138,9 @@ while true do
       local CFC = 0
       local CFD = 0
       for i = 1, #FLAV do
-        CFC = CFC + #(FLAV[i])
+        for r = 1, #FLAV[i] do
+          CFC = CFC + #FLAV[i][r]
+        end
       end
       drawProgressBar(1,25,80,0xFF0000,0x00FF00,CFD,CFC)
       for i = 1, #FLAV do
@@ -150,6 +152,11 @@ while true do
           drawProgressBar(1,25,80,0xFF0000,0x00FF00,CFD,CFC)
         end
       end
+      local strTW = "return " .. selectedVersion.version
+      fs.remove(".version")
+      local f = io.open(".version","w")
+      f:write(strTW)
+      f:close()
       break
     end
   elseif signal[1] == "touch" and signal[3] < 31 then
