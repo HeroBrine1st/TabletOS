@@ -168,7 +168,7 @@ program.bluetoothScreen = function()
 					end)
 					ecs.drawOldPixels(oldFormPixels)
 					form:setActive()
-					updateFileList()
+					updateList()
 				end
 			end)
 			forms.run(windowForm)
