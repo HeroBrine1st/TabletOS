@@ -51,7 +51,7 @@ function drawMenu()
 			drawWorkTable()
 		end},
 		{y=21,name=core.getLanguagePackages().settings,callback=function()
-			dofile("/apps/settings.lua")
+			require("shell").execute("/apps/settings.lua")
 		end},
 	 	{y=22,name=core.getLanguagePackages().appsLauncher,callback=function()
 		ecs.drawOldPixels(oldPixelsM)
