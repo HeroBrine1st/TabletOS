@@ -1,207 +1,202 @@
+local fs = require("filesystem")
 local component = require("component")
 local gpu = component.gpu
-local GUI = require("gui")
-local core = require("TabletOSCore")
-local computer = require("computer")
 local ecs = require("ECSAPI")
-local event = require("event")
-local program = {theme={0xCCCCCC,0xFFFFFF-0xCCCCCC}}
-local BT = require("bluetooth")
+local term = require("term")
+local unicode = require("unicode")
+local zygote = require("zygote")
+local Math = math
+local shell =  require("shell")
+local pm = require("pm")
+local oldPixelsM = {}
 local w,h = gpu.getResolution()
-local shell = require("shell")
-local forms = require("zygote")
-local fs = require("filesystem")
-local gui = require("gui")
-local doa = false
-local function drawScreen(screen)
-	gui.setColors(table.unpack(program.theme))
-	gpu.fill(1,2,80,23," ")
-	local sET = {screen = screen}
-	local y = 2
-	for i = 1, #screen do
-		local e = screen[i]
+local core = require("TabletOSCore")
+component = nil
+local form = zygote.addForm()
+form.left=1
+form.top=2
+form.W=80
+form.H=23
+form.color=0xCCCCCC
 
-		if e.type == "Button" then
-			table.insert(sET,{type="Button",cT=GUI.drawButton(1,y,w,1,e.name(),program.theme[1],program.theme[2]),onClick=e.onClick})
-		elseif e.type == "Label" then
-			gpu.fill(1,y,w,1," ")
-			gui.centerText(w/2,y,e.name())
-		elseif e.type == "Event" then
-			table.insert(sET,{type="Event",listener=e.listener})
-			y = y - 1
-		elseif e.type == "Separator" then 
-			gpu.fill(1,y,w,1,"-")
-		end
-		y = y + 1
-	end
-	return sET
+local function setActiveForm()
+form:setActive()
 end
-
-local function executeScreen(sET)
-	local oldPixels = ecs.rememberOldPixels(1,2,80,24)
-	while true do
-		local event = {event.pull()}
-		if event[1] == "ESS" then 
-			ecs.drawOldPixels(oldPixels) 
-			break 
-		end
-		if event[1] == "changeLanguage" then 
-			drawScreen(sET.screen) 
-		end
-		if event[1] == "touch" then
-			for i = 1, #sET do
-				if sET[i].type ~= "Event" then
-					if sET[i].type == "Button" then
-						local doOnClick = sET[i].cT(event[3],event[4])
-						if doOnClick then 
-							sET[i].onClick() 
-						end
-					end
-				end
-			end
-		end
-		for i = 1, #sET do
-			if sET[i].type == "Event" then
-				sET[i].listener(event)
-			end
-		end
-	end
+local function stopForm(view)
+zygote.stop(form)
 end
+local currentPath = "/"
+local oldFormPixels
+shell.execute("cd" .. currentPath)	
 
-program.mainMenu = {
-	{name=function() return "Bluetooth" end,onClick=function() assert(core.saveDisplayAndCallFunction(program.bluetoothScreen)) end,type="Button"},
-	{type="Separator"},
-	{name=function() return core.getLanguagePackages().language end,onClick=function() executeScreen(drawScreen(program.languageScreen)) end,type="Button"},
-	{listener = function(s) if s[1] == "touch" and (s[3] == 40 or s[3] == 35) and s[4] == 25 then computer.pushSignal("ESS") end end,type="Event"},
-}
 
-program.languageScreen = {
-	{name = function() return core.getLanguagePackages().selLanguage end,type="Label"},
-	{type="Separator"}, 
-	{listener = function(s) if s[1] == "touch" and s[3] == 35 and s[4] == 25 then computer.pushSignal("ESS") end end,type="Event"},
-}
 
-for key,value in pairs(core.languagesFS) do
-	table.insert(program.languageScreen,{name=function() return value end,onClick = function()  computer.pushSignal("ESS") core.changeLanguage(key) end,type="Button"})
-end
 
-program.bluetoothScreen = function()
-	local form = forms.addForm()
-	form.left = 1
-	form.top = 2
-	form.W = 80
-	form.H = 23
-	local list
-	function updateList()
-		list:clear()
-		list:insert("Nothing")
-		BT.on()
-		local BTDev = BT.scan()
-		for _, value in pairs(BTDev) do
-			list:insert(value.name,value.address)
-		end
+
+local list = form:addList(1,2,function(view)
+local value = view.items[view.index]
+
+	if value == ".." then 
+	shell.execute("cd ..")
+	currentPath = shell.getWorkingDirectory()
 	end
-	local buttonoff = form:addButton(1,2,"Off",function() BT.off() end)
-	local buttonon = form:addButton(1,1,"On",function() BT.on() end)
-	local buttonopen = form:addButton(21,1,"Open",function() BT.open() end)
-	local buttonclose = form:addButton(21,2,"Close",function() BT.close() end)
-	local buttonReceive = form:addButton(41,1,"Receive file",function()
-		local dialogWait = function()
-			 gui.drawButton(30,12,20,3,"Waiting for request",0x333333,0xCCCCCC)
+	if fs.isDirectory(value) then
+		oldPath = currentPath
+		currentPath = value
+		view:clear()
+		view:insert("/","/")
+		view:insert("..","..")
+		for name in fs.list(currentPath) do
+			view:insert(name,currentPath .. name)
 		end
-		local dialogAnswer = function(name,deviceName)
-			gpu.fill(30,10,20,9," ")
-			local answer = ecs.universalWindow("auto","auto",60,0x333333,true,
- 			{"CenterText", 0xCCCCCC, core.getLanguagePackages().receiveFile},
- 			{"CenterText",0xCCCCCC,name .. " from " .. deviceName},
-			{"Button", {0x00FF00, 0xFF00FF, "Yes"}, {0xFF0000, 0x00FFFF, "No"}})
-			if answer[1] == "Yes" then return true else return false end
-		end
-		local dialogReceive = function(size, totalSize)
-			local str = "Receiving file " .. tostring(totalSize) .. "/" .. tostring(size)
-			local len = str:len()
-			gui.setColors(0x333333,0xCCCCCC)
-			gpu.fill(len > 20 and 40 - len/2 or 30,11,len > 20 and len or 20,4," ")
-			gui.centerText(40,12,str)
-			gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,totalSize,size)
-		end
-		BT.receiveFile(dialogWait,dialogReceive,dialogAnswer) 
-		gui.setColors(table.unpack(program.theme))
-		gpu.fill(20,10,40,9," ")
-		updateList()
-	end)
-
-	local buttonScan = form:addButton(61,1,"Scan",function() 
-		updateList()
-	end)
-	buttonon.W = 20
-	buttonoff.W = 20
-	buttonopen.W = 20
-	buttonclose.W = 20
-	buttonReceive.W = 20
-	buttonScan.W = 20
-	list = form:addList(1,3,function(view)
-		local address = view.items[view.index]
-		local windowForm = forms.addForm()
+		shell.execute("cd " .. value)
+	elseif fs.exists(value) then
+		oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
+		local windowForm = zygote.addForm()
 		windowForm.left = 30
-		windowForm.top = 12-1
+		windowForm.top = 12-2
 		windowForm.W = 20
-		windowForm.H = 2
-		windowButton1 = windowForm:addButton(1,1,"Send file",function()
-			oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
-			local windowForm = forms.addForm()
-			windowForm.left = 30
-			windowForm.top = 25/2-2
-			windowForm.W = 20
-			windowForm.H = 5
-			form:addLabel(1,1,core.getLanguagePackages().enterPath)
-			local editor = windowForm:addEdit(1,2,function(view1)
-				local value = view1.text
-				if value and fs.exists(value) then
-					BT.sendFile(value,address,function(size,totalSize)
-						local str = "Sending file " .. tostring(totalSize) .. "/" .. tostring(size)
-						local len = str:len()
-						gui.setColors(0x333333,0xCCCCCC)
-						gpu.fill(len > 20 and 40 - len/2 or 30,11,len > 20 and len or 20,4," ")
-						gui.centerText(40,12,str)
-						gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,size,totalSize)
-					end)
-					ecs.drawOldPixels(oldFormPixels)
-					form:setActive()
-					updateList()
-					form:redraw()
-				end
-			end)
-			forms.run(windowForm)
+		windowForm.H = 6
+
+		windowButton1 = windowForm:addButton(1,1,"Edit",function()
+			OSAPI.ignoreListeners()
+			shell.execute("edit " .. value)
+			OSAPI.init()
+			ecs.drawOldPixels(oldFormPixels)
+			setActiveForm()
 		end)
-			windowButton2 = windowForm:addButton(1,2,"Exit",function()
-				form:setActive()
-			end)	
-		windowButton1.W=20
-		windowButton2.W=20
-		forms.run(windowForm)
-	end)
-	updateList()
-	list.W = 80
-	list.H = 20
-	list.color = 0xCCCCCC
-	list.fontColor = (0xFFFFFF - 0xCCCCCC)
-	list.border = 0
-	local function eventListener(_,_,x,y,button,_)
-		if button == 0 and x == 35 and y == 25 then
-			local success, reason = pcall(forms.stop,form)
-			if not success then
-				if reason then
-					ecs.error("Unable to exit program:" .. reason)
+		windowButton2 = windowForm:addButton(1,2,"Execute",function()
+			term.clear()
+			OSAPI.ignoreListeners()
+			local success, reason = shell.execute(value)
+			if not success then ecs.error(reason) end
+			OSAPI.init()
+			ecs.drawOldPixels(oldFormPixels)
+			setActiveForm()
+		end)
+		windowButton3 = windowForm:addButton(1,3,"Remove",function()
+			shell.execute("rm " .. value)
+			ecs.drawOldPixels(oldFormPixels)
+			setActiveForm()
+		end)
+		local function stopFormSS()
+			zygote.stop(windowForm)
+		end
+		windowButton4 = windowForm:addButton(1,4,"To workTable",function()
+			fs.remove("/usr/table/" .. fs.name(value))
+			local file = io.open("/usr/table/" .. fs.name(value),"w")
+			local str = ""
+			str = str .. "dofile(\"" .. value .. "\")"
+			file:write(str)
+			file:close()
+			ecs.drawOldPixels(oldFormPixels)
+			setActiveForm()
+		end)
+			windowButton5 = windowForm:addButton(1,6,"Exit",function()
+			ecs.drawOldPixels(oldFormPixels)
+			setActiveForm()
+		end)
+			windowButton6 = windowForm:addButton(1,5,"Install",function()
+			pm.installApp(value,fs.name(value))
+			ecs.drawOldPixels(oldFormPixels)
+			setActiveForm()
+		end)
+	windowButton1.W=20
+	windowButton2.W=20
+	windowButton3.W=20
+	windowButton4.W=20
+	windowButton5.W=20
+	windowButton6.W=20
+	zygote.run(windowForm)
+	setActiveForm()
+	end
+end)
+
+
+
+
+list.W = 80
+list.H = 22
+list.color = 0xCCCCCC
+list.fontColor = (0xFFFFFF - 0xCCCCCC)
+list.border = 0
+local function updateFileList()
+local listBackup = list
+list:clear()
+list:insert("/","/")
+list:insert("..","..")
+for name in fs.list(currentPath) do
+list:insert(name,currentPath .. name)
+end
+listBackup = nil
+end
+local newFolder = form:addButton(1,1,core.getLanguagePackages().newFolder,function()
+		oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
+		local windowForm = zygote.addForm()
+		windowForm.left = 30
+		windowForm.top = 25/2-2
+		windowForm.W = 20
+		windowForm.H = 4
+
+		local editor = windowForm:addEdit(1,1,function(view)
+			local value = view.text
+			if value then
+				local newFolder = currentPath .. value
+				fs.makeDirectory(newFolder)
+				ecs.drawOldPixels(oldFormPixels)
+				setActiveForm()
+				updateFileList()
+			end
+		end)
+		zygote.run(windowForm)
+end)
+newFolder.W = 20
+
+
+	local newFile = form:addButton(21,1,core.getLanguagePackages().newFile,function()
+		oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
+		local windowForm = zygote.addForm()
+		windowForm.left = 30
+		windowForm.top = 25/2-2
+		windowForm.W = 20
+		windowForm.H = 4
+
+		local editor = windowForm:addEdit(1,1,function(view)
+			local value = view.text
+			if value then
+				local newFile = currentPath .. value
+				local f = io.open(newFile,"w")
+				if f then
+					f:write("")
+					f:close()
 				end
+				ecs.drawOldPixels(oldFormPixels)
+				setActiveForm()
+				updateFileList()
+			end
+		end)
+		zygote.run(windowForm)
+	end)
+newFile.W = 20
+
+local updateButton = form:addButton(41,1,core.getLanguagePackages().updateFileList,updateFileList)
+updateButton.W = 20
+updateFileList()
+local oldPixelsM
+local function eventListener(_,_,x,y,button,_)
+	if button == 0 and (x == 40 or x == 35) and y == 25 then
+		local success, reason = pcall(stopForm)
+		if not success then
+			if reason then
+				ecs.error("Unable to exit program:" .. reason)
 			end
 		end
 	end
-
-	local event = form:addEvent("touch",eventListener)
-	updateList()
-	forms.run(form)
 end
+
+local event = form:addEvent("touch",eventListener)
 OSAPI.init()
-executeScreen(drawScreen(program.mainMenu))
-OSAPI.ignoreListeners()
+gpu.setBackground(0x610B5E)
+gpu.setForeground(0xFFFFFF)
+gpu.set(1,1,core.getLanguagePackages().fileManager)
+zygote.run(form)
