@@ -11,10 +11,10 @@ local w,h = gpu.getResolution()
 local shell = require("shell")
 local forms = require("zygote")
 local fs = require("filesystem")
-
+local gui = require("gui")
 local function drawScreen(screen)
 	gui.setColors(table.unpack(program.theme))
-	gpu.fill(1,1,80,23)
+	gpu.fill(1,1,80,23," ")
 	local sET = {screen = screen}
 	local y = 2
 	for i = 1, #screen do
@@ -36,7 +36,7 @@ local function drawScreen(screen)
 end
 
 local function executeScreen(sET)
-	local oldPixels = ecs.rememberOldPixels(x,y,w,h)
+	local oldPixels = ecs.rememberOldPixels(1,2,80,24)
 	while true do
 		local event = {event.pull()}
 		if event[1] == "ESS" then 
@@ -67,7 +67,7 @@ local function executeScreen(sET)
 end
 
 program.mainMenu = {
-	{name=function() return "Bluetooth" end,onClick=function() core.SaveDisplayAndCallFunction(program.bluetoothScreen) end,type="Button"},
+	{name=function() return "Bluetooth" end,onClick=function() core.saveDisplayAndCallFunction(program.bluetoothScreen) end,type="Button"},
 	{type="Separator"},
 	{name=function() return core.getLanguagePackages().language end,onClick=function() executeScreen(drawScreen(program.languageScreen)) end,type="Button"},
 }
@@ -78,7 +78,7 @@ program.languageScreen = {
 }
 
 for key,value in pairs(core.languagesFS) do
-	table.insert(program.languageScreen,{name=function() return value end,onClick = function() core.changeLanguage(key) computer.pushSignal("ESS") end,type="Button"})
+	table.insert(program.languageScreen,{name=function() return value end,onClick = function()  computer.pushSignal("ESS") core.changeLanguage(key) end,type="Button"})
 end
 
 program.bluetoothScreen = function()
@@ -162,3 +162,5 @@ program.bluetoothScreen = function()
 	updateList()
 	forms.run(form)
 end
+
+executeScreen(drawScreen(program.mainMenu))
