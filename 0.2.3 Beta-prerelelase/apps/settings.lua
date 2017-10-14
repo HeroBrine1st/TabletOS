@@ -90,8 +90,10 @@ program.bluetoothScreen = function()
 	form.top = 2
 	form.W = 80
 	form.H = 23
-	local buttononoff = form:addButton(1,1,"On/Off",function() if BT.state then BT.off() else BT.on() end end)
-	local buttonopenclose = form:addButton(21,1,"Open/Close",function() if BT.opened then BT.close() else BT.open() end end)
+	local buttonoff = form:addButton(1,2,"Off",function() BT.off() end)
+	local buttonon = form:addButton(1,1,"On",function() BT.on() end)
+	local buttonopen = form:addButton(21,1,"Open",function() BT.open() end)
+	local buttonclose = form:addButton(21,2,"Close",function() BT.close() end)
 	local buttonReceive = form:addButton(41,1,"Receive file",function()
 		local dialogWait = function()
 			 gpu.fill(30,10,20,9," ")
@@ -111,6 +113,8 @@ program.bluetoothScreen = function()
 			gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,size,totalSize)
 		end
 		BT.receiveFile(dialogWait,dialogReceive,dialogAnswer) 
+		gpu.setColors(table.unpack(program.theme))
+		gpu.fill(1,13,80,1," ")
 	end)
 	local buttonScan = form:addButton(61,1,"Scan",function() 
 		list:clear()
@@ -124,7 +128,7 @@ program.bluetoothScreen = function()
 	buttonopenclose.W = 20
 	buttonReceive.W = 20
 	buttonScan.W = 20
-	local list = form:addList(1,2,function(view)
+	local list = form:addList(1,3,function(view)
 		local address = view.items[view.index]
 		local windowForm = forms.addForm()
 		windowForm.left = 30
@@ -162,6 +166,7 @@ program.bluetoothScreen = function()
 	end)
 	function updateList()
 		list:clear()
+		list:insert("Nothing")
 		BT.on()
 		local BTDev = BT.scan()
 		for _, value in pairs(BTDev) do
@@ -170,7 +175,7 @@ program.bluetoothScreen = function()
 	end
 	updateList()
 	list.W = 80
-	list.H = 22
+	list.H = 20
 	list.color = 0xCCCCCC
 	list.fontColor = (0xFFFFFF - 0xCCCCCC)
 	list.border = 0
