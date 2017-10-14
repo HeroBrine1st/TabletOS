@@ -15,7 +15,7 @@ local gui = require("gui")
 local doa = false
 local function drawScreen(screen)
 	gui.setColors(table.unpack(program.theme))
-	gpu.fill(1,1,80,23," ")
+	gpu.fill(1,2,80,23," ")
 	local sET = {screen = screen}
 	local y = 2
 	for i = 1, #screen do
@@ -33,7 +33,6 @@ local function drawScreen(screen)
 		end
 		y = y + 1
 	end
-	if not doa then OSAPI.init() doa = true end
 	return sET
 end
 
@@ -164,6 +163,6 @@ program.bluetoothScreen = function()
 	updateList()
 	forms.run(form)
 end
-
+OSAPI.init()
 executeScreen(drawScreen(program.mainMenu))
 OSAPI.ignoreListeners()
