@@ -149,7 +149,7 @@ program.bluetoothScreen = function()
 		windowForm.H = 2
 		windowButton1 = windowForm:addButton(1,1,"Send file",function()
 			oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
-			local windowForm = zygote.addForm()
+			local windowForm = forms.addForm()
 			windowForm.left = 30
 			windowForm.top = 25/2-2
 			windowForm.W = 20
@@ -172,7 +172,7 @@ program.bluetoothScreen = function()
 				end
 			end)
 		end)
-			windowButton2 = windowForm:addButton(1,3,"Exit",function()
+			windowButton2 = windowForm:addButton(1,2,"Exit",function()
 				form:setActive()
 			end)	
 		windowButton1.W=20
