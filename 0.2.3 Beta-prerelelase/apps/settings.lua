@@ -154,7 +154,7 @@ program.bluetoothScreen = function()
 			windowForm.top = 25/2-2
 			windowForm.W = 20
 			windowForm.H = 5
-			form:addLabel(1,1,core.getLanguagePackages().enterPath)
+			windowForm:addLabel(1,1,core.getLanguagePackages().enterPath)
 			local editor = windowForm:addEdit(1,2,function(view1)
 				local value = view1.text
 				if value and fs.exists(value) then
