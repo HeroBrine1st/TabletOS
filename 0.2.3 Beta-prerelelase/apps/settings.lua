@@ -199,4 +199,3 @@ program.bluetoothScreen = function()
 end
 OSAPI.init()
 executeScreen(drawScreen(program.mainMenu))
-OSAPI.ignoreListeners()
