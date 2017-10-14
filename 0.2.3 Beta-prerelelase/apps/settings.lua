@@ -69,7 +69,7 @@ local function executeScreen(sET)
 end
 
 program.mainMenu = {
-	{name=function() return "Bluetooth" end,onClick=function() assert(core.saveDisplayAndCallFunction(program.bluetoothScreen)) end,type="Button"},
+	{name=function() return "Bluetooth" end,onClick=function() program.bluetoothScreen() drawScreen(program.mainMenu) end,type="Button"},
 	{type="Separator"},
 	{name=function() return core.getLanguagePackages().language end,onClick=function() executeScreen(drawScreen(program.languageScreen)) end,type="Button"},
 	{listener = function(s) if s[1] == "touch" and (s[3] == 40 or s[3] == 35) and s[4] == 25 then computer.pushSignal("ESS") end end,type="Event"},
@@ -148,35 +148,30 @@ program.bluetoothScreen = function()
 		windowForm.W = 20
 		windowForm.H = 2
 		windowButton1 = windowForm:addButton(1,1,"Send file",function()
-			oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
-			local windowForm = forms.addForm()
-			windowForm.left = 30
-			windowForm.top = 25/2-2
-			windowForm.W = 20
-			windowForm.H = 5
-			windowForm:addLabel(1,1,core.getLanguagePackages().enterPath)
-			local editor = windowForm:addEdit(1,2,function(view1)
-				local value = view1.text
-				if value and fs.exists(value) then
-					BT.sendFile(value,address,function(size,totalSize)
-						local str = "Sending file " .. tostring(totalSize) .. "/" .. tostring(size)
-						local len = str:len()
-						gui.setColors(0x333333,0xCCCCCC)
-						gpu.fill(len > 20 and 40 - len/2 or 30,11,len > 20 and len or 20,4," ")
-						gui.centerText(40,12,str)
-						gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,size,totalSize)
-					end)
-					ecs.drawOldPixels(oldFormPixels)
-					form:setActive()
-					updateList()
-					form:redraw()
-				end
-			end)
-			forms.run(windowForm)
-		end)
-			windowButton2 = windowForm:addButton(1,2,"Exit",function()
+		oldFormPixels = ecs.rememberOldPixels(1,1,80,25)
+		windowForm:addLabel(1,1,core.getLanguagePackages().enterPath)
+		local editor = windowForm:addEdit(1,2,function(view1)
+			local value = view1.text
+			if value and fs.exists(value) then
+				local str = "Sending file " .. tostring(totalSize) .. "/" .. tostring(size)
+				local len = str:len()
+				BT.sendFile(value,address,function(size,totalSize)
+					gui.setColors(0x333333,0xCCCCCC)
+					gpu.fill(len > 20 and 40 - len/2 or 30,10,len > 20 and len or 20,5," ")
+					gui.centerText(40,12,str)
+					gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,totalSize,size)
+				end)
+				ecs.drawOldPixels(oldFormPixels)
 				form:setActive()
-			end)	
+				updateList()
+				form:redraw()
+			end
+		end)
+		forms.run(windowForm)
+		end)
+		windowButton2 = windowForm:addButton(1,2,"Exit",function()
+			form:setActive()
+		end)	
 		windowButton1.W=20
 		windowButton2.W=20
 		forms.run(windowForm)
