@@ -58,10 +58,10 @@ local function executeScreen(sET)
 					end
 				end
 			end
-			for i = 1, #sET do
-				if sET[i].type == "Event" then
-					sET[i].listener(event)
-				end
+		end
+		for i = 1, #sET do
+			if sET[i].type == "Event" then
+				sET[i].listener(event)
 			end
 		end
 	end
@@ -71,11 +71,13 @@ program.mainMenu = {
 	{name=function() return "Bluetooth" end,onClick=function() core.saveDisplayAndCallFunction(program.bluetoothScreen) end,type="Button"},
 	{type="Separator"},
 	{name=function() return core.getLanguagePackages().language end,onClick=function() executeScreen(drawScreen(program.languageScreen)) end,type="Button"},
+	{listener = function(s) if s[1] == "touch" and (s[3] == 40 or s[3] == 35) and s[4] == 25 then computer.pushSignal("ESS") end end,type="Event"},
 }
 
 program.languageScreen = {
 	{name = function() return core.getLanguagePackages().selLanguage end,type="Label"},
 	{type="Separator"}, 
+	{listener = function(s) if s[1] == "touch" and s[3] == 35 and s[4] == 25 then computer.pushSignal("ESS") end end,type="Event"},
 }
 
 for key,value in pairs(core.languagesFS) do
@@ -89,17 +91,39 @@ program.bluetoothScreen = function()
 	form.W = 80
 	form.H = 23
 	local buttononoff = form:addButton(1,1,"On/Off",function() if BT.state then BT.off() else BT.on() end end)
-	local buttonopenclose = form:addButton(1,2,"Open/Close",function() if BT.opened then BT.close() else BT.open() end end)
-	local buttonReceive = form:addButton(1,3,"Receive file",function()
+	local buttonopenclose = form:addButton(21,1,"Open/Close",function() if BT.opened then BT.close() else BT.open() end end)
+	local buttonReceive = form:addButton(41,1,"Receive file",function()
 		local dialogWait = function()
-			 ecs.universalWindow("auto","auto",60,0xCCCCCC,true,
- 			{"CenterText", 0x333333, },
- 			{"CenterText", 0x333333, version},
-			{"TextField", 10, 0xCCCCCC, 0x333333, 0xFF0000, 0x00FF00,changelog},
-			{"Button", {0x00FF00, 0xFF00FF, "Install"}, {0xFF0000, 0x00FFFF, "Not install"}})
+			 gpu.fill(30,10,20,9," ")
+			 gui.centerText(40,13,"Waiting for request")
 		end
-		BT.receiveFile() 
+		local dialogAnswer = function(name,deviceName)
+			gpu.fill(30,10,20,9," ")
+			local answer = ecs.universalWindow("auto","auto",60,0xCCCCCC,true,
+ 			{"CenterText", 0x333333, core.getLanguagePackages().receiveFile},
+ 			{"CenterText",0x333333,name .. " from " .. deviceName},
+			{"Button", {0x00FF00, 0xFF00FF, "Yes"}, {0xFF0000, 0x00FFFF, "No"}})
+			if answer[1] == "Yes" then return true else return false end
+		end
+		local dialogReceive = function(size, totalSize)
+			gpu.fill(30,10,20,9," ")
+			gui.centerText(40,12,"Receiving file")
+			gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,size,totalSize)
+		end
+		BT.receiveFile(dialogWait,dialogReceive,dialogAnswer) 
 	end)
+	local buttonScan = form:addButton(61,1,"Scan",function() 
+		list:clear()
+		BT.on()
+		local BTDev = BT.scan()
+		for _, value in pairs(BTDev) do
+			list:insert(value.name,value.address)
+		end
+	end)
+	buttononoff.W = 20
+	buttonopenclose.W = 20
+	buttonReceive.W = 20
+	buttonScan.W = 20
 	local list = form:addList(1,2,function(view)
 		local address = view.items[view.index]
 		local windowForm = forms.addForm()
@@ -119,8 +143,9 @@ program.bluetoothScreen = function()
 				local value = view1.text
 				if value and fs.exists(value) then
 					BT.sendFile(value,address,function(size,totalSize)
+						gpu.fill(30,10,20,9," ")
 						gui.centerText(40,12,"Sending file")
-						gui.drawPrograssBar(1,13,80,0xFF0000,0x00FF00,size,totalSize)
+						gui.drawProgressBar(30,13,20,0xFF0000,0x00FF00,size,totalSize)
 					end)
 					ecs.drawOldPixels(oldFormPixels)
 					setActiveForm()
@@ -143,8 +168,9 @@ program.bluetoothScreen = function()
 			list:insert(value.name,value.address)
 		end
 	end
+	updateList()
 	list.W = 80
-	list.H = 20
+	list.H = 23
 	list.color = 0xCCCCCC
 	list.fontColor = (0xFFFFFF - 0xCCCCCC)
 	list.border = 0
