@@ -123,7 +123,6 @@ while true do
     if selectedVersion then
       local AVTU = {}
       for i = 1, #versions do
-        print(table.unpack(versions[i]))
         table.insert(AVTU,versions[i])
         if versions[i].version == selectedVersion.version then break end
       end
@@ -152,9 +151,9 @@ while true do
           drawProgressBar(1,25,80,0xFF0000,0x00FF00,CFD,CFC)
         end
       end
-      local strTW = "return " .. selectedVersion.version
-      fs.remove(".version")
-      local f = io.open(".version","w")
+      local strTW = "return \"" .. selectedVersion.version .. "\""
+      fs.remove("/.version")
+      local f = io.open("/.version","w")
       f:write(strTW)
       f:close()
       break
