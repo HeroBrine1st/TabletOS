@@ -15,6 +15,6 @@
   version = "0.2.3 Microupdate",
   description={en = "Added system updates.", ru = "Добавлены обновления системы."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Microupdate/filelist.txt",
-  exp=true,
+  exp=false,
   },
 }
