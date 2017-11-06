@@ -185,7 +185,7 @@ end
 
 require("term").clear()
 while true do
-  local result, reason = xpcall(loadfile("/OS.lua"), debug.traceback)
+  local result, reason = xpcall(loadfile("/apps/shell.lua"), debug.traceback)
   if not result then
     io.stderr:write((reason ~= nil and tostring(reason) or "unknown error") .. "\n")
     io.write("Press any key to continue.\n")
