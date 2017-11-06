@@ -7,8 +7,14 @@
   },
   {
   version = "0.2.3 Beta-prerelelase",
-  description={en = "App \"Settings\" moved to separate file, added bluetooth", ru = "Приложение \"Настройки\" перенесены в отдельный файл, добавлен блютуз"},
+  description={en = "App \"Settings\" moved to separate file, added bluetooth.", ru = "Приложение \"Настройки\" перенесены в отдельный файл, добавлен блютуз."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Beta-prerelelase/filelist.txt",
   exp=false,
-  }
+  },
+  {
+  version = "0.2.3 Microupdate",
+  description={en = "Added system updates.", ru = "Добавлены обновления системы."},
+  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Microupdate/filelist.txt",
+  exp=false,
+  },
 }
