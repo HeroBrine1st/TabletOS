@@ -8,7 +8,7 @@
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/apps/fileManager.lua",path="/apps/fileManager.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/apps/monitorOnline.lua",path="/apps/monitorOnline.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/apps/shell.lua",path="/apps/shell.lua"},
-  {url="https://pastebin.com/raw/iKzRve2g",path="/lib/zygote.lua"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/lib/forms.lua",path="/lib/zygote.lua"},
   {url="https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/ECSAPI.lua",path="/lib/ECSAPI.lua"},
   {url="https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/advancedLua.lua",path="/lib/advancedLua.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/OpenComputers/master/lib/gui.lua",path="/lib/gui.lua"},
