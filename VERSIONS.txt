@@ -17,4 +17,10 @@
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Microupdate/filelist.txt",
   exp=false,
   },
+  {
+    version = "0.2.4 Prerelelase",
+    description={en = "Fixed menu: always close when not processed, updating menu includes more info.", ru = "Пофиксил меню: всегда закрывается, когда не обрабатывается, меню обновления включает больше информации"},
+    raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4%20Prerelelase/filelist.txt",
+    exp = true,
+  }
 }
