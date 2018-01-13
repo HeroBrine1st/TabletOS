@@ -135,9 +135,9 @@ local function getBar(progress)
 	progress = progress < 0 and 0 or progress
 	progress = progress > 100 and 100 or progress
 	local bar = ""
-	local barCount = prorepties.progressBarLength/100*progress
+	local barCount = 15/100*progress
 	for i = 1, barCount do
-		bar = bar .. prorepties.progressBarFull
+		bar = bar .. "="
 	end
 	bar = text.padRight(bar,prorepties.progressBarLength)
 	return bar
