@@ -208,7 +208,7 @@ function core.downloadFileListAndDownloadFiles(fileListUrl,debug)
 				if not debug then
 					core.getFile(fileList[i].url,fileList[i].path)
 				else
-					download(filelist[i].url,filelist[i].path)
+					download(fileList[i].url,fileList[i].path)
 				end
 			end
 		else 
