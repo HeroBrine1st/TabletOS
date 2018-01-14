@@ -140,7 +140,7 @@ local function getBar(progress)
 	for i = 1, barCount do
 		bar = bar .. "="
 	end
-	bar = text.padRight(bar,prorepties.progressBarLength)
+	bar = text.padRight(bar,15)
 	return bar
 end
 
