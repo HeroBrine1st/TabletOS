@@ -5,6 +5,7 @@ local component = require("component")
 local ecs = require("ECSAPI")
 local term = require("term")
 local gpu = component.gpu
+local text = require("text")
 core.languagePackages = {
 	en={
 	settings="Settings",
