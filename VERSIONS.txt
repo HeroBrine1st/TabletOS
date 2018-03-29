@@ -22,5 +22,11 @@
     description={en = "Fixed menu: always close when not processed, updating menu includes more info.", ru = "Пофиксил меню: всегда закрывается, когда не обрабатывается, меню обновления включает больше информации"},
     raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4%20Prerelelase/filelist.txt",
     exp = false,
+  },
+  {
+    version = "0.2.4.1 Hotfix",
+    description = {en="Fixed bluetooth: component modem is not need for run apps settings",ru="Пофиксил блютуз: компонент modem не обязателен для запуска приложения настроек"},
+    raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4.1%20Hotfix/filelist.txt",
+    exp=true,
   }
 }
