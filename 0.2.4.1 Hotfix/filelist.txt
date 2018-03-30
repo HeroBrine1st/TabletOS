@@ -1,3 +1,4 @@
 {
 {path="/apps/settings.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4.1%20Hotfix/apps/settings.lua"},
+{path="/OS.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4.1%20Hotfix/OS.lua"},
 }
