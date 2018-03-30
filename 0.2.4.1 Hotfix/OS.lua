@@ -9,6 +9,7 @@ local fs = require("filesystem")
 local core = require("TabletOSCore")
 local gui = require("gui")
 _G.Math = math
+_G.isInHome = true
 local apps = {}
 local shell =  require("shell")
 term.clear()
@@ -28,16 +29,18 @@ local function drawBar()
 end
 local dmh
 local function clickedAtArea(x,y,x2,y2,touchX,touchY)
-if (touchX >= x) and (touchX <= x2) and (touchY >= y) and (touchY <= y2) then 
-return true 
-end 
-return false
+	if (touchX >= x) and (touchX <= x2) and (touchY >= y) and (touchY <= y2) then 
+		return true 
+	end 
+	return false
 end
-local oldPixels = {}
 function drawMenu()
+	local oldPixelsM = {}
+	local wereInHome = _G.isInHome
+	_G.isInHome = false
+	if wereInHome then oldPixelsM = ecs.rememberOldPixels(1,15,15,25) end
 	local objects = {
 		{y=19,name=core.getLanguagePackages().fileManager,callback=function() 	
-			--ecs.drawOldPixels(oldPixelsM)
 			dofile("/apps/fileManager.lua") end},
 		{y=20,name=core.getLanguagePackages().monitorOnline,callback=function() 
 			dofile("/apps/monitorOnline.lua")
@@ -46,7 +49,7 @@ function drawMenu()
 			dofile("/apps/settings.lua")
 		end},
 	 	{y=22,name=core.getLanguagePackages().appsLauncher,callback=function()
-		dofile("/apps/appsLauncher.lua")
+			dofile("/apps/appsLauncher.lua")
 		end},
 		{y=23,name=core.getLanguagePackages().reboot,callback=function() computer.shutdown(true) end},
 	 	{y=24,name=core.getLanguagePackages().shutdown,callback=function() computer.shutdown() end},
@@ -76,9 +79,9 @@ function drawMenu()
 		if clickedAtArea(1,10,15,24,touch[3],touch[4]) then
 			local success1, callback1 = checkTouch(touch[4])
 			if success1 then
-				ecs.drawOldPixels(oldPixelsM)
 				pcall(callback1)
-				drawWorkTable()
+				if wereInHome then drawWorkTable() else ecs.drawOldPixels(oldPixelsM) end
+				_G.isInHome = wereInHome
 				break
 			end
 		else
@@ -240,12 +243,11 @@ drawWorkTable()
 listener = function(...)
 	local touch = {...}
 	if touch[3] == 1 and touch[4] == 25 then
-		oldPixelsM = ecs.rememberOldPixels(1,15,15,25)
+		_G.OSAPI.ignoreListeners()
 		drawMenu()
-		ecs.drawOldPixels(oldPixelsM)
+		_G.OSAPI.init()
 	elseif touch[3] == 45 and touch[4] == 25 then
-		event.cancel(timerID)
-		event.ignore("touch",listener)
+		_G.OSAPI.ignoreListeners()
 		term.clear()
 		while true do
 			local result, reason = xpcall(loadfile("/apps/shell.lua"), function(msg)
@@ -291,13 +293,14 @@ while true do
 		local button = workTable[i]
 		if clickedAtArea(button.x,button.y,button.x+button.w-1,button.y+button.h-1,touch[3],touch[4]) then
 			OSAPI.ignoreListeners()
+			_G.isInHome = false
 			local success, successShell, reason = core.saveDisplayAndCallFunction(button.callback)
-			drawWorkTable()
 			OSAPI.init()
 			if not successShell then
-				core.saveDisplayAndCallFunction(ecs.error,reason)
+				ecs.error(reason)
 			end
 			drawWorkTable()
+			_G.isInHome = true
 		end
 	end
 end
