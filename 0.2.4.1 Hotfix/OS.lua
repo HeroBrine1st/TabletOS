@@ -294,7 +294,7 @@ while true do
 		if clickedAtArea(button.x,button.y,button.x+button.w-1,button.y+button.h-1,touch[3],touch[4]) then
 			OSAPI.ignoreListeners()
 			_G.isInHome = false
-			local success, successShell, reason = core.saveDisplayAndCallFunction(button.callback)
+			local successShell, reason = button.callback()
 			OSAPI.init()
 			if not successShell then
 				ecs.error(reason)
