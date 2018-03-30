@@ -33,6 +33,7 @@ return true
 end 
 return false
 end
+local oldPixels = {}
 function drawMenu()
 	local objects = {
 		{y=19,name=core.getLanguagePackages().fileManager,callback=function() 	
@@ -82,6 +83,7 @@ function drawMenu()
 			end
 		else
 			--ecs.drawOldPixels(oldPixels)
+			oldPixels = {}
 			computer.pushSignal(table.unpack(touch))
 			if type(dmh) == "function" then dmh() end
 			break
@@ -111,6 +113,11 @@ function statusBar()
 	gpu.set(80,1,"%")
 	gpu.setBackground(oldBackground)
 	gpu.setForeground(oldForeground)
+	if energy < 6 then
+	require("term").clear()
+	print("Not enough energy! Shutdown tablet... ")
+	require("computer").shutdown()
+	end
 	if not energy == oldEnergy then
 		computer.pushSignal("energyChange",oldEnergy,energy)
 	end
@@ -233,7 +240,7 @@ drawWorkTable()
 listener = function(...)
 	local touch = {...}
 	if touch[3] == 1 and touch[4] == 25 then
-		oldPixelsM = ecs.rememberOldPixels(1,10,15,25)
+		oldPixelsM = ecs.rememberOldPixels(1,15,15,25)
 		drawMenu()
 		ecs.drawOldPixels(oldPixelsM)
 	elseif touch[3] == 45 and touch[4] == 25 then
@@ -241,16 +248,16 @@ listener = function(...)
 		event.ignore("touch",listener)
 		term.clear()
 		while true do
-  local result, reason = xpcall(loadfile("/apps/shell.lua"), function(msg)
-    return tostring(msg).."\n"..debug.traceback()
-  end)
-  if not result then
-    io.stderr:write((reason ~= nil and tostring(reason) or "unknown error") .. "\n")
-    io.write("Press any key to continue.\n")
-    os.sleep(0.5)
-    require("event").pull("key")
-  end
-end
+			local result, reason = xpcall(loadfile("/apps/shell.lua"), function(msg)
+			    return tostring(msg).."\n"..debug.traceback()
+			end)
+			if not result then
+			    io.stderr:write((reason ~= nil and tostring(reason) or "unknown error") .. "\n")
+			    io.write("Press any key to continue.\n")
+			    os.sleep(0.5)
+			    require("event").pull("key")
+			end
+		end
 	end
 	local power = core.getLanguagePackages().power
 	local len = unicode.len(power)
@@ -284,10 +291,11 @@ while true do
 		local button = workTable[i]
 		if clickedAtArea(button.x,button.y,button.x+button.w-1,button.y+button.h-1,touch[3],touch[4]) then
 			OSAPI.ignoreListeners()
-			local successShell, reason = button.callback()
+			local success, successShell, reason = core.saveDisplayAndCallFunction(button.callback)
+			drawWorkTable()
 			OSAPI.init()
 			if not successShell then
-				ecs.error(reason)
+				core.saveDisplayAndCallFunction(ecs.error,reason)
 			end
 			drawWorkTable()
 		end
