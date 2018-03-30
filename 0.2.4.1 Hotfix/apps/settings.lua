@@ -38,11 +38,9 @@ local function drawScreen(screen)
 end
 
 local function executeScreen(sET)
-	local oldPixels = ecs.rememberOldPixels(1,2,80,24)
 	while true do
 		local event = {event.pull()}
 		if event[1] == "ESS" then 
-			ecs.drawOldPixels(oldPixels) 
 			break 
 		end
 		if event[1] == "changeLanguage" then 
