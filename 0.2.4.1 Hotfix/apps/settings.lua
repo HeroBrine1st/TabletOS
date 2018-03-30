@@ -43,7 +43,7 @@ local function executeScreen(sET)
 		if event[1] == "ESS" then 
 			break 
 		end
-		if event[1] == "changeLanguage" then 
+		if event[1] == "changeLanguage" or event[1] == "RELOAD_GRAPHICS" then 
 			drawScreen(sET.screen) 
 		end
 		if event[1] == "touch" then
@@ -86,7 +86,7 @@ end
 program.bluetoothScreen = function()
 	local success, BT = pcall(require,"bluetooth")
 	if not success then
-		gui.drawButton(30,12,20,3,"Not enough modem =(",0x333333,0xCCCCCC)
+		gui.drawButton(30,12,20,3,"Not enough modem=(",0x333333,0xCCCCCC)
 		event.pull("touch")
 		return
 	end
