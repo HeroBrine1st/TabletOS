@@ -291,11 +291,10 @@ while true do
 		local button = workTable[i]
 		if clickedAtArea(button.x,button.y,button.x+button.w-1,button.y+button.h-1,touch[3],touch[4]) then
 			OSAPI.ignoreListeners()
-			local success, successShell, reason = core.saveDisplayAndCallFunction(button.callback)
-			drawWorkTable()
+			local successShell, reason = button.callback()
 			OSAPI.init()
 			if not successShell then
-				core.saveDisplayAndCallFunction(ecs.error,reason)
+				ecs.error(reason)
 			end
 			drawWorkTable()
 		end
