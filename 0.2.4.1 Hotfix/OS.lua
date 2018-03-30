@@ -33,7 +33,6 @@ return true
 end 
 return false
 end
-local oldPixels = {}
 function drawMenu()
 	local objects = {
 		{y=19,name=core.getLanguagePackages().fileManager,callback=function() 	
@@ -83,7 +82,6 @@ function drawMenu()
 			end
 		else
 			--ecs.drawOldPixels(oldPixels)
-			oldPixels = {}
 			computer.pushSignal(table.unpack(touch))
 			if type(dmh) == "function" then dmh() end
 			break
@@ -113,11 +111,6 @@ function statusBar()
 	gpu.set(80,1,"%")
 	gpu.setBackground(oldBackground)
 	gpu.setForeground(oldForeground)
-	if energy < 6 then
-	require("term").clear()
-	print("Not enough energy! Shutdown tablet... ")
-	require("computer").shutdown()
-	end
 	if not energy == oldEnergy then
 		computer.pushSignal("energyChange",oldEnergy,energy)
 	end
@@ -240,7 +233,7 @@ drawWorkTable()
 listener = function(...)
 	local touch = {...}
 	if touch[3] == 1 and touch[4] == 25 then
-		oldPixelsM = ecs.rememberOldPixels(1,2,80,24)
+		oldPixelsM = ecs.rememberOldPixels(1,10,15,25)
 		drawMenu()
 		ecs.drawOldPixels(oldPixelsM)
 	elseif touch[3] == 45 and touch[4] == 25 then
