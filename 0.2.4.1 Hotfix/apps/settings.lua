@@ -90,6 +90,7 @@ program.bluetoothScreen = function()
 	if not success then
 		gui.drawButton(30,12,20,3,"Not enough modem =(",0x333333,0xCCCCCC)
 		event.pull("touch")
+		return
 	end
 	local form = forms.addForm()
 	form.left = 1
