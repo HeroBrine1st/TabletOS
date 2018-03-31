@@ -24,8 +24,8 @@
     exp = false,
   },
   {
-    version = "0.2.4.1 Hotfix",
-    description = {en="Fixed bluetooth: component modem is not need for run apps settings",ru="Пофиксил блютуз: компонент modem не обязателен для запуска приложения настроек"},
+    version = "0.2.4.1 Multithreads",
+    description = {en="WIP",ru="WIP"},
     raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4.1%20Hotfix/filelist.txt",
     exp=true,
   }
