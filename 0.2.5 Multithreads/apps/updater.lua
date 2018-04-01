@@ -16,9 +16,7 @@ local languagePackages = {
 	}
 }
 
-setmetatable(languagePackages,{
-	__index = languagePackages[core.getLanguage]
-})
+languagePackages = languagePackages[core.getLanguage()]
 local function checkUpdate()
 	local installedVersion = dofile("/.version")
 	local versionsRAW = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/VERSIONS.txt"
@@ -146,7 +144,7 @@ local buffer = require("doubleBuffering")
 local function updateWindow()
 	if not _G.updates then 
 		local oldpixels = ecs.info("auto","auto","",languagePackages.nothing) 
-		event.pull("touch")
+		require("event").pull("touch")
 		ecs.drawOldPixels(oldpixels)
 		return 
 	end
