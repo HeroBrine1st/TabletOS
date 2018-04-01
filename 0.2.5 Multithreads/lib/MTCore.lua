@@ -9,7 +9,7 @@ local event = require("event")
 function multithread.create(f,name)
 	local thread = coroutine.create(f)
 	table.insert(multithread.all,{thread=thread,name=name})
-	table.insert(multithread.yielding,#multithread.all,{thread=thread,name=name,index=#multithread.all})
+	multithread.yielding[#multithread.all] = {thread=thread,name=name,index=#multithread.all}
 	return #multithread.all
 end
 
@@ -20,10 +20,10 @@ function multithread.run(index)
 		local indexR = multithread.running.index
 		coroutine.yield(thread)
 		multithread.running = nil
-		table.insert(multithread.yielding,indexR,{thread=thread,name=name,index=indexR})
+		multithread.yielding[indexR] = {thread=thread,name=name,index=indexR}
 	end
 	local thread, name, index = multithread.yielding[index].thread, multithread.yielding[index].name, multithread.yielding[index].index
-	table.remove(multithread.yielding,index)
+	multithread.yielding[index] = nil
 	multithread.running = {thread=thread,name=name,index=index}
 	return coroutine.resume(thread,index)
 end
@@ -35,7 +35,7 @@ function multithread.yield(...)
 		local indexR = multithread.running.index
 		coroutine.yield(...)
 		multithread.running = nil
-		table.insert(multithread.yielding,indexR,{thread=thread,name=name,index=indexR})
+		multithread.yielding[indexR] = {thread=thread,name=name,index=indexR}
 	end
 end
 
