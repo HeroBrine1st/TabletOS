@@ -43,6 +43,7 @@ function graphics.drawMenu()
 	core.saveData("menuData",menu)
 	local sW, sH = buffer.getResolution()
 	local x,y,w,h = 1,sH - #menu, 15, #menu
+	local screen = buffer.copy(x,y,80,15)
 	buffer.square(x,y,w,h,0xFFFFFF,0x000000," ")
 	for i = 1, #menu do
 		local tY = y + i - 1
@@ -52,8 +53,12 @@ function graphics.drawMenu()
 	while true do
 		local _,_,tX,tY,_,_ = event.pull("touch")
 		if gui.clickedAtArea(x,y,x+w-1,y+h-1,tX,tY) then
+			buffer.paste(x,y,screen)
+			buffer.draw()
 			return menu[#menu-(sH-tY)+1].path
 		else
+			buffer.paste(x,y,screen)
+			buffer.draw()
 			break
 		end
 	end
@@ -70,7 +75,8 @@ function graphics.drawBars(nPO)
 	for i = 1, math.min(#notifications,70) do
 		nStr = nStr .. notifications[i].icon
 	end
-	if #notifications > 70 then nStr = nStr .. "..." end
+	nStr = nStr:sub(1,70)
+	if #notifications > 70 then nStr = nStr .. "…" end
 	if nPO then nStr = core.getLanguagePackages().notifications end
 	buffer.formattedText(1,1,nStr)
 	buffer.set(1,25,graphics.theme.menuButton.background,graphics.theme.menuButton.foreground,"M")
@@ -98,7 +104,7 @@ function graphics.openNotifications(y,noProcess)
 		buffer.text(1,y1+1,graphics.theme.notifications.foreground,text1)
 		buffer.text(1,y1+2,graphics.theme.notifications.foreground,text2)	
 		local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i,}
-		local bX1, bY1, bX2, bY2 = buffer.getDrawLimit()
+		local bX1, bY1, bX2, bY2 = buffer.getDrawLimit() 
 		if notif.y2 < bY2 then 
 			table.insert(visible,notif)
 		end
@@ -156,7 +162,7 @@ function graphics.processStatusBar(x,y)
 			buffer.draw()
 		elseif signal == "drop" then
 			if not opened then
-				if y > touchY then
+				if y > touchY and y-touchY > 2 then
 					for i = y, sH do
 						os.sleep(0.01)
 						graphics.openNotifications(i)
@@ -171,6 +177,7 @@ function graphics.processStatusBar(x,y)
 						graphics.openNotifications(j)
 						buffer.draw()
 					end
+					return
 				end 
 			elseif opened then
 				if y < 23 then
@@ -192,16 +199,7 @@ end
 
 function graphics.clearSandbox()
 	local sW, sH = buffer.getResolution()
-	buffer.square(1,2,sW,sH-1,0x000000,0xFFFFFF," ")
-end
-buffer.clear()
-graphics.drawBars()
-buffer.draw(true)
-while true do
-	local _,_,x,y,_,_ = event.pull("touch")
-	if y == 1 then
-		graphics.processStatusBar(x,y)
-	end
+	buffer.square(1,2,sW,sH-2,0x000000,0xFFFFFF," ")
 end
 
 return graphics
