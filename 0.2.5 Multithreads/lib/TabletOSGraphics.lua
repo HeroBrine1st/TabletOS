@@ -3,7 +3,7 @@ local component = require("component")
 local event = require("event")
 local buffer = require("doubleBuffering")
 local unicode = require("unicode")
-
+local ecs = require("ECSAPI")
 local graphics = {
 	theme = {
 		bars = {
@@ -195,6 +195,10 @@ function graphics.processStatusBar(x,y)
 			end
 		end
 	end
+end
+
+function graphics.errorFrame(name)
+	
 end
 
 function graphics.clearSandbox()
