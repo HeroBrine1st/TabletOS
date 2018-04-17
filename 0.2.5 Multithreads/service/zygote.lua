@@ -20,12 +20,10 @@ function zygote.listener(...)
 				MT.yield(path)
 				event.listen("touch",zygote.listener)
 			end
-		elseif
-			y == 25 and x == 40 then
-				event.ignore("touch",zygote.listener)
-				MT.yield()
-				event.listen("touch",zygote.listener)
-			end
+		elseif y == 25 and x == 40 then
+			event.ignore("touch",zygote.listener)
+			MT.yield()
+			event.listen("touch",zygote.listener)
 		end
 	end
 end
