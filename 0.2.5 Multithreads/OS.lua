@@ -18,10 +18,8 @@ table.sort(_G.applications,function(a,b) return a.name < b.name end)
 while true do
 	local nextFile = nextFile or HOME
 	if MT.running == nil then
-		local func = function()
-			loadfile("/service/zygote.lua",loadfile(nextFile))
-		end
-		local i = MT.create(,nextFile)
+		local func = loadfile("/service/zygote.lua",loadfile(nextFile))
+		local i = MT.create(func,nextFile)
 		local success, reason = MT.resume(i,"OPEN_APP")
 		graphics.clearSandbox()
 		if success then nextFile = reason end
