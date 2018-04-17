@@ -20,7 +20,7 @@ while true do
 	if MT.running == nil then
 		local func = loadfile("/service/zygote.lua")
 		local i = MT.create(func,nextFile)
-		local success, reason = MT.resume(i,loadfile(nextFile),"OPEN_APP")
+		local success, reason = MT.run(i,loadfile(nextFile),"OPEN_APP")
 		graphics.clearSandbox()
 		if success then nextFile = reason end
 		--if not success then graphics.errorFrame(name,reason) end
