@@ -30,6 +30,7 @@ function zygote.listener(...)
 	end
 end
 
+end
 if type(args[1]) == "function" then
 	event.listen("touch",zygote.listener)
 	local result = {args[1](args[2])}
