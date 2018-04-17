@@ -1,5 +1,5 @@
 local graphics = require("TabletOSGraphics")
-local buffer = require("DoubleBuffering")
+local buffer = require("doubleBuffering")
 local image = require("image")
 local desctop = "/usr/Desctop/"
 local apps = _G.applications
