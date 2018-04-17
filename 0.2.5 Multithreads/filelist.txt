@@ -25,4 +25,5 @@
         url = "https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/doubleBuffering.lua",
         path = "/lib/doubleBuffering.lua"
     },
+    {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/apps/Launcher.lua",path="/apps/Launcher.lua",},
 }
