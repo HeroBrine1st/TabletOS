@@ -61,6 +61,7 @@ local function main()
 			table.insert(files,file)
 		end
 	end
+	table.sort(files)
 	if _G.wallpaper then buffer.image(1,2,image.load(_G.wallpaper)) graphics.drawBars() end
 	return drawTextTable(files,1),files
 end
