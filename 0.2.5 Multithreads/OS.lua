@@ -10,7 +10,7 @@ for file in fs.list(apps) do
 	file = fs.concat(apps,file)
 	if file ~= HOME then
 		local success, name = pcall(dofile,file)
-		table.insert(_G.applications,{file=file,name=name}
+		table.insert(_G.applications,{file=file,name=name})
 	end
 end
 table.sort(_G.applications,function(a,b) return a.name < b.name end)
