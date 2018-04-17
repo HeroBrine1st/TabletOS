@@ -23,4 +23,10 @@
     raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4%20Prerelelase/filelist.txt",
     exp = false,
   },
+  {
+  version = "0.2.5 Multithreads",
+  description = {en="none",ru="none"},
+  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/filelist.txt",
+  exp=true,
+  },
 }
