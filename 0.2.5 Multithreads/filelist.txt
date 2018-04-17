@@ -5,5 +5,24 @@
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua",},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/init.lua",path="/init.lua",},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/OS.lua",path="/OS.lua",},
-
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/advancedLua.lua",
+        path = "/lib/advancedLua.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/color.lua",
+        path = "/lib/color.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/FormatModules/OCIF.lua",
+        path = "/lib/FormatModules/OCIF.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/image.lua",
+        path = "/lib/image.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/doubleBuffering.lua",
+        path = "/lib/doubleBuffering.lua"
+    },
 }
