@@ -1,0 +1,9 @@
+{
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/service/zygote.lua",path="/service/zygote.lua",},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/lib/MTCore.lua",path="/lib/MTCore.lua",},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/lib/TabletOSCore.lua",path="/lib/TabletOSCore.lua",},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua",},
+  {url="https://github.com/HeroBrine1st/TabletOS/blob/master/0.2.5%20Multithreads/init.lua",path="/init.lua",},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.5%20Multithreads/OS.lua",path="/OS.lua",},
+
+}
