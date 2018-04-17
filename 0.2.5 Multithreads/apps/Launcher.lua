@@ -90,6 +90,7 @@ local args = {...}
 local thisScreen = "MAIN"
 if args[1] == "OPEN_APP" then
 	local desctopTable,files = main()
+	buffer.draw()
 	while true do
 		local signal, arg1,arg2,arg3,arg4,arg5 = event.pull()
 		if signal == "touch" then
@@ -99,6 +100,7 @@ if args[1] == "OPEN_APP" then
 				if thisScreen == "APP_LIST" then
 					desctopTable,files = main()
 					thisScreen = "MAIN"
+					buffer.draw()
 				end
 			else
 				local file = files[clickedTo(desctopTable,x,y)]
@@ -108,6 +110,8 @@ if args[1] == "OPEN_APP" then
 		elseif signal == "key_down" then
 			if arg3 == 30 and keyboard.isControlDown() then
 				desctopTable,files = allApps()
+				thisScreen = "APP_LIST"
+				buffer.draw()
 			end
 		end
 	end
