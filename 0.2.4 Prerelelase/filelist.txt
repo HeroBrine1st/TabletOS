@@ -1,4 +1,4 @@
 {{path="/OS.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4%20Prerelelase/OS.lua"},
 {path="/lib/TabletOSCore.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4%20Prerelelase/lib/TabletOSCore.lua"},
 {url="https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/lib/ECSAPI.lua",path="/lib/ECSAPI.lua"},
-{url="https://raw.githubusercontent.com/IgorTimofeev/AdvancedLua/master/AdvancedLua.lua",path="/lib/AdvancedLua.lua"}}
+{url="https://raw.githubusercontent.com/IgorTimofeev/AdvancedLua/master/AdvancedLua.lua",path="/lib/advancedLua.lua"}}
