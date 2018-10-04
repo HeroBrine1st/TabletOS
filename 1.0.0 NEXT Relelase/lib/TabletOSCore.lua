@@ -100,7 +100,7 @@ function core.pcall(...)
 		for i = 1, #{...} do
 			str = str .. tostring(({...})[i]) .. " "
 		end
-		str = str .. " REASON: " .. result[2] .. "\n"
+		str = str .. " REASON: " .. tostring(result[2]) .. "\n"
 		local f = io.open("/TabletOS/logs.log","a")
 		f:write(str)
 		f:close()
