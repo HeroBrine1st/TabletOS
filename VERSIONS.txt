@@ -23,4 +23,9 @@
     raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4%20Prerelelase/filelist.txt",
     exp = false,
   },
+  {version = "1.0.0 NEXT Relelase",
+  description = {en = "A lot of changes. Transitional update.",ru="Очень много изменений. Переходное обновление."},
+  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/filelist.txt",
+  exp=false,
+  }
 }
