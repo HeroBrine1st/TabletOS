@@ -13,4 +13,24 @@
 {path="/TabletOS/Lang/Updater/eu_EN.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Updater/eu_EN.lang"},
 {path="/TabletOS/Lang/Updater/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Updater/eu_RU.lang"},
 {path="/autorun.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/autorun.lua"},
+    {--Спасибо ECS за готовый список файлов
+        url = "https://raw.githubusercontent.com/IgorTimofeev/AdvancedLua/master/AdvancedLua.lua",
+        path = "/lib/advancedLua.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/Color/master/Color.lua",
+        path = "/lib/color.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/Image/master/OCIF.lua",
+        path = "/lib/FormatModules/OCIF.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/Image/master/Image.lua",
+        path = "/lib/image.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/DoubleBuffering/master/DoubleBuffering.lua",
+        path = "/lib/doubleBuffering.lua"
+    }
 }
