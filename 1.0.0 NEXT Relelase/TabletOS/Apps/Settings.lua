@@ -124,7 +124,7 @@ program.updates = {
 }
 
 for key,value in pairs(core.languages) do
-	table.insert(program.languageScreen,{name=function() return value end,onClick = function()  computer.pushSignal("ESS") core.loadLanguage(key) end,type="Button"})
+	table.insert(program.languageScreen,{name=function() return value end,onClick = function()  computer.pushSignal("ESS") core.loadLanguage(key) core.resetSettings(true) end,type="Button"})
 end
 graphics.drawBars()
 executeScreen(drawScreen(program.mainMenu))
