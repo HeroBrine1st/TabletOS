@@ -68,6 +68,17 @@ local function drawDir(dir,page)
 	return buttons,bIOP
 end
 
+local success, reason = core.pcall(dofile,"/TabletOS/Service/Updater.lua")
+if not success then
+	local str = core.getLanguagePackages().OS_errorIn
+	str=str:gsub("?","/TabletOS/Service/Updater.lua")
+	core.newNotification(0,"E",str,reason)
+else
+	_G.updater = reason
+	if updater.hasUpdate then
+		core.newNotification(10,"U",core.getLanguagePackages().OS_updateAvailable,updater.lastVersName)
+	end
+end
 local page = 1
 local dir = dirs.desctop
 while true do
@@ -96,7 +107,14 @@ while true do
 		graphics.drawChanges()
 	elseif x == 1 and y == h then
 		local file = graphics.drawMenu()
-		if file then core.pcall(dofile,file) end
+		if file then 
+			local success, reason = core.pcall(dofile,file) 
+			if not success then
+				local str = core.getLanguagePackages().OS_errorIn
+				str=str:gsub("?",file)
+				core.newNotification(0,"E",str,reason)
+			end
+		end
 	elseif y == h-1 then
 		if x < w/2+1 then 
 			page = math.max(1,page-1)
@@ -115,6 +133,11 @@ while true do
 			if button == 0 then
 				if not fs.isDirectory(xFile) then
 					local success, reason = core.pcall(dofile,xFile)
+					if not success then
+						local str = core.getLanguagePackages().OS_errorIn
+						str=str:gsub("?",xFile)
+						core.newNotification(0,"E",str,reason)
+					end
 				else
 					dir = xFile
 				end
