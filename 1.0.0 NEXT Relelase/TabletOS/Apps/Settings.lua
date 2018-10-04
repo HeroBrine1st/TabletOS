@@ -35,7 +35,20 @@ end
 local function executeScreen(sET)
 	while true do
 		local event = {event.pull()}
-		if graphics.clickedToBarButton(event[3],event[4]) == "HOME" then 
+		if event[3]==1 and event[4]==h then
+			local file = graphics.drawMenu()
+			if file then 
+				event.timer(0.1,function() 
+					local success, reason = core.pcall(dofile,file) 
+					if not success then
+						local str = core.getLanguagePackages().OS_errorIn
+						str:gsub("?",file)
+						core.newNotification(0,"E",str,reason)
+					end
+				end)
+				break
+			end
+		elseif graphics.clickedToBarButton(event[3],event[4]) == "HOME" then 
 			os.exit() 
 		end
 		if event[1] == "ESS" then 
@@ -74,8 +87,11 @@ local function executeScreen(sET)
 end
 
 program.mainMenu = {
-	{name=function() return core.getLanguagePackages().Settings_langin end, onClick=function() executeScreen(drawScreen(program.langAndInput)) end,type="Button"},
 	{name=function() return core.getLanguagePackages().Settings_network end, onClick=function() graphics.drawInfo("Work in progress",{}) end,type="Button"},
+	{type="Separator"}, 
+	{name=function() return core.getLanguagePackages().Settings_langin end, onClick=function() executeScreen(drawScreen(program.langAndInput)) end,type="Button"},
+	{type="Separator"}, 
+	{name=function() return core.getLanguagePackages().Settings_updates end, onClick=function() executeScreen(drawScreen(program.updates)) end,type="Button"},
 	{listener = function(s) if s[1] == "touch" and graphics.clickedToBarButton(s[3],s[4]) == "BACK" then computer.pushSignal("ESS") end end,type="Event"},
 }
 
@@ -92,6 +108,19 @@ program.languageScreen = {
 			computer.pushSignal("ESS")
 		end
 	end,type="Event"},
+}
+local function split(source, delimiters)
+  local elements = {}
+  local pattern = '([^'..delimiters..']+)'
+  string.gsub(source, pattern, function(value) elements[#elements + 1] = value;  end);
+  return elements
+end
+program.updates = {
+	{name=function() return core.getLanguagePackages().Settings_installUpdates end, onClick=function() updater.update() end,type="Button"},
+	{name=function() return core.getLanguagePackages().Settings_getChangelog end, onClick=function() 
+		local strTbl = split(updater.changelog,"\n")
+		graphics.drawInfo(core.getLanguagePackages().Settings_getChangelog,strTbl)
+	end,type="Button"},
 }
 
 for key,value in pairs(core.languages) do
