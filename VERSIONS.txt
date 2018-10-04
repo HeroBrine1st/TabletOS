@@ -1,24 +1,24 @@
 {
   {
-  version = "0.2.2.3 Beta-prerelelase",
+  version = "0.2.2.3 Beta-prerelelase DELETED",
   description={en = "A first version of TabletOS system.",ru="Первая версия TabletOS."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.2.3%20Beta-prerelelase/filelist.txt",
   exp=false,
   },
   {
-  version = "0.2.3 Beta-prerelelase",
+  version = "0.2.3 Beta-prerelelase DELETED",
   description={en = "App \"Settings\" moved to separate file, added bluetooth.", ru = "Приложение \"Настройки\" перенесены в отдельный файл, добавлен блютуз."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Beta-prerelelase/filelist.txt",
   exp=false,
   },
   {
-  version = "0.2.3 Microupdate",
+  version = "0.2.3 Microupdate DELETED",
   description={en = "Added system updates.", ru = "Добавлены обновления системы."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.3%20Microupdate/filelist.txt",
   exp=false,
   },
   {
-    version = "0.2.4 Prerelelase",
+    version = "0.2.4 Prerelelase DELETED",
     description={en = "Fixed menu: always close when not processed, updating menu includes more info.", ru = "Пофиксил меню: всегда закрывается, когда не обрабатывается, меню обновления включает больше информации"},
     raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/0.2.4%20Prerelelase/filelist.txt",
     exp = false,
