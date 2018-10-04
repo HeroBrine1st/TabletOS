@@ -99,7 +99,7 @@ function contextMenu.contextMenuForDir(xFile)
 		},
 		{name=""},
 		{name = core.getLanguagePackages().OS_this,
-			contextMenu = contextMenu.contextMenuForThis(dir)
+			contextMenu = contextMenu.contextMenuForThis(xFile)
 		},
 	}
 end
@@ -141,7 +141,7 @@ function contextMenu.contextMenuForFile(xFile)
 		},
 		{name=""},
 		{name = core.getLanguagePackages().OS_this,
-			contextMenu = contextMenu.contextMenuForThis(dir)
+			contextMenu = contextMenu.contextMenuForThis(xFile)
 		},
 	}
 end
