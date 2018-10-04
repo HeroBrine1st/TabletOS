@@ -1,7 +1,6 @@
 local fs = require("filesystem")
-local version = ({...})[1]
-local strTW = "return \"" .. version .. "\""
-fs.remove("/.version")
-local f = io.open("/.version","w")
+local args = ({...})
+local strTW = "return \"" .. args[2] .. "\""
+local f = io.open("/TabletOS/.version","w")
 f:write(strTW)
 f:close()
