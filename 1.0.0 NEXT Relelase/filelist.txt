@@ -8,8 +8,8 @@
 {path="/TabletOS/Apps/SetupWizard.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Apps/SetupWizard.lua"},
 {path="/TabletOS/Lang/OS/eu_EN.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/OS/eu_EN.lang"},
 {path="/TabletOS/Lang/OS/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/OS/eu_RU.lang"},
-{path="TabletOS/Lang/Settings/eu_EN.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Settings/eu_EN.lang"},
-{path="TabletOS/Lang/Settings/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Settings/eu_RU.lang"},
+{path="/TabletOS/Lang/Settings/eu_EN.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Settings/eu_EN.lang"},
+{path="/TabletOS/Lang/Settings/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Settings/eu_RU.lang"},
 {path="/TabletOS/Lang/Updater/eu_EN.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Updater/eu_EN.lang"},
 {path="/TabletOS/Lang/Updater/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Updater/eu_RU.lang"},
 }
