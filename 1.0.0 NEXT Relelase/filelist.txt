@@ -12,4 +12,5 @@
 {path="/TabletOS/Lang/Settings/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Settings/eu_RU.lang"},
 {path="/TabletOS/Lang/Updater/eu_EN.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Updater/eu_EN.lang"},
 {path="/TabletOS/Lang/Updater/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/TabletOS/Lang/Updater/eu_RU.lang"},
+{path="/autorun.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/autorun.lua"},
 }
