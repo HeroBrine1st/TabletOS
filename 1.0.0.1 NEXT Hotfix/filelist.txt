@@ -4,4 +4,5 @@
 {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0.1%20NEXT%20Hotfix/TabletOS/Apps/SetupWizard.lua",path="/TabletOS/Apps/SetupWizard.lua"},
 {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0.1%20NEXT%20Hotfix/TabletOS/Desctop/license.txt",path="/TabletOS/Desctop/license.txt"},
 {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0.1%20NEXT%20Hotfix/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua"},
+{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0.1%20NEXT%20Hotfix/lib/TabletOSContextMenu.lua",path="/lib/TabletOSContextMenu.lua"}
 }
