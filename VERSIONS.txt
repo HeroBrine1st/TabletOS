@@ -27,5 +27,11 @@
   description = {en = "A lot of changes. Transitional update.",ru="Очень много изменений. Переходное обновление."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0%20NEXT%20Relelase/filelist.txt",
   exp=false,
+  },
+  {
+  version = "1.0.0.1 NEXT Hotfix",
+  description = {en="Transitional update.",ru="Переходное обновление.",eu_EN="Fixed crashes due to os.exit, fixed problems with exiting the update section.",eu_RU="Исправлены вылеты из-за os.exit,исправлены проблемы с выходом из раздела обновления."},
+  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0.1%20NEXT%20Hotfix/filelist.txt",
+  exp=false,
   }
 }
