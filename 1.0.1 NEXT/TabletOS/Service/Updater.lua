@@ -1,4 +1,4 @@
-local component = require("component")
+local component = require("component") 
 local serial = require("serialization")
 local core = require("TabletOSCore")
 local updater = {}
