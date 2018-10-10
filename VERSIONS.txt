@@ -33,5 +33,25 @@
   description = {en="Transitional update.",ru="Переходное обновление.",eu_EN="Fixed crashes due to os.exit, fixed problems with exiting the update section.",eu_RU="Исправлены вылеты из-за os.exit,исправлены проблемы с выходом из раздела обновления."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.0.1%20NEXT%20Hotfix/filelist.txt",
   exp=false,
+  },
+  {version = "1.0.1 NEXT",
+   description = {eu_RU = "Добавлена возможность копирования и вставки, включая ярлыки.
+Должен показываться заряд батареи (но этого не произойдет),
+Небольшие технические изменения, а именно:
+Файл логов не будет расти бесконечно,
+Логи получили приоритет и метку времени,
+Файл autorun.lua в случае ошибки в /OS.lua не будет крашить всю систему,
+При ошибке в системе обновлений система это явно напишет
+в центре уведомлений.",eu_EN = "Machine translate:
+Added the ability to copy and paste, including shortcuts.
+The battery charge should be shown (but this will not happen)
+Minor technical changes, namely:
+The log file will not grow indefinitely,
+Logs received priority and timestamp,
+The autorun.lua file will not crash the entire system in case of an 
+error in /OS.lua,if there is an error in the update system, the 
+system will obviously write this in the center of notifications.",},
+    raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1%20NEXT/filelist.txt",
+    exp=false,
   }
 }
