@@ -9,4 +9,5 @@
 {path="/TabletOS/Lang/Settings/eu_EN.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1%20NEXT/TabletOS/Lang/Settings/eu_EN.lang"},
 {path="/TabletOS/Lang/Settings/eu_RU.lang",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1%20NEXT/TabletOS/Lang/Settings/eu_RU.lang"},
 {path="/autorun.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1%20NEXT/autorun.lua"},
+{path="/TabletOS/Service/Updater.lua",url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1%20NEXT/TabletOS/Service/Updater.lua"},
 }
