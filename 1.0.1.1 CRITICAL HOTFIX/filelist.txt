@@ -1,0 +1,1 @@
+{{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1.1%20CRITICAL%20HOTFIX/TabletOS/Apps/Settings.lua",path="/TabletOS/Apps/Settings.lua"}}
