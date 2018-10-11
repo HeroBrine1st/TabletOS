@@ -39,7 +39,7 @@
     raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1%20NEXT/filelist.txt",
     exp=true,
   },
-  {version = "1.0.1.1 CRITICAL HOTFIX // READ THE CHANGELOG",
+  {version = "1.0.1.1 CRITICAL HOTFIX // READ A CHANGELOG",
    description = {eu_RU="Вы не можете обновиться.\nВаши действия:\n1. Нажмите ctrl+alt+c, пока не выйдете в консоль, введите lua\n2. Введите _G.updater.update()\n3. Ждите загрузки обновления\n\nАльтернативный вариант:\n1. Нажмите ctrl+alt+c, пока не выйдете в консоль\n2. Переустановите систему - pastebin run 1xudmTa7",eu_EN="Machine translate.\nYou can not update the system.\nYour actions:\n\n1. Press ctrl + alt + c, until you exit the console, enter lua\n2. Enter _G.updater.update()\n3. Wait for the update to download.\n\nAlternative option:\n1. Press ctrl + alt + c until you exit the console.\n2. Reinstall the system - pastebin run 1xudmTa7"},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.1.1%20CRITICAL%20HOTFIX/filelist.txt",
   exp=false,
