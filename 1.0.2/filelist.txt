@@ -1,0 +1,6 @@
+{
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.2/TabletOS/Lang/OS/eu_RU.lang",path="/TabletOS/Lang/OS/eu_RU.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.2/TabletOS/Lang/OS/eu_RU.lang",path="/TabletOS/Lang/OS/eu_RU.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.2/lib/TabletOSContextMenu.lua",path="/lib/TabletOSContextMenu.lua"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.2/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua"},
+}
