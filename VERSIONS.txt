@@ -45,7 +45,7 @@
   exp=false,
   },
   {version = "1.0.2",
-  description = {eu_RU="Пофикшен заряд батареи, добавлена папка \"Все программы\" в меню в нижней левой\nчасти экрана (/TabletOS/Menu/). Добавлена кнопка \"Выполнить команду\" в\nконтекстном меню текущей папки.",eu_EN="Fixed battery charge, added \"All programs\" folder to the menu at the bottom\nleft of the screen (/Tablet OS/Menu/). Added the \ "Execute\" button in the\ncontext menu of the current folder."},
+  description = {eu_RU="Пофикшен заряд батареи, добавлена папка \"Все программы\" в меню в нижней левой\nчасти экрана (/TabletOS/Menu/). Добавлена кнопка \"Выполнить команду\" в\nконтекстном меню текущей папки.",eu_EN="Fixed battery charge, added \"All programs\" folder to the menu at the bottom\nleft of the screen (/TabletOS/Menu/). Added the \"Execute\" button in the\ncontext menu of the current folder."},
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.2/filelist.txt",
   exp=false,
   },
