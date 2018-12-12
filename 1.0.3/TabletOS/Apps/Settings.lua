@@ -127,7 +127,7 @@ program.languageScreen = {
 program.updates = {
 	{name=function() return core.getLanguagePackages().Settings_installUpdates end, onClick=function() updater.update() end,type="Button"},
 	{name=function() return core.getLanguagePackages().Settings_getChangelog end, onClick=function() 
-		graphics.drawScrollingInfoWindow(core.getLanguagePackages().Settings_getChangelog,updater.changelog)
+		graphics.drawScrollingInfoWindow(w*0.75,h*0.6,core.getLanguagePackages().Settings_getChangelog,updater.changelog)
 	end,type="Button"},
 	{listener = function(s) if s[1] == "touch" and graphics.clickedToBarButton(s[3],s[4]) == "BACK" then computer.pushSignal("ESS") end end,type="Event"},
 }
