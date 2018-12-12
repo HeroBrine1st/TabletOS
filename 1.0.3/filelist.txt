@@ -1,0 +1,9 @@
+{
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/lib/TabletOSCore.lua",path="/lib/TabletOSCore.lua"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/OS.lua",path="/OS.lua"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/TabletOS/Lang/OS/eu_EN.lang",path="/TabletOS/Lang/OS/eu_EN.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/TabletOS/Lang/OS/eu_RU.lang",path="/TabletOS/Lang/OS/eu_RU.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/TabletOS/Apps/Settings.lua",path="/TabletOS/Apps/Settings.lua"},
+  
+}
