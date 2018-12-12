@@ -442,8 +442,8 @@ end
 
 local function drawScrollBar(x,y,h,max,scroll,displayedH)
 	if not displayedH then displayedH = h end
-	local pos = y+h*(scroll/max)
-	local scrH = h*math.min(1,displayedH/max)
+	local pos = math.floor(y+h*(scroll/max))
+	local scrH = math.ceil(h*math.min(1,displayedH/max))
 	buffer.drawRectangle(x,y,1,h,graphics.theme.infoWindow.scrollBarBack,0x0," ")
 	buffer.drawRectangle(x,pos,1,scrH,graphics.theme.infoWindow.scrollBarFront,0x0," ")
 end
