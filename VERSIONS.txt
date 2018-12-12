@@ -49,4 +49,10 @@
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.2/filelist.txt",
   exp=false,
   },
+  {
+  version = "1.0.3",
+  description = {eu_RU="Добавлено новое окно текста с прокруткой.",eu_EN="Added a new scrolling text window."},
+  raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/filelist.txt",
+  exp=false,
+  },
 }
