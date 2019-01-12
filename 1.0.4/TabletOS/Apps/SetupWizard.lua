@@ -33,6 +33,7 @@ buffer.setDrawLimit(table.unpack(appSandbox))
 buffer.drawRectangle(1,5,sW,sH-3,theme.sandbox.background,0x0," ")
 graphics.centerText(sW/2,6,theme.sandbox.foreground,"Welcome!")
 graphics.centerText(sW/2,sH-3,theme.sandbox.foreground,"Next>")
+graphics.centerText(sW/2,sH-1,theme.sandbox.background-0x444444,"Help ")
 buffer.drawChanges()
 local languages = {}
 for _,value in pairs(core.languages) do
@@ -47,6 +48,7 @@ local function drawLanguages(scroll)
 	buffer.drawRectangle(1,5,sW,sH-3,theme.sandbox.background,0x0," ")
 	graphics.centerText(sW/2,6,theme.sandbox.foreground,"Welcome!")
 	graphics.centerText(sW/2,sH-3,theme.sandbox.foreground,"Next>")
+	graphics.centerText(sW/2,sH-1,theme.sandbox.background-0x444444,"Help ")
 	local y = cY+scroll
 	buffer.setDrawLimit(1,7,sW,sH-6)
 	for i = 1, #languages do
@@ -82,6 +84,8 @@ while true do
 	elseif sig[1] == "touch" then
 		if graphics.clickedAtArea(sW/2-3,sH-3,sW/2+3,sH-3,sig[3],sig[4]) then
 			break
+		elseif graphics.clickedAtArea(sW/2-3,sH-1,sW/2+3,sH-1,sig[3],sig[4]) then
+			graphics.drawInfo("Help",{"Use mouse wheel for select a language"})
 		end
 	end
 end
