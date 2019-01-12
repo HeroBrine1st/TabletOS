@@ -250,13 +250,13 @@ end
 local lastLowMemory = 0
 function core.memorySpectre()
   local free = computer.freeMemory()
-  if free < 5000 and lastLowMemory + core.memoryCheckTimeout > computer.uptime() then
+  if free < 5000 and lastLowMemory + core.memoryCheckTimeout < computer.uptime() then
     lastLowMemory = computer.uptime()
     if not core.lowMemory then
       core.lowMemory = true
       core.newNotification(10,"L","Low memory detected","TabletOS will disable animations for save as much as possible memory")
     end
-  elseif lastLowMemory + core.memoryCheckTimeout > computer.uptime() then
+  elseif lastLowMemory + core.memoryCheckTimeout < computer.uptime() then
     core.lowMemory = false
   end
 end
