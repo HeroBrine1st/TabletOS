@@ -1,5 +1,7 @@
 local core = require("TabletOSCore")
 local graphics = require("TabletOSGraphics")
+local buffer = require("doubleBuffering")
+local w,h = buffer.getResolution()
 local main = {
 	{name=function() return core.getLanguagePackages().Settings_installUpdates end, onClick=function() updater.update() end,type="Button"},
 	{name=function() return core.getLanguagePackages().Settings_getChangelog end, onClick=function() 
