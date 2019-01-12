@@ -49,17 +49,9 @@ local actions = {
 local function executeScreen(sET)
 	local selButton
 	while true do
-		local event = {event.pull()}
-		if event[3]==1 and event[4]==h then
-			local file = graphics.drawMenu()
-			if file then 
-				event1.timer(0,function() 
-					core.executeFile(file)
-				end)
-				os.exit()
-				break
-			end
-		elseif event[1] == "ESS" then 
+		local event = {event.pull(0.5)}
+		drawScreen(sET.screen)
+		if event[1] == "ESS" then 
 			computer.pushSignal("REDRAW_ALL")
 			break 
 		elseif event[1] == "CLOSE" then
@@ -75,6 +67,15 @@ local function executeScreen(sET)
 				computer.pushSignal("ESS")
 			elseif event[4] == 1 then
 				graphics.processStatusBar(event[3],event[4])
+			end
+		elseif event[1] == "drop" and event[3]==1 and event[4]==h then
+			local file = graphics.drawMenu()
+			if file then 
+				event1.timer(0,function() 
+					core.executeFile(file)
+				end)
+				os.exit()
+				break
 			end
 		end
 		if event[1] == "touch" or event[1] == "drag" or event[1] == "drop" then
