@@ -62,6 +62,7 @@
 Обработчик малого количества оперативной памяти
 "Расположение файла" у ярлыков
 Ярлыки теперь работают и для контекстного меню
+Блокировка системы паролем
 Изменено:
 Вложенные контекстные меню подсвечиваются
 Большинство программ (в том числе контекстное меню) реагируют не на нажатие, а на отпускание кнопки мыши
@@ -73,6 +74,7 @@ RAM indicator in the status bar
 Handler of a small amount of RAM
 File Location for Labels
 Shortcuts now work for context menu
+Password lock
 Changed:
 Nested context menus are highlighted.
 Most programs (including the context menu) do not respond to a click, but when the mouse button is released.
