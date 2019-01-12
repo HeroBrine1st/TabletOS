@@ -142,7 +142,7 @@ function graphics.drawBars(options)
 		local charge = math.floor(computer.energy()/computer.maxEnergy()*100+0.5)
 		local str = text.padLeft(tostring(charge) .. "%",4)
 		buffer.drawText(w-3,1,statusBarFore,str)
-		local RAM = "RAM: " .. tostring(computer.freeMemory()) .. "/" .. tostring(computer.totalMemory())
+		local RAM = "RAM:" .. text.padLeft(tostring(math.floor(computer.freeMemory()/computer.totalMemory()*100+0.5)),3) .. "%"
 		buffer.drawText(w-5-#RAM,1,statusBarFore,RAM)
 		-- local fore = options.statusBarBack or graphics.theme.bars.background
 		-- --if network.isActive() then fore = 0x000000 end
