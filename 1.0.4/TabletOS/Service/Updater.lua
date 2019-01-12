@@ -47,7 +47,11 @@ for i = 1, #new do
 		local filels,reason = serial.unserialize(request(new[i].raw))
 		assert(filels,reason)
 		for i = 1, #filels do
-			filelist[filels[i].path] = filels[i].url
+			if filels[i].url then
+				filelist[filels[i].path] = filels[i].url
+			elseif filels[i].type then
+				filelist[i] = filels[i].type
+			end
 		end
 		lastVersName = new[i].version
 		updater.force = updater.force == nil and new.force
@@ -139,7 +143,11 @@ function updater.update()
 	component.gpu.setForeground(0xFFFFFF)
 	require("term").clear()
 	for key, value in pairs(updater.filelist) do
-		download(value,key)
+		if value == "DELETE" then
+			fs.remove(key)
+		else
+			download(value,key)
+		end
 	end
 	local f = io.open("/TabletOS/.version","w")
 	f:write("return " .. tostring(updater.lastVersion))
