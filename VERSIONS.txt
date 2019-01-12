@@ -82,6 +82,6 @@ Fixed:
 OS.lua could think wrong about the number of items on the desktop
 Duplication of the update system error]]},
   raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/filelist.txt",
-  exp=true,
+  exp=false,
   },
 }
