@@ -1,5 +1,5 @@
 local core = require("TabletOSCore")
-
+local graphics = require("TabletOSGraphics")
 local main = {
 	{name=function() return core.getLanguagePackages().Settings_installUpdates end, onClick=function() updater.update() end,type="Button"},
 	{name=function() return core.getLanguagePackages().Settings_getChangelog end, onClick=function() 
