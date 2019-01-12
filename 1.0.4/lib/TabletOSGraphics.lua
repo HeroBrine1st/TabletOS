@@ -372,7 +372,8 @@ function graphics.drawContextMenu(x,y,elements,...)
 	end
 	local selectedElement
 	while true do
-		local eventName,_2,touchX,touchY,button,nickname = event.pull()
+		local eventName,_2,touchX,touchY,button,nickname = event.pull(0.5)
+		graphics.drawBars(graphics.barOptions)
 		if eventName == "touch" then
 			if button == 0 and graphics.clickedAtArea(x,y,x+w-1,y+h-1,touchX,touchY) then
 				local selectedContext = touchX == x+w-1 or touchX == x+w-2
@@ -401,10 +402,8 @@ function graphics.drawContextMenu(x,y,elements,...)
 				else
 					selectedElement = nil
 				end
-				graphics.drawChanges()
 			else
 				drawElement(selectedElement,false)
-				graphics.drawChanges()
 				selectedElement = nil
 			end
 		elseif eventName == "drop" then
@@ -435,10 +434,10 @@ function graphics.drawContextMenu(x,y,elements,...)
 					end
 					buffer.drawRectangle(x,touchY,w,1,graphics.theme.contextMenu.background,0x0," ")
 					buffer.drawText(x,touchY,graphics.theme.contextMenu.foreground,element.newname)
-					graphics.drawChanges()
 				end
 			end
 		end
+		graphics.drawChanges()
 	end
 end
 
@@ -480,6 +479,7 @@ function graphics.drawEdit(label0,label,text)
 		buffer.drawRectangle(x+1,y+h-2,w-2,1,graphics.theme.editMenu.background,0x0," ")
 		visible = visible .. (cursor and "█" or " ")
 		buffer.drawText(x+1,y+h-2,graphics.theme.editMenu.foreground,visible)
+		graphics.drawBars(graphics.barOptions)
 		buffer.drawChanges()
 		local signal = {event.pull(0.5,"key_down")}
 		cursor = not cursor
@@ -548,7 +548,8 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 	buffer.drawChanges()
 	buffer.setDrawLimit(x,y+1,x+w-1,y+h-2)
 	while true do
-		local signal, _, _, _, direction = event.pull()
+		local signal, _, _, _, direction = event.pull(0.5)
+		graphics.drawBars(graphics.barOptions)
 		if signal == "scroll" then
 			scroll = scroll - direction
 			scroll = math.max(0,scroll)
@@ -565,13 +566,13 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 				end
 			end
 			drawScrollBar(x+w-1,y+1,h-2,#textTable,scroll)
-			buffer.drawChanges()
 		elseif signal == "touch" then
 			buffer.resetDrawLimit()
 			buffer.paste(x,y,screen)
 			graphics.drawChanges()
 			break
 		end
+		graphics.drawChanges()
 	end
 end
 
