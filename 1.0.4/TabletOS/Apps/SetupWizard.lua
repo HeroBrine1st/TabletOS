@@ -74,13 +74,14 @@ for _, value in pairs(core.languages) do
 end
 while true do
 	local sig = {event.pull()}
-	if sig[1] == "scroll" then
+	if sig[1] == "key_up" then
+		local dir = 0
+		if sig[4] == 200 then dir = 1 end
+		if sig[4] == 208 then dir = -1 end
+		scr = scr + dir
+	elseif sig[1] == "scroll" then
 		local dir = sig[5]
 		scr = scr + dir
-		scr = math.max(scr,-(#languages-1))
-		scr = math.min(scr,math.max(0,(#languages-2)))
-		selectedLanguage = drawLanguages(scr)
-		buffer.drawChanges()
 	elseif sig[1] == "touch" then
 		if graphics.clickedAtArea(sW/2-3,sH-3,sW/2+3,sH-3,sig[3],sig[4]) then
 			break
@@ -88,6 +89,10 @@ while true do
 			graphics.drawInfo("Help",{"Use mouse wheel for select a language"})
 		end
 	end
+	scr = math.max(scr,-(#languages-1))
+	scr = math.min(scr,math.max(0,(#languages-2)))
+	selectedLanguage = drawLanguages(scr)
+	buffer.drawChanges()
 end
 
 for key, value in pairs(core.languages) do
