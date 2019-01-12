@@ -134,10 +134,10 @@ function graphics.drawBars(options)
 	for i = 1, math.min(#notifications,math.floor(w*0.875)) do
 		nStr = nStr .. notifications[i].icon
 	end
-	nStr = nStr:sub(1,70)
+	nStr = nStr:sub(1,w*0.875)
 	if #notifications > (w*0.875) then nStr = nStr .. "…" end
 	if options.notifCenter then nStr = core.getLanguagePackages().OS_notifications end
-	buffer.drawText(1,1,0xFFFFFF,nStr)
+	buffer.drawText(1,1,statusBarFore,nStr)
 	buffer.set(1,h,graphics.theme.menuButton.background,graphics.theme.menuButton.foreground,"M")
 	do
 		local charge = math.floor(computer.energy()/computer.maxEnergy()*100+0.5)
