@@ -248,22 +248,33 @@ function core.executeFile(path)
   end
 end
 local lastLowMemory = 0
-local lowMemoryCounter = 9
+local lowMemoryCounter = 0
+local highMemoryCounter = 0
 function core.memorySpectre()
   local free = computer.freeMemory()
-  if free < 5000 and lastLowMemory + core.memoryCheckTimeout < computer.uptime() then
+  if free < 10000 then
     lowMemoryCounter = lowMemoryCounter + 1
-    if lowMemoryCounter > 3 then
+    highMemoryCounter = 0
+    if lowMemoryCounter > 3 and lastLowMemory + core.memoryCheckTimeout < computer.uptime() then
       lastLowMemory = computer.uptime()
       if not core.lowMemory then
         core.lowMemory = true
-        core.newNotification(10,"L","Low memory detected","TabletOS will disable animations for save as much as possible memory")
+        if not core.settings.lowMemoryDisplayed then
+          core.newNotification(10,"L","Low memory level detected","TabletOS will disable animations for save as much as possible memory")
+          core.settings.lowMemoryDisplayed = true
+          core.saveSettings()
+        end
       end
       lowMemoryCounter = 0
     end
   elseif lastLowMemory + core.memoryCheckTimeout < computer.uptime() then
     lowMemoryCounter = 0
-    core.lowMemory = false
+    highMemoryCounter = highMemoryCounter + 1
+    if highMemoryCounter > 3 then
+      --core.newNotification(0,"N","Normal memory level","TabletOS enabled animations")
+      core.lowMemory = false
+      highMemoryCounter = 0
+    end
   end
 end
 event.timer(0.25,function() core.memorySpectre() end,math.huge)
