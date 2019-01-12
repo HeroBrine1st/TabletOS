@@ -10,7 +10,7 @@ local unicode   =   require "unicode"
 local computer  =   require "computer"
 local crypt     =   require "crypt"
 local dirs      =   {
-      desctop   =   "/TabletOS/Desctop/",
+      desctop   =   "/TabletOS/Desktop/",
 }
 
 for _, dir in pairs(dirs) do
