@@ -143,7 +143,9 @@ function graphics.drawBars(options)
 		local charge = math.floor(computer.energy()/computer.maxEnergy()*100+0.5)
 		local str = text.padLeft(tostring(charge) .. "%",4)
 		buffer.drawText(w-3,1,statusBarFore,str)
+		core.memorySpectre()
 		local RAM = "RAM:" .. text.padLeft(tostring(math.floor(computer.freeMemory()/computer.totalMemory()*100+0.5)),3) .. "%"
+		if core.lowMemory then RAM = "RAM: LOW" end
 		buffer.drawText(w-5-#RAM,1,statusBarFore,RAM)
 		-- local fore = options.statusBarBack or graphics.theme.bars.background
 		-- --if network.isActive() then fore = 0x000000 end
@@ -185,27 +187,32 @@ function graphics.openNotifications(y,noProcess)
 	if (not y or y == sH) and not noProcess then
 		buffer.drawChanges()
 		while true do
-			local _,_,x,y,_,_ = event.pull("touch")
-			if y == sH then
-				return
-			elseif y > 1 and y < sH then
-				for i = 1, #visible do
-					local e = visible[i]
-					if graphics.clickedAtArea(e.x1,e.y1,e.x2,e.y2,x,y) then
-						core.removeNotification(e.index)
-						visible = {}
-						for i = 1, #notifications do
-							local y1 = (i-1)*3+2
-							local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i,}
-							local bX1, bY1, bX2, bY2 = buffer.getDrawLimit()
-							if notif.y2 < bY2 then
-								table.insert(visible,notif)
-							end
+			local name,_,x,y,_,_ = event.pull(0.5)
+			if name == "touch" then
+				if y == sH then
+					return
+				end
+			elseif name == "drop" then
+				if y > 1 and y < sH then
+					for i = 1, #visible do
+						local e = visible[i]
+						if graphics.clickedAtArea(e.x1,e.y1,e.x2,e.y2,x,y) then
+							core.removeNotification(e.index)
+							break
 						end
-						graphics.openNotifications(sH,true)
-						buffer.drawChanges()
-						break
 					end
+				end
+			end
+			graphics.drawBars(graphics.barOptions)
+			graphics.openNotifications(sH,true)
+			buffer.drawChanges()
+			visible = {}
+			for i = 1, #core.getNotifications() do
+				local y1 = (i-1)*3+2
+				local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i,}
+				local bX1, bY1, bX2, bY2 = buffer.getDrawLimit()
+				if notif.y2 < bY2 then
+					table.insert(visible,notif)
 				end
 			end
 		end
@@ -215,7 +222,7 @@ end
 function graphics.processStatusBar(x,y)
 	local sW, sH = buffer.getResolution()
 	local copyY = 2 --поставить на 1 в случае багов
-	local screen = buffer.copy(1,copyY,sW,sH)
+	local screen
 	local bOp = graphics.barOptions
 	local oldBOp = graphics.barOptions
 	bOp.notifCenter = true
@@ -232,15 +239,20 @@ function graphics.processStatusBar(x,y)
 			screen = nil
 		end
 	end
+	if not core.lowMemory then
+		screen = buffer.copy(1,copyY,sW,sH)
+	else
+		noAnimations = true
+	end
 	graphics.drawBars(bOp)
 	graphics.openNotifications(3)
 	buffer.drawChanges()
 	local touchX,touchY = x or 1, y or 1
 	local opened = false
 	while true do
-		local signal,_,x,y,_,_ = event.pull()
 		memorySpectre()
 		if noAnimations then graphics.openNotifications() return end
+		local signal,_,x,y,_,_ = event.pull()
 		if signal == "touch" then
 			touchX, touchY = x, y
 		elseif signal == "drag" then
