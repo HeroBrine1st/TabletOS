@@ -13,4 +13,5 @@
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/lib/TabletOSContextMenu.lua",path="/lib/TabletOSContextMenu.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/lib/TabletOSCore.lua",path="/lib/TabletOSCore.lua"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/Libraries/master/crypt.lua",path="/lib/crypt.lua"},
 }
