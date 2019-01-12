@@ -93,7 +93,7 @@ end
 _G.association = association
 
 function event.disableInterrupt()
-    local event.data_signalBackup = require("process").info().data.signal
+    event.data_signalBackup = require("process").info().data.signal
     require("process").info().data.signal = function() return false end
 end
 
@@ -152,7 +152,6 @@ if core.settings.userInit == "false" or not core.settings.userInit then
 end
 local page = 1
 local dir = dirs.desctop
-local cache = {}
 while true do
     local w,h = buffer.getResolution()
     local count = 0
