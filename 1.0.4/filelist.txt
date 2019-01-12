@@ -6,8 +6,8 @@
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/TabletOS/Apps/Settings.pkg/Modules/OTA.lua",path="/TabletOS/Apps/Settings.pkg/Modules/OTA.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/TabletOS/Apps/Settings.pkg/Modules/Security.lua",path="/TabletOS/Apps/Settings.pkg/Modules/Security.lua"},
   {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/TabletOS/Service/Updater.lua",path="/TabletOS/Service/Updater.lua"},
-  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/blob/master/1.0.4/TabletOS/Lang/OS/eu_RU.lang",path="/TabletOS/Lang/OS/eu_RU.lang"},
-  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/blob/master/1.0.4/TabletOS/Lang/OS/eu_EN.lang",path="/TabletOS/Lang/OS/eu_EN.lang"},
-  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/blob/master/1.0.4/TabletOS/Lang/Settings/eu_RU.lang",path="/TabletOS/Lang/Settings/eu_RU.lang"},
-  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/blob/master/1.0.4/TabletOS/Lang/Settings/eu_EN.lang",path="/TabletOS/Lang/Settings/eu_EN.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/TabletOS/Lang/OS/eu_RU.lang",path="/TabletOS/Lang/OS/eu_RU.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/TabletOS/Lang/OS/eu_EN.lang",path="/TabletOS/Lang/OS/eu_EN.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/TabletOS/Lang/Settings/eu_RU.lang",path="/TabletOS/Lang/Settings/eu_RU.lang"},
+  {url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/TabletOS/Lang/Settings/eu_EN.lang",path="/TabletOS/Lang/Settings/eu_EN.lang"},
 }
