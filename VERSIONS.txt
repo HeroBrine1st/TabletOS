@@ -55,4 +55,31 @@
   raw="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.3/filelist.txt",
   exp=false,
   },
+  {
+  version = "1.0.4",
+  description = {eu_RU=[[Добавлено:
+Показатель оперативной памяти в строке состояния
+Обработчик малого количества оперативной памяти
+"Расположение файла" у ярлыков
+Ярлыки теперь работают и для контекстного меню
+Изменено:
+Вложенные контекстные меню подсвечиваются
+Большинство программ (в том числе контекстное меню) реагируют не на нажатие, а на отпускание кнопки мыши
+Исправлено:
+OS.lua могла неверно думать о количестве элементов на рабочем столе
+Дублирование ошибки системы обновлений]],eu_EN=[[Machine translate.
+Added by:
+RAM indicator in the status bar
+Handler of a small amount of RAM
+File Location for Labels
+Shortcuts now work for context menu
+Changed:
+Nested context menus are highlighted.
+Most programs (including the context menu) do not respond to a click, but when the mouse button is released.
+Fixed:
+OS.lua could think wrong about the number of items on the desktop
+Duplication of the update system error]]},
+  raw = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/1.0.4/filelist.txt",
+  exp=true,
+  },
 }
