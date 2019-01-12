@@ -78,8 +78,9 @@ function graphics.drawMenu()
 	local menu = {
 		{name = core.getLanguagePackages().OS_settings,callback = function() return "/TabletOS/Apps/Settings.pkg" end},
 		{name = core.getLanguagePackages().OS_shutdown,contextMenu = {
+			{name=core.getLanguagePackages().OS_lock,callback=function() screenLock() return false end},
 			{name=core.getLanguagePackages().OS_reboot, callback = function() return "/bin/reboot.lua" end},
-			{name=core.getLanguagePackages().OS_shutdown2, callback = function() return "/bin/shutdown.lua" end}},
+			{name=core.getLanguagePackages().OS_shutdown2, callback = function() return "/bin/shutdown.lua" end},},
 		},
 		{name=core.getLanguagePackages().OS_allPrograms,contextMenu=require("TabletOSContextMenu").contextFromDir("/TabletOS/Menu/")},
 	}
