@@ -14,7 +14,7 @@ local noUpdates = {
 return {
 	name = function() return core.getLanguagePackages().Settings_updates end,
 	onClick = function()
-		if updater.hasUpdates then
+		if updater.hasUpdate then
 			setContentView(main)
 		else
 			setContentView(noUpdates)
