@@ -565,7 +565,7 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 					break
 				end
 			end
-			drawScrollBar(x+w-1,y+1,h-2,#textTable,scroll)
+			drawScrollBar(x+w-1,y+1,h-2,#textTable,scroll,h-2)
 		elseif signal == "touch" then
 			buffer.resetDrawLimit()
 			buffer.paste(x,y,screen)
