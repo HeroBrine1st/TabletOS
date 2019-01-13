@@ -525,7 +525,7 @@ end
 local function drawScrollBar(x,y,h,max,scroll,displayedH)
 	if not displayedH then displayedH = 1 end
 	local pos = math.floor(y+h*(scroll/max))
-	local scrH = math.ceil(h*math.min(1,displayedH/max))
+	local scrH = math.min(h,math.ceil(h*math.min(1,displayedH/max)))
 	buffer.drawRectangle(x,y,1,h,graphics.theme.infoWindow.scrollBarBack,0x0," ")
 	buffer.drawRectangle(x,pos,1,scrH,graphics.theme.infoWindow.scrollBarFront,0x0," ")
 end
@@ -558,7 +558,6 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 			local posY = y+1
 			for i = (scroll+1), (scroll+h-2) do
 				if textTable[i] then
-					--local y = (scroll+h-2)-i = scroll+h-2-i
 					buffer.drawText(x+1,posY,graphics.theme.infoWindow.foreground,textTable[i])
 					posY = posY+1
 				else
