@@ -475,7 +475,7 @@ function graphics.drawEdit(label0,label,text)
 	local visible = unicode.sub(text,-visibleLen)
 	local cursor = false
 	while true do
-		visible = text:sub(-visibleLen)
+		visible = unicode.sub(text,-visibleLen)
 		buffer.drawRectangle(x+1,y+h-2,w-2,1,graphics.theme.editMenu.background,0x0," ")
 		visible = visible .. (cursor and "█" or " ")
 		buffer.drawText(x+1,y+h-2,graphics.theme.editMenu.foreground,visible)
