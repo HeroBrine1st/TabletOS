@@ -21,6 +21,47 @@ local backgrounds = {{0x888888,0xFFFFFF},
                      {0x555555,0xFFFFFF}}
 local buttonW = 20
 local buttonH = 1
+local hotkeys = {
+    ["Delete"] = {
+        action = {"DELETE"},
+    },
+    ["Ctrl"] = {
+        ["e"] = {
+            action = "EDIT",
+            ["Delete"] = {
+                action = {"DELETE","EDIT"},
+            }
+        }
+    }
+}
+local getActionFromKeys
+getActionFromKeys = function(downkeys,_hotkeys)
+    _hotkeys = _hotkeys or hotkeys
+    for key, value in pairs(_hotkeys) do
+        if key ~= "action" then
+            for i = 1, #downkeys do
+                print(downkeys[i],i,#downkeys)
+                if downkeys[i] == key then
+                    if value.action then
+                        if #downkeys == 1 then
+                            return value.action
+                        end
+                    end
+                    local a = table.remove(downkeys,i)
+                    local result = getActionFromKeys(downkeys,value)
+                    if result then return result end
+                    table.insert(downkeys,i,a)
+                else
+                    local a = table.remove(downkeys,i)
+                    local result = getActionFromKeys(downkeys,value)
+                    if result then return result end
+                    table.insert(downkeys,i,a)
+                end
+            end
+        end
+    end
+end
+
 local function drawTable(tbl,options)
     options = options or {}
     options.deltaX = options.deltaX or 0
