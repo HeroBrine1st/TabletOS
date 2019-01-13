@@ -141,6 +141,7 @@ else
     end
 end
 ----------------------------------PROGRAM LOGIC----------------------------------
+buffer.drawChanges(true)
 screenLock()
 if core.settings.userInit == "false" or not core.settings.userInit then
     local sW,sH = buffer.getResolution()
