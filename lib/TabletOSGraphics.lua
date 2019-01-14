@@ -141,12 +141,12 @@ function graphics.drawBars(options)
 	buffer.set(1,h,graphics.theme.menuButton.background,graphics.theme.menuButton.foreground,"M")
 	do
 		local charge = math.floor(computer.energy()/computer.maxEnergy()*100+0.5)
-		local str = text.padLeft(tostring(charge) .. "%",4)
-		buffer.drawText(w-3,1,statusBarFore,str)
+		local str = text.padLeft(braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,0,1,1,0) .. " " .. tostring(charge) .. "%",4)
 		core.memorySpectre()
 		local RAM = "RAM:" .. text.padLeft(tostring(math.floor(computer.freeMemory()/computer.totalMemory()*100+0.5)),3) .. "%"
 		if core.lowMemory then RAM = "RAM: LOW" end
-		buffer.drawText(w-5-#RAM,1,statusBarFore,RAM)
+		str = RAM .. " " .. str
+		buffer.drawText(w-#str,1,statusBarFore,str)
 		-- local fore = options.statusBarBack or graphics.theme.bars.background
 		-- --if network.isActive() then fore = 0x000000 end
 		-- --if network.isConnected() then fore = 0xFFFFFF end
