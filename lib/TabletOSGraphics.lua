@@ -141,7 +141,7 @@ function graphics.drawBars(options)
 	buffer.set(1,h,graphics.theme.menuButton.background,graphics.theme.menuButton.foreground,"M")
 	do
 		local charge = math.floor(computer.energy()/computer.maxEnergy()*100+0.5)
-		local str = text.padLeft(braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,0,1,1,0) .. " " .. tostring(charge) .. "%",4)
+		local str = text.padLeft(braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(0,1,1,0,0,0,0,0) .. " " .. tostring(charge) .. "%",4)
 		core.memorySpectre()
 		local RAM = "RAM:" .. text.padLeft(tostring(math.floor(computer.freeMemory()/computer.totalMemory()*100+0.5)),3) .. "%"
 		if core.lowMemory then RAM = "RAM: LOW" end
