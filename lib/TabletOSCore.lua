@@ -9,10 +9,10 @@ local core = {
   },
 
   associations = {
-      txt = "edit",
-      lua = "execute",
-      bin = "edit",
-      cfg = "edit",
+      txt = "EDIT",
+      lua = "EXECUTE",
+      bin = "EDIT",
+      cfg = "EDIT",
   },
   settings = {
     langPath = "/TabletOS/Lang/",

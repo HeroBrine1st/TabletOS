@@ -9,6 +9,7 @@ local shell     =   require "shell"
 local unicode   =   require "unicode"
 local computer  =   require "computer"
 local crypt     =   require "crypt"
+local keyboard  =   require "keyboard"
 local dirs      =   {
       desctop   =   "/TabletOS/Desktop/",
 }
@@ -21,14 +22,18 @@ local backgrounds = {{0x888888,0xFFFFFF},
                      {0x555555,0xFFFFFF}}
 local buttonW = 20
 local buttonH = 1
+local keysConvertTable = {
+    rcontrol = "ctrl",
+    lcontrol = "ctrl",
+}
 local hotkeys = {
-    ["Delete"] = {
+    ["delete"] = {
         action = {"DELETE"},
     },
-    ["Ctrl"] = {
+    ["ctrl"] = {
         ["e"] = {
             action = "EDIT",
-            ["Delete"] = {
+            ["delete"] = {
                 action = {"DELETE","EDIT"},
             }
         }
@@ -40,18 +45,12 @@ getActionFromKeys = function(downkeys,_hotkeys)
     for key, value in pairs(_hotkeys) do
         if key ~= "action" then
             for i = 1, #downkeys do
-                print(downkeys[i],i,#downkeys)
                 if downkeys[i] == key then
                     if value.action then
                         if #downkeys == 1 then
                             return value.action
                         end
                     end
-                    local a = table.remove(downkeys,i)
-                    local result = getActionFromKeys(downkeys,value)
-                    if result then return result end
-                    table.insert(downkeys,i,a)
-                else
                     local a = table.remove(downkeys,i)
                     local result = getActionFromKeys(downkeys,value)
                     if result then return result end
@@ -70,7 +69,7 @@ local function drawTable(tbl,options)
     local buttons = {}
     for i = 1, #tbl do
         local x = (i-1)*buttonW%w+1 + options.deltaX
-        local y = math.floor((i-1)*buttonW/w)*buttonH+2+options.deltaY -- local y = ((i-1)*buttonW//w)*buttonH+2
+        local y = math.floor((i-1)*buttonW/w)*buttonH+2 + options.deltaY -- local y = ((i-1)*buttonW//w)*buttonH+2
         local background,foreground = table.unpack(backgrounds[i%2+1])
         local touchChecker = graphics.drawButton(x,y,buttonW,buttonH,tbl[i].name,background,foreground)
         table.insert(buttons,{check=touchChecker,callback=tbl[i].callback})
@@ -129,7 +128,7 @@ function errorReport(file,success,reason,...)
 end
 _G.errorReport = errorReport
 function association(file)
-    return core.associations[tostring(file:match("%.(%a+)$"))]
+    return core.settings.associations[tostring(file:match("%.(%a+)$"))]
 end
 _G.association = association
 
@@ -251,10 +250,20 @@ while true do
                 end
                 if button == 0 then
                     if not fs.isDirectory(xFile) then
-                        if association(xFile) == "execute" then 
+                        local assoc = association(xFile)
+                        if #keyboard.pressedCodes[component.keyboard.address] > 0 then
+                            local downkeys = {}
+                            for i = 1, #keyboard.pressedCodes[component.keyboard.address] do
+                                local key = keyboard.keys[keyboard.pressedCodes[component.keyboard.address][i]]
+                                if keysConvertTable[key] then key = keysConvertTable[key] end
+                                table.insert(downkeys,key)
+                            end
+                        end
+                        assoc = getActionFromKeys(downkeys)
+                        if assoc == "EXECUTE" then 
                             local success, reason = core.pcall(dofile,xFile)
                             errorReport(xFile,success,reason)
-                        elseif association(xFile) == "edit" then
+                        elseif assoc == "EDIT" then
                             os.execute("edit " .. "\"" .. xFile .. "\"")
                         end
                         buffer.drawChanges(true)
