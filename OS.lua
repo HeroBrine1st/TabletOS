@@ -258,8 +258,8 @@ while true do
                                 if keysConvertTable[key] then key = keysConvertTable[key] end
                                 table.insert(downkeys,key)
                             end
+                            assoc = getActionFromKeys(downkeys)
                         end
-                        assoc = getActionFromKeys(downkeys)
                         if assoc == "EXECUTE" then 
                             local success, reason = core.pcall(dofile,xFile)
                             errorReport(xFile,success,reason)
