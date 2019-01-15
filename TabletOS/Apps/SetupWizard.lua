@@ -4,6 +4,7 @@ local core = require("TabletOSCore")
 local unicode = require("unicode")
 local event = require("event")
 buffer.drawChanges(true)
+local appSandbox = {1,5,sW,sH}
 local theme = {
 	bar = {
 		background = 0x888888,
@@ -50,7 +51,7 @@ end
 
 local function processList(options,list)
 	options.scroll = options.scroll or 0
-	options.helpWindowContent = options.helpWindowContent or {"Use mouse wheel or up/down arrows for select a language"}
+	options.helpWindowContent = options.helpWindowContent or {"Use mouse wheel or up/down arrows for select a element"}
 	local nextButtonArea = {
 		(sW-unicode.len(options.nextButtonLabel))/2,
 		sH-3,
@@ -64,7 +65,8 @@ local function processList(options,list)
 		sH-3,
 	}
 	local result = {}
-	while true do
+	while
+	 true do
 		result = {drawSelector(options,list)}
 		buffer.drawChanges()
 		local sig = {event.pull()}
@@ -90,12 +92,7 @@ buffer.drawRectangle(1,1,sW,1,theme.bar.graphBack,0x0," ")
 buffer.drawRectangle(1,2,sW,3,theme.bar.background,0x0," ")
 buffer.drawText(2,3,theme.bar.foreground,"Setup Wizard")
 buffer.drawChanges()
-local appSandbox = {1,5,sW,sH}
 buffer.setDrawLimit(table.unpack(appSandbox))
-buffer.drawRectangle(1,5,sW,sH-3,theme.sandbox.background,0x0," ")
-graphics.centerText(sW/2,6,theme.sandbox.foreground,"Welcome!")
-graphics.centerText(sW/2,sH-3,theme.sandbox.foreground,"Next>")
-graphics.centerText(sW/2,sH-1,theme.sandbox.background-0x444444,"Help ")
 buffer.drawChanges()
 local languages = {}
 for _,value in pairs(core.languages) do
@@ -109,10 +106,21 @@ for key, value in pairs(core.languages) do
 	end
 end
 
-buffer.drawRectangle(1,5,sW,sH-3,theme.sandbox.background,0x0," ")
-local timezone = graphics.drawEdit(core.getLanguagePackages().OS_enteringTimezone,{core.getLanguagePackages().OS_enterTimezone,
-	"",
-	core.getLanguagePackages().OS_enterForEnd},"0")
+-- buffer.drawRectangle(1,5,sW,sH-3,theme.sandbox.background,0x0," ")
+-- local timezone = graphics.drawEdit(core.getLanguagePackages().OS_enteringTimezone,{core.getLanguagePackages().OS_enterTimezone,
+-- 	"",
+-- 	core.getLanguagePackages().OS_enterForEnd},"0")
+
+local timezones = {}
+for i = -12,12 do
+	table.insert(timezones,tostring(i))
+end
+local timezone,index = processList({
+	scroll = 0,
+	label = core.getLanguagePackages().SetuoWizard_selectTimezone,
+	helpWindowContent = core.getLanguagePackages().SetupWizard_helpWindowContext,
+	helpButtonLabel = core.getLanguagePackages().SetupWizard_helpButtonLabel,
+},timezones)
 core.settings.timezone = tonumber(timezone)
 
 core.settings.userInit = true
