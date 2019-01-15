@@ -65,6 +65,8 @@ local function processList(options,list)
 	}
 	local result = {}
 	while true do
+		result = {drawSelector(options,list)}
+		buffer.drawChanges()
 		local sig = {event.pull()}
 		if sig[1] == "key_up" then
 			local dir = 0
@@ -81,8 +83,6 @@ local function processList(options,list)
 				graphics.drawInfo(options.helpButtonLabel,options.helpWindowContent)
 			end
 		end
-		result = {drawSelector(options,list)}
-		buffer.drawChanges()
 	end
 end
 local sW,sH = buffer.getResolution()
