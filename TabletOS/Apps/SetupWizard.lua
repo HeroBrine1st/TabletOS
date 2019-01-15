@@ -95,17 +95,13 @@ buffer.drawChanges()
 buffer.setDrawLimit(table.unpack(appSandbox))
 buffer.drawChanges()
 local languages = {}
-for _,value in pairs(core.languages) do
+local languages2 = {}
+for key,value in pairs(core.languages) do
 	table.insert(languages,value)
+	table.insert(languages2,key)
 end
-local selectedLanguage = processList({},languages)
-
-for key, value in pairs(core.languages) do
-	if value == selectedLanguage then 
-		core.loadLanguage(key)
-	end
-end
-
+local selectedLanguage,index = processList({},languages)
+core.loadLanguage(languages2[i])
 -- buffer.drawRectangle(1,5,sW,sH-3,theme.sandbox.background,0x0," ")
 -- local timezone = graphics.drawEdit(core.getLanguagePackages().OS_enteringTimezone,{core.getLanguagePackages().OS_enterTimezone,
 -- 	"",
