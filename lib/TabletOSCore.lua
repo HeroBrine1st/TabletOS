@@ -32,9 +32,12 @@ setmetatable(core.languages,{
 })
 setmetatable(core.settings,{
   __index = function(self, key)
-    if not rawget(self,key) then rawset(self,key,core[key]) end
+    if not rawget(self,key) then self[key] = core[key] end
     return rawget(self,key)
-  end
+  end,
+  __newindex = function()
+    core.saveSettings()
+  end,
 })
 function core.loadLanguage(lang)
   core.settings.language = lang
