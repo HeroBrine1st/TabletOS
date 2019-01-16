@@ -17,4 +17,24 @@
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Modules/Security.lua",path="/TabletOS/Apps/Settings.pkg/Modules/Security.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Modules/Language.lua",path="/TabletOS/Apps/Settings.pkg/Modules/Language.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Modules/OTA.lua",path="/TabletOS/Apps/Settings.pkg/Modules/OTA.lua"},
+	{
+        url = "https://raw.githubusercontent.com/IgorTimofeev/AdvancedLua/master/AdvancedLua.lua",
+        path = "/lib/advancedLua.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/Color/master/Color.lua",
+        path = "/lib/color.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/Image/master/OCIF.lua",
+        path = "/lib/FormatModules/OCIF.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/Image/master/Image.lua",
+        path = "/lib/image.lua"
+    },
+    {
+        url = "https://raw.githubusercontent.com/IgorTimofeev/DoubleBuffering/master/DoubleBuffering.lua",
+        path = "/lib/doubleBuffering.lua"
+    },
 }
