@@ -64,7 +64,7 @@ function graphics.drawButton(x,y,w,h,text,buttonColor,textColor)
 end
 
 function graphics.centerText(x,y,fore,text,trancparency)
-  local x1 = x - math.floor(unicode.len(text)/2+0.5)
+  local x1 = x - math.ceil(unicode.len(text)/2+0.5)
   buffer.drawText(x1,y,fore,text,trancparency)
 end
 
@@ -123,13 +123,20 @@ function graphics.drawBars(options)
 	local notifications = core.getNotifications()
 	local statusBarBack = options.statusBarBack or graphics.theme.bars.background
 	local statusBarFore = options.statusBarFore or graphics.theme.bars.foreground
-	if options.notifCenter then statusBarBack = graphics.theme.bars.background statusBarFore = graphics.theme.bars.foreground end
+	local navBarBack = options.navBarBack or graphics.theme.bars.background
+	local navBarFore = options.navBarFore or graphics.theme.bars.foreground
+	if options.notifCenter then 
+		statusBarBack = graphics.theme.bars.background
+		statusBarFore = graphics.theme.bars.foreground
+		navBarFore = graphics.theme.bars.foreground
+		navBarBack = graphics.theme.bars.background
+	end
 	buffer.drawRectangle(1,1,w,1,statusBarBack,statusBarFore," ")
-	buffer.drawRectangle(1,h,w,1,options.navBarBack or graphics.theme.bars.background, options.navBarFore or graphics.theme.bars.foreground," ")
-	buffer.set(w/2,h,options.navBarBack or graphics.theme.bars.background,options.navBarFore or graphics.theme.bars.foreground,braileSymbol(0,1,1,0,1,1,1,1))
-	buffer.set(w/2+1,h,options.navBarBack or graphics.theme.bars.background,options.navBarFore or graphics.theme.bars.foreground,braileSymbol(1,1,1,1,0,1,1,0))
-	buffer.set(math.floor(w/2-w*0.0625),h,options.navBarBack or graphics.theme.bars.background,options.navBarFore or graphics.theme.bars.foreground,"◀")
-	buffer.set(math.floor(w/2+w*0.0625+1),h,options.navBarBack or graphics.theme.bars.background,options.navBarFore or graphics.theme.bars.foreground,"▶")
+	buffer.drawRectangle(1,h,w,1,navBarBack,navBarFore," ")
+	buffer.set(w/2,h,navBarBack,navBarFore,braileSymbol(0,1,1,0,1,1,1,1))
+	buffer.set(w/2+1,h,navBarBack,navBarFore,braileSymbol(1,1,1,1,0,1,1,0))
+	buffer.set(math.floor(w/2-w*0.0625),h,navBarBack,navBarFore,"◀")
+	buffer.set(math.floor(w/2+w*0.0625+1),h,navBarBack,navBarFore,"▶")
 	local nStr = ""
 	for i = 1, math.min(#notifications,math.floor(w*0.875)) do
 		nStr = nStr .. notifications[i].icon
@@ -141,12 +148,12 @@ function graphics.drawBars(options)
 	buffer.set(1,h,graphics.theme.menuButton.background,graphics.theme.menuButton.foreground,"M")
 	do
 		local charge = math.floor(computer.energy()/computer.maxEnergy()*100+0.5)
-		local str = text.padLeft(braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(0,1,1,0,0,0,0,0) .. " " .. tostring(charge) .. "%",4)
+		local str = braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(1,1,1,1,1,1,1,1) .. braileSymbol(0,1,1,0,0,0,0,0) .. tostring(charge) .. "%"
 		core.memorySpectre()
 		local RAM = "RAM:" .. text.padLeft(tostring(math.floor(computer.freeMemory()/computer.totalMemory()*100+0.5)),3) .. "%"
 		if core.lowMemory then RAM = "RAM: LOW" end
 		str = RAM .. " " .. str
-		buffer.drawText(w-#str,1,statusBarFore,str)
+		buffer.drawText(w-unicode.len(str)+1,1,statusBarFore,str)
 		-- local fore = options.statusBarBack or graphics.theme.bars.background
 		-- --if network.isActive() then fore = 0x000000 end
 		-- --if network.isConnected() then fore = 0xFFFFFF end
