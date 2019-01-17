@@ -260,11 +260,17 @@ while true do
                             end
                             assoc = getActionFromKeys(downkeys)
                         end
-                        if assoc == "EXECUTE" then 
-                            local success, reason = core.pcall(dofile,xFile)
-                            errorReport(xFile,success,reason)
-                        elseif assoc == "EDIT" then
-                            os.execute("edit " .. "\"" .. xFile .. "\"")
+                        if type(assoc) ~= "table" then assoc = {assoc} end
+                        for i = 1,#assoc do
+                            local association = assoc[i]
+                            if association == "EXECUTE" then 
+                                local success, reason = core.pcall(dofile,xFile)
+                                errorReport(xFile,success,reason)
+                            elseif association == "EDIT" then
+                              os.execute("edit " .. "\"" .. xFile .. "\"")
+                            elseif association == "DELETE" then
+                                os.execute("rm \"" .. xFile .. "\" -r")
+                            end
                         end
                         buffer.drawChanges(true)
                     else
