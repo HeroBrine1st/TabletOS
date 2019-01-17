@@ -26,15 +26,15 @@ local core = {
 }
 local settingsMetatable = {
   __index = function(self, key)
-    if not rawget(self,key) then self[key] = core[key] end
+    if not rawget(self,key) then rawset(self,key,core[key]) end
     return rawget(self,key)
   end,
-  __newindex = function(self,key,value)
-    if not key == "package" then
-      self[key] = value
-      core.saveSettings()
-    end
-  end,
+  -- __newindex = function(self,key,value)
+  --   if not key == "package" then
+  --     self[key] = value
+  --     core.saveSettings()
+  --   end
+  -- end,
 }
 setmetatable(core.languages,{
   __index = function(self,key)
