@@ -24,21 +24,25 @@ local core = {
   lowMemory = false,
   memoryCheckTimeout = 10,
 }
+local settingsMetatable = {
+  __index = function(self, key)
+    if not rawget(self,key) then self[key] = core[key] end
+    return rawget(self,key)
+  end,
+  __newindex = function(self,key,value)
+    if not key == "package" then
+      self[key] = value
+      core.saveSettings()
+    end
+  end,
+}
 setmetatable(core.languages,{
   __index = function(self,key)
     if rawget(self,key) then return rawget(self,key) end
     return key
   end
 })
-setmetatable(core.settings,{
-  __index = function(self, key)
-    if not rawget(self,key) then self[key] = core[key] end
-    return rawget(self,key)
-  end,
-  __newindex = function()
-    core.saveSettings()
-  end,
-})
+setmetatable(core.settings,settingsMetatable)
 function core.loadLanguage(lang)
   core.settings.language = lang
   local package = {}
@@ -213,6 +217,7 @@ function core.init()
   else
     core.resetSettings()
   end
+  setmetatable(core.settings,settingsMetatable)
   core.loadLanguage(core.settings.language)
   fs.remove("/TabletOS/logs.log")
 end
