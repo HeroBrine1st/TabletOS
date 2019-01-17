@@ -5,6 +5,7 @@
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/lib/crypt.lua",path="/lib/crypt.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/lib/TabletOSCore.lua",path="/lib/TabletOSCore.lua"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/lib/TabletOSContextMenu.lua",path="/lib/TabletOSContextMenu.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Service/Updater.lua",path="/TabletOS/Service/Updater.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Lang/OS/eu_RU.lang",path="/TabletOS/Lang/OS/eu_RU.lang"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Lang/OS/eu_EN.lang",path="/TabletOS/Lang/OS/eu_EN.lang"},
