@@ -117,6 +117,7 @@ for i = -12,12 do
 	local zone = i
 	if i > 0 then zone = "+" .. tostring(zone) end
 	zone = "GMT" .. zone
+	if i == 9 then zone = "ZERO" end
 	table.insert(timezones,zone)
 end
 local timezone,index = processList({
