@@ -18,23 +18,20 @@ local core = {
     langPath = "/TabletOS/Lang/",
     language = "eu_EN",
     userInit = false,
-    package = {},
-    timezone = "0",
+    timezone = 0,
   },
   lowMemory = false,
   memoryCheckTimeout = 10,
 }
 local settingsMetatable = {
   __index = function(self, key)
-    if not rawget(self,key) then rawset(self,key,core[key]) end
+    if not rawget(self,key) then self[key] = core[key] end
     return rawget(self,key)
   end,
-  -- __newindex = function(self,key,value)
-  --   if not key == "package" then
-  --     self[key] = value
-  --     core.saveSettings()
-  --   end
-  -- end,
+  __newindex = function(self,key,value)
+    rawset(self,key,value)
+    core.saveSettings()
+  end,
 }
 setmetatable(core.languages,{
   __index = function(self,key)
@@ -65,11 +62,11 @@ function core.loadLanguage(lang)
       return "lang." .. key
     end
   })
-  core.settings.package = package
+  core.package = package
   computer.pushSignal("REDRAW_ALL")
 end
 
-function core.getLanguagePackages() return core.settings.package end
+function core.getLanguagePackages() return core.package end
 
 function core.saveData(name,data)
   checkArg(2,data,"table")
@@ -177,8 +174,6 @@ local function findTypeAndConvertFromString(value)
 end
 
 function core.saveSettings()
-  local package = core.settings.package
-  core.settings.package = nil
   local str = ""
   for key, value in pairs(core.settings) do
     local _value = value
@@ -192,8 +187,6 @@ function core.saveSettings()
   if not f then return f, r end
   f:write(str)
   f:close()
-  core.settings.package = package
-  package = nil
   return true
 end
 

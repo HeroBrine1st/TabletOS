@@ -93,6 +93,7 @@ end
 
 function graphics.clickedToBarButton(x,y)
 	local w,h = buffer.getResolution()
+	if y == 1 then return "STATUS_BAR" end
 	if y ~= h then return nil end
 	local home = {math.floor(w/2),math.floor(w/2+1)}
 	local back = math.floor(w/2-w*0.0625)
@@ -102,6 +103,15 @@ function graphics.clickedToBarButton(x,y)
 	if x == forward then return "NEXT" end
 	if x == 1 then return "MENU" end
 end
+
+-- local function touchListener(name,address,x,y,button,nickname)
+-- 	if button == 0 then
+-- 		local result = graphics.clickedToBarButton(x,y)
+-- 		if result then
+-- 			event.push("TabletOS_BarClick",result)
+-- 		end
+-- 	end
+-- end
 
 function graphics.drawActionBar(options)
 	local color = options.color
