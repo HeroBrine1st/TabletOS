@@ -551,7 +551,7 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 	for i = scroll+1, scroll+h-2 do
 		buffer.drawText(x+1,y+i,graphics.theme.infoWindow.foreground,textTable[i] or "")
 	end
-	drawScrollBar(x+w-1,y+1,h-2,#textTable,scroll)
+	drawScrollBar(x+w-1,y+1,h-2,#textTable,scroll,h-2)
 	buffer.drawChanges()
 	buffer.setDrawLimit(x,y+1,x+w-1,y+h-2)
 	while true do
