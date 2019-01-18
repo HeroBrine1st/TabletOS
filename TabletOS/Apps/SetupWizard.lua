@@ -114,7 +114,10 @@ core.loadLanguage(languages2[index])
 
 local timezones = {}
 for i = -12,12 do
-	table.insert(timezones,tostring(i))
+	local zone = i
+	if i > 0 then zone = "+" .. tostring(zone) end
+	zone = "GMT" .. zone
+	table.insert(timezones,zone)
 end
 local timezone,index = processList({
 	scroll = 0,
