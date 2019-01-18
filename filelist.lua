@@ -13,6 +13,8 @@
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Lang/Settings/eu_EN.lang",path="/TabletOS/Lang/Settings/eu_EN.lang"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Lang/Updater/eu_RU.lang",path="/TabletOS/Lang/Updater/eu_RU.lang"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Lang/Updater/eu_EN.lang",path="/TabletOS/Lang/Updater/eu_EN.lang"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Lang/SetupWizard/eu_RU.lang",path="/TabletOS/Lang/SetupWizard/eu_RU.lang"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Lang/SetupWizard/eu_EN.lang",path="/TabletOS/Lang/SetupWizard/eu_EN.lang"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/SetupWizard.lua",path="/TabletOS/Apps/SetupWizard.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Main.lua",path="/TabletOS/Apps/Settings.pkg/Main.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Modules/Security.lua",path="/TabletOS/Apps/Settings.pkg/Modules/Security.lua"},
