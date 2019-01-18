@@ -171,7 +171,7 @@ end
 ----------------------------------UPDATING----------------------------------
 local success, reason = core.pcall(dofile,"/TabletOS/Service/Updater.lua")
 if not success then
-    errorReport("/TabletOS/Service/Updater.lua",success,reason)
+    --errorReport("/TabletOS/Service/Updater.lua",success,reason)
     core.newNotification(10,"D",core.getLanguagePackages().OS_updateServiceUnavailable,reason)
     _G.updater = {}
 else

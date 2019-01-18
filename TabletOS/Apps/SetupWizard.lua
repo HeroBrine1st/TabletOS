@@ -106,7 +106,7 @@ for key,value in pairs(core.languages) do
 	table.insert(languages2,key)
 end
 local selectedLanguage,index = processList({},languages)
-core.loadLanguage(languages2[index]) 
+core.loadLanguage(languages2[index])
 -- buffer.drawRectangle(1,5,sW,sH-3,theme.sandbox.background,0x0," ")
 -- local timezone = graphics.drawEdit(core.getLanguagePackages().OS_enteringTimezone,{core.getLanguagePackages().OS_enterTimezone,
 -- 	"",
@@ -117,17 +117,17 @@ for i = -12,12 do
 	local zone = i
 	if i > 0 then zone = "+" .. tostring(zone) end
 	zone = "GMT" .. zone
-	if i == 9 then zone = "ZERO" end
+	if i == 0 then zone = "ZERO" end
 	table.insert(timezones,zone)
 end
 local timezone,index = processList({
-	scroll = 0,
+	scroll = -12,
 	label = core.getLanguagePackages().SetupWizard_selectTimezone,
 	helpWindowContent = core.getLanguagePackages().SetupWizard_helpWindowContent,
 	helpButtonLabel = core.getLanguagePackages().SetupWizard_helpButtonLabel,
 	nextButtonLabel = core.getLanguagePackages().SetupWizard_nextButtonLabel,
 },timezones)
-core.settings.timezone = tonumber(timezone)
+core.settings.timezone = index-13
 
 core.settings.userInit = true
 core.saveSettings()

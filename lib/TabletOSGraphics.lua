@@ -64,7 +64,7 @@ function graphics.drawButton(x,y,w,h,text,buttonColor,textColor)
 end
 
 function graphics.centerText(x,y,fore,text,trancparency)
-  local x1 = x - math.ceil(unicode.len(text)/2+0.5)
+  local x1 = x - math.floor(unicode.len(text)/2+0.5)
   buffer.drawText(x1,y,fore,text,trancparency)
 end
 
