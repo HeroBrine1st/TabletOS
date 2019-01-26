@@ -7,7 +7,7 @@ local langSelect = {
 }
 
 for key,value in pairs(core.languages) do
-	table.insert(langSelect,{name=function() return value end,onClick = function()  computer.pushSignal("ESS") core.loadLanguage(key) core.saveSettings() end,type="Button"})
+	table.insert(langSelect,{name=function() return value end,onClick = function()  computer.pushSignal("ESS") core.loadLanguage(key) end,type="Button"})
 end
 
 local langAndInput = {

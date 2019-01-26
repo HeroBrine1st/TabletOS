@@ -15,7 +15,6 @@ local screenLock = {
 	{type="Button",name=function() return core.getLanguagePackages().Settings_password end, onClick = function(event)
 		if not event.action == "DOWN" then return end
 		local tmp = {}
-		local step = 1
 		local password = graphics.drawEdit(core.getLanguagePackages().Settings_setupSecurity,{
 				core.getLanguagePackages().Settings_enterNewPasswordStep1,
 			})
@@ -26,7 +25,6 @@ local screenLock = {
 			core.settings.lockType = "password"
 			core.settings.lockHash = crypt.md5(password)
 			graphics.drawInfo(core.getLanguagePackages().Settings_setupSecurity,{core.getLanguagePackages().Settings_passwordInstalled})
-			core.saveSettings()
 			computer.pushSignal("ESS")
 		else
 			graphics.drawInfo(core.getLanguagePackages().Settings_setupSecurity,{core.getLanguagePackages().Settings_passwordNotMatch})

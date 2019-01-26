@@ -489,28 +489,48 @@ function graphics.drawEdit(label0,label,text)
 	end
 	buffer.drawText(x,y+h-2,0xFFFFFF,">")
 	local visibleLen = w-2
-	local visible = unicode.sub(text,-visibleLen)
-	local cursor = false
-	while true do
-		visible = unicode.sub(text,-visibleLen)
-		buffer.drawRectangle(x+1,y+h-2,w-2,1,graphics.theme.editMenu.background,0x0," ")
-		visible = visible .. (cursor and "█" or " ")
-		buffer.drawText(x+1,y+h-2,graphics.theme.editMenu.foreground,visible)
-		graphics.drawBars(graphics.barOptions)
+	local cursor = true
+	local textX = x+1
+	local textY = y+h-2
+	local fore = graphics.theme.editMenu.foreground
+	local function draw()
+		buffer.drawRectangle(textX,textY,w-2,1,graphics.theme.editMenu.background,0x0," ")
+		local textVisible = unicode.sub(text,-visibleLen)
+		textVisible = textVisible .. (cursor and " " or "█")
+		buffer.drawText(textX,textY,fore,textVisible)
 		buffer.drawChanges()
-		local signal = {event.pull(0.5,"key_down")}
-		cursor = not cursor
-		if #signal > 0 then
-			cursor = false
-			if signal[4] == 28 then 
+	end
+	while true do
+		draw()
+		local eventName, meta0,meta1,meta2,meta3,meta4 = event.pull(0.5)
+		if not eventName then cursor = not cursor else cursor = false end
+		if eventName == "key_down" then
+			local eventData = {
+				address = meta0,
+				char = meta1,
+				code = meta2,
+				player = meta3,
+			}
+			if eventData.code == 28 then
 				buffer.paste(x,y,screen)
 				graphics.drawChanges()
 				return text
-			elseif signal[4] == 14 then 
+			elseif eventData.code == 14 then
 				text = unicode.sub(text,1,-2)
 			else
-				text = text .. tostring(convertCode(signal[3]))
+				text = text .. convertCode(eventData.char)
 			end
+		elseif eventName == "clipboard" then
+			local eventData = {
+				address = meta0,
+				value = meta1,
+				nickname = meta2,
+			}
+			text = text .. tostring(eventData.value)
+		elseif eventName == "touch" then
+			buffer.paste(x,y,screen)
+			graphics.drawChanges()
+			return text
 		end
 	end
 end
@@ -534,7 +554,12 @@ function graphics.drawInfo(label,strTbl)
 	graphics.drawButton(x,y,w,1,label,graphics.theme.infoWindow.background,graphics.theme.infoWindow.foreground)
 	graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,graphics.theme.infoWindow.buttonBack,graphics.theme.infoWindow.buttonFore)
 	graphics.drawChanges()
-	event.pull("touch")
+	while true do
+		graphics.drawBars(graphics.barOptions)
+		local e = {event.pull(0.5)}
+		if e[1] == "touch" then break end
+		if e[1] == "key_down" and e[4] == 28 then break end
+	end
 	buffer.paste(x,y,screen)
 	graphics.drawChanges()
 end

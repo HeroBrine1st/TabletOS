@@ -159,7 +159,7 @@ function contextMenu.contextMenuForDir(xFile)
         },
         {name = core.getLanguagePackages().OS_remove,
             callback = function() 
-                return os.execute("rm \"" .. xFile .. "\"")
+                return os.execute("rm \"" .. xFile .. "\" -r")
             end 
         },
         {name = core.getLanguagePackages().OS_properties,

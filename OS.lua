@@ -9,6 +9,7 @@ local shell     =   require "shell"
 local unicode   =   require "unicode"
 local computer  =   require "computer"
 local crypt     =   require "crypt"
+local component =   require "component"
 local keyboard  =   require "keyboard"
 local dirs      =   {
       desctop   =   "/TabletOS/Desktop/",
@@ -32,7 +33,7 @@ local hotkeys = {
     },
     ["ctrl"] = {
         ["e"] = {
-            action = "EDIT",
+            action = {"EDIT"},
             ["delete"] = {
                 action = {"DELETE","EDIT"},
             }
@@ -251,14 +252,20 @@ while true do
                 if button == 0 then
                     if not fs.isDirectory(xFile) then
                         local assoc = association(xFile)
-                        if #keyboard.pressedCodes[component.keyboard.address] > 0 then
+                        local pressedKeys = keyboard.pressedCodes[component.keyboard.address]
+                        --core.log(2,"OS",tostring(#pressedKeys))
+                        if pressedKeys then
                             local downkeys = {}
-                            for i = 1, #keyboard.pressedCodes[component.keyboard.address] do
-                                local key = keyboard.keys[keyboard.pressedCodes[component.keyboard.address][i]]
-                                if keysConvertTable[key] then key = keysConvertTable[key] end
-                                table.insert(downkeys,key)
+                            for key,value in pairs(pressedKeys) do
+                                --core.log(2,"OS",tostring(key))
+                                local char = keyboard.keys[key]
+                                --core.log(2,"OS",tostring(char))
+                                if keysConvertTable[char] then char = keysConvertTable[char] end
+                                --core.log(2,"OS",tostring(char))
+                                table.insert(downkeys,char)
                             end
                             assoc = getActionFromKeys(downkeys)
+                           --core.log(2,"OS",tostring(assoc))
                         end
                         if type(assoc) ~= "table" then assoc = {assoc} end
                         for i = 1,#assoc do
