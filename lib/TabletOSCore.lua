@@ -14,32 +14,45 @@ local core = {
       bin = "EDIT",
       cfg = "EDIT",
   },
-  settings = {
-    langPath = "/TabletOS/Lang/",
-    language = "eu_EN",
-    userInit = false,
-    timezone = 0,
-  },
+  settings = {},
   lowMemory = false,
   memoryCheckTimeout = 10,
 }
-local settingsMetatable = {
+
+local settingsProxy = { -- СЮДА МЕТАТАБЛИЦУ НЕ СТАВИТЬ!
+  langPath = "/TabletOS/Lang/",
+  language = "eu_EN",
+  userInit = false,
+  timezone = 0,
+}
+setmetatable(core.settings,{
   __index = function(self, key)
-    if not rawget(self,key) then self[key] = core[key] end
-    return rawget(self,key)
+    if not settingsProxy[key] then settingsProxy[key] = core[key] end
+    return settingsProxy[key]
   end,
   __newindex = function(self,key,value)
-    rawset(self,key,value)
+    rawset(settingsProxy,key,value)
     core.saveSettings()
   end,
-}
+  __pairs = function(self)
+    return pairs(settingsProxy)
+  end,
+  __ipairs = function(self)
+    return ipairs(settingsProxy)
+  end,
+  __len = function(self)
+    return #settingsProxy
+  end,
+  __name = "TabletOS Settings Proxy",
+  __metatable = "Protected metatable of TabletOS Settings Proxy.",
+})
 setmetatable(core.languages,{
   __index = function(self,key)
     if rawget(self,key) then return rawget(self,key) end
     return key
   end
 })
-setmetatable(core.settings,settingsMetatable)
+
 function core.loadLanguage(lang)
   core.settings.language = lang
   local package = {}
@@ -175,7 +188,7 @@ end
 
 function core.saveSettings()
   local str = ""
-  for key, value in pairs(core.settings) do
+  for key, value in pairs(settingsProxy) do
     local _value = value
     if type(value) == "table" or type(value) == "string" then
       _value = serialize(value)
@@ -192,25 +205,27 @@ end
 
 function core.resetSettings(save)
   if not save then
-    core.settings = {}
-    core.settings.language = "eu_EN"
-    core.settings.langPath = "/TabletOS/Lang/"
+    settingsProxy = {
+      language = "eu_EN",
+      langPath = "/TabletOS/Lang/",
+    }
   end
   return core.saveSettings()
 end
 
 function core.init()
+  local settings = {}
   if fs.exists("/TabletOS/settings.bin") then
     for line in io.lines("/TabletOS/settings.bin") do
       local key, value = line:match("\"(.+)\"%s\"(.+)\"")
       if key then
-        core.settings[key] = findTypeAndConvertFromString(value)
+        settings[key] = findTypeAndConvertFromString(value)
       end
     end
+    settingsProxy = settings
   else
     core.resetSettings()
   end
-  setmetatable(core.settings,settingsMetatable)
   core.loadLanguage(core.settings.language)
   fs.remove("/TabletOS/logs.log")
 end
@@ -264,7 +279,6 @@ function core.memorySpectre()
         if not core.settings.lowMemoryDisplayed then
           core.newNotification(10,"L","Low memory level detected","TabletOS will disable animations for save as much as possible memory")
           core.settings.lowMemoryDisplayed = true
-          core.saveSettings()
         end
       end
       lowMemoryCounter = 0
