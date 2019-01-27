@@ -130,5 +130,4 @@ local timezone,index = processList({
 core.settings.timezone = index-13
 
 core.settings.userInit = true
-core.saveSettings()
 buffer.setDrawLimit(1,1,sW,sH)
