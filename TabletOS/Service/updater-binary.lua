@@ -40,7 +40,8 @@ local env = {
 	assert = assert,
 
 }
-local f, r = loadfile("updater-script",_,_,env)
+local _,_,path = require("TabletOSCore").getPackageDirectory()
+local f, r = loadfile(fs.concat(fs.path(path),"updater-script"),_,env)
 if not f then error(r) end
 local success, reason = pcall(f)
 if not success then error(reason) end
