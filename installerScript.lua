@@ -1,4 +1,4 @@
-local args = ...
+local args = ({...})[1]
 local channel = args.channel
 local filelist = args.filelist
 local build = filelist.build
