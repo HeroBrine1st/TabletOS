@@ -1,3 +1,4 @@
-"connecting" "ПОДКЛЮЧЕНИЕ   "
-"downloading" "ЗАГРУЗКА     "
-"downloadDone" "ЗАВЕРШЕНО   "
+"downloadingUpdateStart" "Начинается загрузка обновления..."
+"downloadingUpdateStartDescription" "Это займет несколько минут."
+"updateDownloaded" "Обновление загружено."
+"rebootSystem" "Перезагрузите систему для автоматической установки обновления"

@@ -3,158 +3,139 @@ local serial = require("serialization")
 local core = require("TabletOSCore")
 local updater = {}
 local fs = require("filesystem")
+local thread = require("thread")
 local internet
+local pjctsURL = "https://raw.githubusercontent.com/HeroBrine1st/UniversalInstaller/master/projects.list"
 if component.isAvailable("internet") then
 	internet = component.internet
 else
 	--internet = require("TabletOSNetwork").tryToInetConnect()
 	error("NO INTERNET CARD // NO INTERNET CONNECTION")
 end
-
-local versions = "https://raw.githubusercontent.com/HeroBrine1st/TabletOS/master/VERSIONS.txt"
-local version = dofile("/TabletOS/.version")
-
-local function request(uri,post,headers)
-	local success, handle = core.pcall(internet.request,uri,post,headers)
-	if success then
-		local buffer = ""
-		repeat
-			local chunk,reason=handle.read()
-			if reason then error(tostring(reason)) end
-			if chunk then buffer = buffer .. chunk end
-		until not chunk
-		return buffer
-	else
-		error(handle)
-	end
-end
-local vers1 = request(versions)
-local vers,reason = serial.unserialize(vers1)
-assert(vers,reason)
-local new = {}
-for i = version + 1, #vers do
-	table.insert(new,vers[i])
-end
-local changelog = ""
-local filelist = {}
-local hasUpdate
-local lastVersion = #vers
-local lastVersName
-for i = 1, #new do
-	if not new[i].exp then
-		hasUpdate = true
-		changelog = changelog .. tostring(new[i].version) .. ":" .. tostring(new[i].description[core.settings.language]) .. "\n"
-		local filels,reason = serial.unserialize(request(new[i].raw))
-		assert(filels,reason)
-		for i = 1, #filels do
-			if filels[i].url then
-				filelist[filels[i].path] = filels[i].url
-			elseif filels[i].type then
-				filelist[i] = filels[i].type
-			end
-		end
-		lastVersName = new[i].version
-		updater.force = updater.force == nil and new.force
-	end
-end
-
-updater.changelog = changelog
-updater.lastVersName = lastVersName
-updater.filelist = filelist
-updater.hasUpdate = hasUpdate
-updater.lastVersion = lastVersion
-vers = nil
-filelist = nil
-changelog = nil
-
----------------------------------------------UPDATE---------------------------------------------
-local term = require("term")
-local text = require("text")
-
-local function write(text)
-  local _, y = term.getCursor()
-  term.setCursor(1, y)
-  term.write(text)
-end
-
-local function getBar(progress)
-	progress = progress < 0 and 0 or progress
-	progress = progress > 100 and 100 or progress
-	local bar = ""
-	local barCount = 15/100*progress
-	for i = 1, barCount do
-		bar = bar .. "="
-	end
-	bar = text.padRight(bar,15)
-	return bar
-end
-
-local function shellProgressBar(file,progress)
-	local text1 = ""
-	if progress == -1 then 
-		text1 = file .. " " .. " [" .. getBar(progress) .. "] 0%   " .. core.getLanguagePackages().Updater_connecting
-	elseif progress >= 0 and progress < 100 then
-		text1 = file .. " [" .. getBar(progress) .. "] " .. text.padRight(tostring(progress) .. "%",4) .. " " .. core.getLanguagePackages().Updater_downloading
-	elseif progress == 100 then
-		text1 = file .. " [" .. getBar(progress) .. "] 100%  " .. core.getLanguagePackages().Updater_downloadDone
-	end
-	write(text1)
-end
-
-local function download(url,path)
-	fs.remove(path)
-	fs.makeDirectory(fs.path(path))
-	local name = fs.name(path)
-	local file, reason = io.open(path,"w")
-	if not file then error(tostring(reason)) end
-	shellProgressBar(name,-1)
-	local success, reqH = pcall(internet.request,url)
-	if success then
-		if reqH then
-			local resCode, _1, resData
-			while not resCode do
-				resCode, _1, resData = reqH:response()
-			end
-			if resData and resData["Content-Length"] then
-				local contentLength = tonumber(resData["Content-Length"][1])
-				local downloadedLength = 0
-				while downloadedLength < contentLength do
-					local data, reason = reqH.read()
-					if not data and reason then reqH.close() error(tostring(reason)) end 
-					downloadedLength = downloadedLength + #data
-					file:write(data)
-					shellProgressBar(name,math.floor(downloadedLength/contentLength*100+0.5))
-				end
-				io.write("\n")
-				reqH.close()
-				file:close()
-				if buff then return buffer end			
-			else
-				error(tostring(resCode) .. " " .. tostring(_1) .. " " .. ": Content-Lenght absent")
-			end
-		end
-	else
-		error(reqH)
-	end
-end
-
-function updater.update()
-	component.gpu.setBackground(0)
-	component.gpu.setForeground(0xFFFFFF)
-	require("term").clear()
-	for key, value in pairs(updater.filelist) do
-		if value == "DELETE" then
-			fs.remove(key)
-		else
-			download(value,key)
-		end
-	end
-	local f = io.open("/TabletOS/.version","w")
-	f:write("return " .. tostring(updater.lastVersion))
+local metadata
+if fs.exists("/TabletOS/.vMetadata") then
+	local f = io.open("/TabletOS/.vMetadata","r")
+	local data = f:read("*a")
 	f:close()
-	require("computer").shutdown(true)
+	metadata = assert(load("return " .. data))()
+end
+if not metadata then
+	metadata = {}
+end
+if not TabletOS.settings.updateChannel then
+	TabletOSCore.settings.updateChannel = metadata.channel
+else
+	metadata.channel = TabletOSCore.settings.updateChannel
+end
+if not metadata.channel then
+	metadata.channel = 1
+	metadata.build = 0
+end
+local function request(options,handler)
+	local success,response = pcall(internet.request,options.url,options.post,options.headers)
+	if success then
+		if responce then
+			local responseCode, responseName, responseHeaders
+			while not reaponceCode do
+				os.sleep(0)
+				responseCode, responseName, responseHeaders = response:response()
+			end
+			local buffer = ""
+			repeat
+				os.sleep(0)
+				local data, reason = request.read()
+				if data then
+					buffer = buffer .. data
+				elseif reason then 
+					request:close() 
+					error(reason) 
+				end
+			until not data
+			request:close()
+			return handler(buffer,responseCode,responseName,responseHeaders)
+		end
+	else
+		error(reaponce)
+	end
 end
 
-if updater.force then updater.update() end
+local function findUpdates()
+	return request({
+		url = pjctsURL,
+	},function(data)
+		data = assert(load("return " .. data))()
+		for i = 1, #data do
+			if data[i].name == "TabletOS" then
+				local project = data[i]
+				local channel = project.channels[metadata.channel]
+				local filelist = channel.filelist
+				return request({
+					url = filelist,
+				},function(data)
+					data = assert(load("return " .. data))()
+					if data.build > metadata.build then
+						return filelist
+					end
+					return false
+				end)
+			end
+		end
+	end)
+end
+
+local function prepareToUpdate(filelist)
+	thread.create(function()
+		core.newNotification(0,"U",core.getLanguagePackages().Updater_downloadingUpdateStart,core.getLanguagePackages().Updater_downloadingUpdateStartDescription)
+		local f = io.open("/TabletOS/UpdateCache/updater-script","w")
+		local cache = {}
+		for i = 1, #filelist do
+			local file = filelist[i]
+			request({
+				url = file.url,
+			},function(data)
+				local path = fs.concat("/TabletOS/UpdateCache/",file.path)
+				fs.makeDirectory(fs.path(path))
+				local fileStream = io.write(path,"w")
+				fileStream:write(data)
+				fileStream:close()
+				f:write("echo(\"Copying " .. path .. " to " .. file.path .. "\")")
+				f:write("copy(" .. path .. "," .. file.path .. ")\n")
+				f:write("progress(" .. tostring(i/#filelist*0.5) .. ")\n")
+			end)
+			cache[file.path] = true
+		end
+		for i = 1, #metadata.filelist do
+			local filepath = metadata.filelist[i]
+			if not cache[filepath] then
+				f:write("echo(\"Deleting " .. filepath .. "\")\n")
+				f:write("delete(" .. filepath .. ")\n")
+				f:write("progress(" .. tostring(i/#metadata.filelist*0.4+0.5) .. ")\n")
+			end
+		end
+		f:write("echo(\"Updating metadata\")")
+		f:write("file = read_file(\"/TabletOS/.vMetadata\")\n")
+		f:write("metadata = parse($file)\n")
+		f:write("metadata[\"build\"] = " .. tostring(filelist.build) .. "\n")
+		f:write("metadata[\"filelist\"] = " .. serialization.serialize(filelist) .. "\n")
+		f:write("file = stringify($metadata);n")
+		f:write("write_file(\"/TabletOS/.vMetadata\",$file)")
+		f:write("progress(1)")
+		f:write("echo(\"Success\")")
+		f:close()
+		local f2 = io.open("/TabletOS/UpdateCache/updater-binary","w")
+		f2:write([[local a=require("filesystem")local b=require("serialization")local c=require("gpu")local d={}local e={progress=function(f)f=math.min(1,math.max(f,0))d.progress=f;if _G.progress then _G.progress(f)end end,write_file=function(g,h)local i=io.open(g,"w")i:write(h)i:close()end,read_file=function(g)local i=io.open(g)local h=i:read("*a")i:close()return h end,echo=function(j)print(j)end,copy=function(k,l)a.copy(k,l)end,delete=function(g)a.remove(g)end,abort=function(m)error(m)end,parse=function(n)return b.unserialize(n)end,stringify=function(o)return b.serialize(o)end,assert=assert}local i,p=loadfile("updater-script",_,_,e)if not i then echo(p)return end;local q,r=pcall(i)if not q then echo(r)end]])
+		f2:close()
+		core.newNotification(0,"U",core.getLanguagePackages().Updater_updateDownloaded,core.getLanguagePackages().Updater_rebootSystem)
+	end):detach()
+end
+
+local updates = findUpdates()
+if updates then
+	updater.hasUpdate = true
+	updater.lastVersName = updates.name
+	updater.prepare = prepareToUpdate
+else
+	updater.prepare = function() end
+end
 
 return updater
