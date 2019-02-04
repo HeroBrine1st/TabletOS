@@ -22,10 +22,10 @@ end
 if not metadata then
 	metadata = {}
 end
-if not TabletOS.settings.updateChannel then
-	TabletOSCore.settings.updateChannel = metadata.channel
+if not core.settings.updateChannel then
+	core.settings.updateChannel = metadata.channel
 else
-	metadata.channel = TabletOSCore.settings.updateChannel
+	metadata.channel = core.settings.updateChannel
 end
 if not metadata.channel then
 	metadata.channel = 1
