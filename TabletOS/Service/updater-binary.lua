@@ -1,6 +1,6 @@
 local fs = require("filesystem")
 local serialization = require("serialization")
-local gpu = require("gpu")
+local gpu = require("component").gpu
 local cache = {}
 local env = {
 	progress = function(progress)
@@ -41,6 +41,6 @@ local env = {
 
 }
 local f, r = loadfile("updater-script",_,_,env)
-if not f then echo(r) return end
+if not f then error(r) end
 local success, reason = pcall(f)
-if not success then echo(reason) end
+if not success then error(reason) end

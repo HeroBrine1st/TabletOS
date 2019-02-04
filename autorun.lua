@@ -1,9 +1,14 @@
 local fs = require("filesystem")
 if fs.exists("/TabletOS/UpdateCache/updater-binary") then
 	
-	pcall(dofile,"/TabletOS/UpdateCache/updater-binary")
+	local success, reason = pcall(dofile,"/TabletOS/UpdateCache/updater-binary")
 	os.execute("rm -r /TabletOS/UpdateCache")
-	require("computer").shutdown(true)
+	if not success then
+		require("TabletOSCore").newNotification(10,"U","Update failed.",tostring(reason))
+		error(reason)
+	else
+		require("computer").shutdown(true)
+	end
 end
 
 
