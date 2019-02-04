@@ -9,7 +9,7 @@ metadata.build = build
 metadata.filelist = {}
 for key, value in pairs(filelist) do
 	if key ~= "build" then
-		table.insert(filelist,key)
+		table.insert(metadata.filelist,key)
 	end
 end
 local path = "/TabletOS/.vMetadata"
