@@ -127,7 +127,7 @@ local notifications = {}
 function core.newNotification(priority,icon,name,description)
   local notification = {priority=priority,icon=icon,name=name,description=description}
   table.insert(notifications,notification)
-  table.sort(notifications,function(a,b) return a.priority < b.priority end)
+  table.sort(notifications,function(a,b) return a.priority > b.priority end)
 end
 
 function core.getNotifications() return notifications end
