@@ -158,7 +158,7 @@ if updates then
 	--print("Updates got #2")
 	updater.hasUpdate = true
 	updater.lastVersName = updates.name or "No version name downloaded"
-	updater.prepare = function() 
+	updater.prepare = function()
 		prepareToUpdate(updates)
 	end
 else

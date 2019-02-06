@@ -174,31 +174,39 @@ end
 function graphics.openNotifications(y,noProcess)
 	local sW, sH = buffer.getResolution()
 	local notifications = core.getNotifications()
-	if y then
+	y = y or sH
+	buffer.drawRectangle(1,2,sW,y-1,graphics.theme.notifications.background,graphics.theme.notifications.foreground," ")
+	graphics.centerText(sW/2+1,y,graphics.theme.notifications.foreground,"====")
+	buffer.setDrawLimit(1,2,sW,y-1)
+	local visible = {}
+	local function redraw()
 		buffer.drawRectangle(1,2,sW,y-1,graphics.theme.notifications.background,graphics.theme.notifications.foreground," ")
 		graphics.centerText(sW/2+1,y,graphics.theme.notifications.foreground,"====")
 		buffer.setDrawLimit(1,2,sW,y-1)
-	else
-		buffer.drawRectangle(1,2,sW,sH-1,graphics.theme.notifications.background,graphics.theme.notifications.foreground," ")
-		graphics.centerText(sW/2+1,sH,graphics.theme.notifications.foreground,"====")
-		buffer.setDrawLimit(1,2,sW,sH-1)
-	end
-	local visible = {}
-	for i = 1, #notifications do
-		local y1 = (i-1)*3+2
-		buffer.drawText(1,y1,graphics.theme.notifications.nameFore,notifications[i].name)
-		local text1 = notifications[i].description
-		local text2 = ""
-		local textTbl = string.wrap(text1,sW)
-		text1,text2 = textTbl[1] or "", textTbl[2] or ""
-		buffer.drawText(1,y1+1,graphics.theme.notifications.foreground,text1)
-		buffer.drawText(1,y1+2,graphics.theme.notifications.foreground,text2)	
-		local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i}
-		local bX1, bY1, bX2, bY2 = buffer.getDrawLimit() 
-		if notif.y2 < bY2 then 
-			table.insert(visible,notif)
+		visible = {}
+		for i = 1, #notifications do
+			local y1 = (i-1)*3+2
+			local label = notifications[i].name
+			local text1 = notifications[i].description
+			local text2 = ""
+			local textTbl = string.wrap(text1,sW)
+			text1,text2 = textTbl[1] or "", textTbl[2] or ""
+			if textTbl[3] then
+				text2 = unicode.sub(text2,1,sW-1) .. "…"
+			end
+			buffer.drawText(1,y1,graphics.theme.notifications.nameFore,label)
+			buffer.drawText(sW,y1,graphics.theme.notifications.nameFore,"×")
+			buffer.drawText(1,y1+1,graphics.theme.notifications.foreground,text1)
+			buffer.drawText(1,y1+2,graphics.theme.notifications.foreground,text2)
+			local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i, text = textTbl, label = label}
+			local bX1, bY1, bX2, bY2 = buffer.getDrawLimit() 
+			if notif.y2 < bY2 then 
+				table.insert(visible,notif)
+			end
 		end
+		buffer.setDrawLimit(1,1,sW,sH)
 	end
+	redraw()
 	buffer.setDrawLimit(1,1,sW,sH)
 	graphics.centerText(1,sW/2,0x0,"    ")
 	if (not y or y == sH) and not noProcess then
@@ -214,24 +222,19 @@ function graphics.openNotifications(y,noProcess)
 					for i = 1, #visible do
 						local e = visible[i]
 						if graphics.clickedAtArea(e.x1,e.y1,e.x2,e.y2,x,y) then
-							core.removeNotification(e.index)
+							if x == e.x2 and y == e.y1 then
+								core.removeNotification(e.index)
+							else
+								graphics.drawInfo(e.label,e.text)
+							end
 							break
 						end
 					end
 				end
 			end
 			graphics.drawBars(graphics.barOptions)
-			graphics.openNotifications(sH,true)
+			redraw()
 			buffer.drawChanges()
-			visible = {}
-			for i = 1, #core.getNotifications() do
-				local y1 = (i-1)*3+2
-				local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i,}
-				local bX1, bY1, bX2, bY2 = buffer.getDrawLimit()
-				if notif.y2 < bY2 then
-					table.insert(visible,notif)
-				end
-			end
 		end
 	end
 end
@@ -436,8 +439,12 @@ function graphics.drawContextMenu(x,y,elements,...)
 					end
 					if element.contextMenu and (whatToExecute == "any" or whatToExecute == "contextMenu")then
 						local cX,cY = x+w,touchY
-						element.contextMenu["repeat"] = true
-						local res = {graphics.drawContextMenu(cX,cY,element.contextMenu,...)}
+						local contextMenu  = element.contextMenu
+						if type(element.contextMenu) == "function" then
+							contextMenu = contextMenu()
+						end
+						contextMenu["repeat"] = true
+						local res = {graphics.drawContextMenu(cX,cY,contextMenu,...)}
 						if #res > 0 then
 							buffer.paste(x,y,screen)
 							buffer.drawChanges()
@@ -527,7 +534,7 @@ function graphics.drawEdit(label0,label,text)
 				nickname = meta2,
 			}
 			text = text .. tostring(eventData.value)
-		elseif eventName == "touch" then
+		elseif eventName == "drop" then
 			buffer.paste(x,y,screen)
 			graphics.drawChanges()
 			return text
@@ -557,7 +564,7 @@ function graphics.drawInfo(label,strTbl)
 	while true do
 		graphics.drawBars(graphics.barOptions)
 		local e = {event.pull(0.5)}
-		if e[1] == "touch" then break end
+		if e[1] == "drop" then break end
 		if e[1] == "key_down" and e[4] == 28 then break end
 	end
 	buffer.paste(x,y,screen)
@@ -607,7 +614,7 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 				end
 			end
 			drawScrollBar(x+w-1,y+1,h-2,#textTable,scroll,h-2)
-		elseif signal == "touch" then
+		elseif signal == "drop" then
 			buffer.resetDrawLimit()
 			buffer.paste(x,y,screen)
 			graphics.drawChanges()

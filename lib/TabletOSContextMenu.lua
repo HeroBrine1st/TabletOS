@@ -205,12 +205,13 @@ function contextMenu.contextMenuForFile(xFile)
             end 
         },
         {name=core.getLanguagePackages().OS_edit,
-            callback=function() os.execute("edit " .. "\"" .. xFile .. "\"") buffer.drawChanges(true) end
+            callback=function() os.execute("edit " .. "\"" .. xFile .. "\"") buffer.drawChanges(true) return true end
         },
         {name=core.getLanguagePackages().OS_rewrite,
             callback=function()
                 fs.remove(xFile)
-                os.execute("edit " .. "\"" .. xFile .. "\"") buffer.drawChanges(true)
+                os.execute("edit " .. "\"" .. xFile .. "\"") 
+                buffer.drawChanges(true)
             end
         },
         {name=""},
@@ -229,7 +230,7 @@ function contextMenu.contextMenuForFile(xFile)
         {name=""},
         {name = core.getLanguagePackages().OS_rename,
             callback = function() 
-                local newName = graphics.drawEdit(core.getLanguagePackages().OS_fileRenaming,{"",core.getLanguagePackages().OS_enterNewFileName}) 
+                local newName = graphics.drawEdit(core.getLanguagePackages().OS_fileRenaming,{"",core.getLanguagePackages().OS_enterNewFileName},fs.name(xFile)) 
                 return fs.rename(xFile,fs.concat(fs.path(xFile),newName))
             end 
         },
@@ -269,7 +270,7 @@ function contextMenu.contextFromDir(dir)
             if obj:sub(-4) == ".pkg" then
                 table.insert(context,{name=file:sub(1,-2),callback = function() return obj end})
             else
-                table.insert(context,{name=file:sub(1,-2),contextMenu=contextMenu.contextFromDir(obj)})
+                table.insert(context,{name=file:sub(1,-2),contextMenu=function() return contextMenu.contextFromDir(obj) end})
             end
         else
             table.insert(context,{name=file,callback=function()
@@ -277,13 +278,15 @@ function contextMenu.contextFromDir(dir)
                     local success, reason = core.pcall(dofile,obj)
                     errorReport(file,success,reason)
                     if success then return reason end
-                elseif _G.association(obj) == "execute" then
+                elseif _G.association(obj) == "EXECUTE" then
                     return obj
-                elseif _G.association(obj) == "edit" then
+                elseif _G.association(obj) == "EDIT" then
                     os.execute("edit \"" .. obj .. "\"")
                 end
                 buffer.drawChanges(true)
                 return false --что бы цепочка завершилась
+            end,contextMenu = function()
+                return contextMenu.contextMenuForFile(obj)
             end})
         end
     end

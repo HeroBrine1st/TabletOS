@@ -254,7 +254,7 @@ while true do
                         local assoc = association(xFile)
                         local pressedKeys = keyboard.pressedCodes[component.keyboard.address]
                         --core.log(2,"OS",tostring(#pressedKeys))
-                        if pressedKeys then
+                        if #pressedKeys > 0 then
                             local downkeys = {}
                             for key,value in pairs(pressedKeys) do
                                 --core.log(2,"OS",tostring(key))
