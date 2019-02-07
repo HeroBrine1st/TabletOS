@@ -4,7 +4,7 @@ if fs.exists("/TabletOS/UpdateCache/updater-binary") then
 	os.execute("rm -r /TabletOS/UpdateCache/updater-binary")
 	os.execute("rm -r /TabletOS/UpdateCache/updater-script")
 	if not success then
-		require("TabletOSCore").newNotification(10,"U","Update failed.",tostring(reason))
+		require("TabletOSCore").newNotification(10,"D","Update failed.",tostring(reason))
 		--error(reason)
 	else
 		require("computer").shutdown(true)
