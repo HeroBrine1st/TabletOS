@@ -248,6 +248,7 @@ function core.getPackageDirectory()
 end
 
 function core.executeFile(path)
+  if type(path) ~= "string" then return end
   if path:sub(-4) == ".pkg" then
     local fileToExecute = fs.concat(path,"Main.lua")
     local success, reason = core.pcall(dofile,fileToExecute)
