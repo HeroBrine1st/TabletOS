@@ -59,8 +59,11 @@ function contextMenu.contextMenuForThis(dir)
             callback = function()
                 if copyingFile then
                     local name = fs.name(copyingFile)
-                    while fs.exists(fs.concat(dir,name)) do
-                        name = name .. tostring(math.floor(math.random()*1000))
+                    local newname = name
+                    local i = 1
+                    while fs.exists(fs.concat(dir,newname)) do
+                        local point = newname:find(".")
+                        name = name:sub(1,point-1) .. " (" .. tostring(i) .. ")" .. name:sub(point)
                     end
                     os.execute("cp -rw " .. copyingFile .. " " .. fs.concat(dir,name))
                     if cutting then
