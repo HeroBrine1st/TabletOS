@@ -34,7 +34,7 @@ local function drawScreen(screen)
 	end
 	graphics.drawActionBar({
 		color=program.actionBar.background,
-		text=core.getLanguagePackages().OS_settings,
+		text=screen.name and screen.name() or core.getLanguagePackages().OS_settings,
 		textColor=program.actionBar.foreground,
 		statusBarFore=program.actionBar.statusBarFore,
 	})
@@ -88,7 +88,7 @@ local function executeScreen(sET)
 			for i = 1, #sET do
 				if sET[i].type == "Button" then
 					local doOnClick = sET[i].cT(event[3],event[4])
-					if doOnClick then 
+					if doOnClick then
 						if selButton and not i == selButton then 
 							if sET[selButton].onDrop then
 								sET[selButton].onDrop()
