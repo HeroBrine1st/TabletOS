@@ -80,6 +80,7 @@ local function processList(options,list)
 			local dir = 0
 			if sig[4] == 200 then dir = 1 end
 			if sig[4] == 208 then dir = -1 end
+			if sig[4] == 28 then return table.unpack(result) end
 			options.scroll = options.scroll + dir
 		elseif sig[1] == "scroll" then
 			local dir = sig[5]
