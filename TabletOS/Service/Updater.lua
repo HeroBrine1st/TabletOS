@@ -103,13 +103,13 @@ local function prepareToUpdate(filelist)
 metadata = parse(metafile)
 echo("Backing system up")
 for i = 1, #metadata.filelist do
-local file = metadata.filelist[i]
-local backpath = "/TabletOS/UpdateCache/Backup" .. file
-copy(file,backpath)
-progress(i/#metadata.filelist*0.3)
+	local file = metadata.filelist[i]
+	local backpath = "/TabletOS/UpdateCache/Backup" .. file
+	copy(file,backpath)
+	progress(i/#metadata.filelist*0.3)
 end
 onError(function()
-package_extract_dir("Backup","/")
+	package_extract_dir("Backup","/")
 end)
 echo("Installing update")
 ]])
