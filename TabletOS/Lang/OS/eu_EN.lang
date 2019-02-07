@@ -32,8 +32,6 @@
 "close" "Close"
 "name" "Name:"
 "folderType" "Type: folder"
-"faqLabel" "Welcome to TabletOS GUI."
-"faq" "If the notification center does not want to close itself, click on ==== and lead up.\nTo interact with a file/folder or current directory, right-click on a file, folder or empty space.\n Please report bugs to the group vk.com/herobrine1_youtube, on the forum computercraft.ru or https://discord.gg/JzWQdph"
 "errorIn" "An error occurred in the file ?"
 "updateAvailable" "Update available"
 "updateServiceUnavailable" "Update service is unavailable."
