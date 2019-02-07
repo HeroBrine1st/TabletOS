@@ -282,6 +282,8 @@ function contextMenu.contextFromDir(dir)
                     return obj
                 elseif _G.association(obj) == "EDIT" then
                     os.execute("edit \"" .. obj .. "\"")
+                else
+                    return obj
                 end
                 buffer.drawChanges(true)
                 return false --что бы цепочка завершилась
