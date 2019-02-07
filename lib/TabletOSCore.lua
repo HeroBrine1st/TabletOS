@@ -280,7 +280,7 @@ local lowMemoryCounter = 0
 local highMemoryCounter = 0
 function core.memorySpectre()
   local free = computer.freeMemory()
-  if free < 16384 then
+  if free < 65536 then
     lowMemoryCounter = lowMemoryCounter + 1
     highMemoryCounter = 0
     if lowMemoryCounter > 3 and lastLowMemory + core.memoryCheckTimeout < computer.uptime() then
