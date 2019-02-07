@@ -372,6 +372,7 @@ function graphics.drawContextMenu(x,y,elements,...)
 			local fore = selected and graphics.theme.contextMenu.pressedFore or graphics.theme.contextMenu.foreground
 			local useContext = isComplexElement(index)
 			if useContext then
+				core.showGuide("ContextMenuDoubleAction")
 				local recX = selected and (context and x+w-2 or x) or x
 				local recY = elementY
 				local recW = selected and (context and 2 or unicode.len(element.name) + 2) or w
@@ -441,7 +442,7 @@ function graphics.drawContextMenu(x,y,elements,...)
 						local cX,cY = x+w,touchY
 						local contextMenu  = element.contextMenu
 						if type(element.contextMenu) == "function" then
-							contextMenu = contextMenu()
+							contextMenu = contextMenu(...)
 						end
 						contextMenu["repeat"] = true
 						local res = {graphics.drawContextMenu(cX,cY,contextMenu,...)}
@@ -485,7 +486,7 @@ function graphics.drawEdit(label0,label,text)
 	w = w+w%2 --если число нечетное - добавится 1 и станет четным
 	local h = 3 + #label
 	local sW, sH = buffer.getResolution()
-	local x,y = (sW-w)/2,(sH-h)/2
+	local x,y = (sW-w)/2+1,(sH-h)/2+1
 	x,y,w,h = math.floor(x+0.5),math.floor(y+0.5),math.floor(w+0.5),math.floor(h+0.5)
 	local screen = buffer.copy(x,y,w,h)
 	buffer.drawRectangle(x,y,w,h,graphics.theme.editMenu.background,0x0," ")
@@ -551,7 +552,7 @@ function graphics.drawInfo(label,strTbl)
 	end
 	w = w+w%2 --если число нечетное - добавится 1 и станет четным
 	local sW,sH = buffer.getResolution()
-	local x,y = (sW-w)/2,(sH-h)/2
+	local x,y = (sW-w)/2+1,(sH-h)/2+1
 	x,y,w,h = math.floor(x+0.5),math.floor(y+0.5),math.floor(w+0.5),math.floor(h+0.5)
 	local screen = buffer.copy(x,y,w,h)
 	buffer.drawRectangle(x,y,w,h,graphics.theme.infoWindow.background,0x0," ")
@@ -634,8 +635,8 @@ function graphics.resetDrawDaemons()
 end
 
 function graphics.drawChanges(_123)
-	for _, value in pairs(float) do
-		core.pcall(value)
+	for name, value in pairs(float) do
+		core.pcall(value,name)
 	end
 	buffer.drawChanges(_123)
 end
