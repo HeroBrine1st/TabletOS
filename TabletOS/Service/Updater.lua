@@ -158,7 +158,7 @@ echo("Installing update")
 			core.newNotification(0,"U",core.getLanguagePackages().Updater_updateDownloaded,core.getLanguagePackages().Updater_rebootSystem)
 		end)
 		if not success then
-			core.newNotification(0,"U",core.getLanguagePackages().Updater_failedPreparingUpdates,reason)
+			core.newNotification(0,"U",core.getLanguagePackages().Updater_updateDownloadError,reason)
 		end
 	end):detach()
 end
