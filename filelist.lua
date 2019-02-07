@@ -21,6 +21,10 @@
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Modules/Security.lua",path="/TabletOS/Apps/Settings.pkg/Modules/Security.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Modules/Language.lua",path="/TabletOS/Apps/Settings.pkg/Modules/Language.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Apps/Settings.pkg/Modules/OTA.lua",path="/TabletOS/Apps/Settings.pkg/Modules/OTA.lua"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Guide/ContextMenuDoubleAction.lua",path="/TabletOS/Guide/ContextMenuDoubleAction.lua"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Guide/LowMemory.lua",path="/TabletOS/Guide/LowMemory.lua"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Guide/Start.lua",path="/TabletOS/Guide/Start.lua"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Experimental/TabletOS/Guide/UpdateReceived.lua",path="/TabletOS/Guide/UpdateReceived.lua"},
 	{
         url = "https://raw.githubusercontent.com/IgorTimofeev/AdvancedLua/master/AdvancedLua.lua",
         path = "/lib/advancedLua.lua"
