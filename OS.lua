@@ -178,6 +178,7 @@ if not success then
 else
     _G.updater = reason
     if updater.hasUpdate then
+        core.showGuide("UpdateReceived")
         core.newNotification(10,"U",core.getLanguagePackages().OS_updateAvailable,updater.lastVersName)
     end
 end
@@ -190,7 +191,7 @@ if core.settings.userInit == "false" or not core.settings.userInit then
     graphics.drawBars()
     graphics.clearSandbox()
     graphics.drawChanges()
-    graphics.drawScrollingInfoWindow(sW*0.75,sH*0.6,core.getLanguagePackages().OS_faqLabel,core.getLanguagePackages().OS_faq)
+    core.showGuide("Start")
 end
 local page = 1
 local dir = dirs.desctop

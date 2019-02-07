@@ -7,7 +7,8 @@ local core = {
     ["eu_EN"] = "English",
     ["eu_RU"] = "Русский",
   },
-
+  langPath = "/TabletOS/Lang/",
+  guidePath = "/TabletOS/Guide/",
   associations = {
       txt = "EDIT",
       lua = "EXECUTE",
@@ -20,7 +21,6 @@ local core = {
 }
 
 local settingsProxy = { -- СЮДА МЕТАТАБЛИЦУ НЕ СТАВИТЬ!
-  langPath = "/TabletOS/Lang/",
   language = "eu_EN",
   userInit = false,
   timezone = 0,
@@ -134,6 +134,16 @@ function core.getNotifications() return notifications end
 function core.removeNotification(index)
   table.remove(notifications,index)
 end
+
+function core.showGuide(name)
+  if not core.settings["guide"..name.."Displayed"] and core.settings.userInit then
+    local tbl = dofile(fs.concat(core.guidePath,name)..".lua")
+    local guide = tbl[core.settings.language]
+    core.newNotification(0,guide.icon,guide.name,guide.description)
+    core.settings["guide"..name.."Displayed"] = true
+  end
+end
+
 local priors = {
   "Verbose",
   "Debug",
@@ -277,10 +287,7 @@ function core.memorySpectre()
       lastLowMemory = computer.uptime()
       if not core.lowMemory then
         core.lowMemory = true
-        if not core.settings.lowMemoryDisplayed then
-          core.newNotification(10,"L","Low memory level detected","TabletOS will disable animations for save as much as possible memory")
-          core.settings.lowMemoryDisplayed = true
-        end
+        core.showGuide("LowMemory")
       end
       lowMemoryCounter = 0
     end
