@@ -111,7 +111,7 @@ end
 function core.getEditTime(path)
   local t_correction = (tonumber(core.settings.timezone) or 0) * 3600
     local lastmod = fs.lastModified(path) + t_correction
-    local data = os.date('%x', lastmod)
+    local data = os.date('%d.%m.%Y', lastmod)
     local time = os.date('%X', lastmod)
     return data, time, lastmod
 end

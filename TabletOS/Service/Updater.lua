@@ -99,20 +99,33 @@ local function prepareToUpdate(filelist)
 		local success, reason = pcall(function()
 			fs.makeDirectory("/TabletOS/UpdateCache/")
 			local f = io.open("/TabletOS/UpdateCache/updater-script","w")
+			f:write([[local metafile = read_file("/TabletOS/.vMetadata")
+metadata = parse(metafile)
+echo("Backing system up")
+for i = 1, #metadata.filelist do
+local file = metadata.filelist[i]
+local backpath = "/TabletOS/UpdateCache/Backup" .. file
+copy(file,backpath)
+progress(i/#metadata.filelist*0.3)
+end
+onError(function()
+package_extract_dir("Backup","/")
+end)
+echo("Installing update")
+]])
 			local cache = {}
 			for i = 1, #filelist do
 				local file = filelist[i]
 				request({
 					url = file.url,
 				},function(data)
-					local path = fs.concat("/TabletOS/UpdateCache/",file.path)
+					local path = fs.concat("/TabletOS/UpdateCache/Files/",file.path)
 					fs.makeDirectory(fs.path(path))
 					local fileStream = io.open(path,"w")
 					fileStream:write(data)
 					fileStream:close()
-					f:write("echo(\"Copying " .. path .. " to " .. file.path .. "\")\n")
 					f:write("copy(\"" .. path .. "\",\"" .. file.path .. "\")\n")
-					f:write("progress(" .. tostring(i/#filelist*0.5) .. ")\n")
+					f:write("progress(" .. tostring(i/#filelist*0.5+0.3) .. ")\n")
 				end)
 				cache[file.path] = true
 			end
@@ -120,9 +133,8 @@ local function prepareToUpdate(filelist)
 				local filepath = metadata.filelist[i]
 				core.log(2,"Updater",serialization.serialize(filepath))
 				if not cache[filepath] then
-					f:write("echo(\"Deleting " .. filepath .. "\")\n")
 					f:write("delete(\"" .. filepath .. "\")\n")
-					f:write("progress(" .. tostring(i/#metadata.filelist*0.4+0.5) .. ")\n")
+					f:write("progress(" .. tostring(i/#metadata.filelist*0.1+0.8) .. ")\n")
 				end
 			end
 			local _filelist = {}
@@ -131,24 +143,22 @@ local function prepareToUpdate(filelist)
 				table.insert(_filelist,file.path)
 			end
 			f:write("echo(\"Updating metadata\")\n")
-			f:write("file = read_file(\"/TabletOS/.vMetadata\")\n")
-			f:write("metadata = parse(file)\n")
 			f:write("metadata[\"build\"] = " .. tostring(filelist.build) .. "\n")
 			f:write("metadata[\"filelist\"] = " .. serialization.serialize(_filelist) .. "\n")
-			f:write("file = stringify(metadata);\n")
+			f:write("local file = stringify(metadata);\n")
 			f:write("write_file(\"/TabletOS/.vMetadata\",file)\n")
 			f:write("progress(1)\n")
 			f:write("echo(\"Success\")\n")
 			f:close()
 			local f2 = io.open("/TabletOS/UpdateCache/updater-binary","w")
 			f2:write([[
-				local a=require("filesystem")local b=require("serialization")local c=require("component").gpu;local d={}local e={progress=function(f)f=math.min(1,math.max(f,0))d.progress=f;if _G.progress then _G.progress(f)end end,write_file=function(g,h)local i=io.open(g,"w")i:write(h)i:close()end,read_file=function(g)local i=io.open(g)local h=i:read("*a")i:close()return h end,echo=function(j)print(j)end,copy=function(k,l)a.copy(k,l)end,delete=function(g)a.remove(g)end,abort=function(m)error(m)end,parse=function(n)return b.unserialize(n)end,stringify=function(o)return b.serialize(o)end,assert=assert}local p,p,q=require("TabletOSCore").getPackageDirectory()local i,r=loadfile(a.concat(a.path(q),"updater-script"),p,e)if not i then error(r)end;local s,t=pcall(i)if not s then error(t)end
+				local a=require("filesystem")local b=require("serialization")local c=require("component").gpu;local d=require("term")d.clear()d.setCursor(1,2)local e,f=c.getResolution()_G.progress=function(progress)local g=0x000000;local h=0xFFFFFF;progress=progress or 0;local i=math.floor(e*progress+0.5)local j=c.setBackground(g)c.fill(1,1,e,1," ")c.setBackground(h)c.fill(1,1,i,1," ")c.setBackground(j)end;local k={}local l=print;local function print(...)l(...)progress(k.progress)end;local m={progress=function(progress)progress=math.min(1,math.max(progress,0))k.progress=progress;if _G.progress then _G.progress(progress)end end,write_file=function(n,o)print("Writing "..tostring(#o).." bytes to "..n)a.makeDirectory(a.path(n))local p=io.open(n,"w")p:write(o)p:close()end,read_file=function(n)print("Reading "..n)local p=io.open(n)local o=p:read("*a")p:close()return o end,echo=function(q)print(q)end,copy=function(r,s)print("Copying "..r.." to "..s)a.makeDirectory(a.path(s))a.copy(r,s)end,delete=function(n)print("Deleting "..n)a.remove(n)end,abort=function(t)error(t)end,parse=function(u)return b.unserialize(u)end,stringify=function(v)return b.serialize(v)end,assert=assert,onError=function(w)k.onError=w end,package_extract_dir=function(x,y)local z,z,A=require("TabletOSCore").getPackageDirectory()local B=a.concat(A,x)print("Extracting "..x.." to "..y)os.execute("cp "..B.."/* "..y.." -r")end}local z,z,y=require("TabletOSCore").getPackageDirectory()local p,C=loadfile(a.concat(a.path(y),"updater-script"),z,m)if not p then error(C)end;local D,E=pcall(p)if not D then pcall(k.onError)error(E)end
 			]])
 			f2:close()
 			core.newNotification(0,"U",core.getLanguagePackages().Updater_updateDownloaded,core.getLanguagePackages().Updater_rebootSystem)
 		end)
 		if not success then
-			
+			core.newNotification(0,"U",core.getLanguagePackages().Updater_failedPreparingUpdates,reason)
 		end
 	end):detach()
 end
