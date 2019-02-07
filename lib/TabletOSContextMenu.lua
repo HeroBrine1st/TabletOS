@@ -62,10 +62,11 @@ function contextMenu.contextMenuForThis(dir)
                     local newname = name
                     local i = 1
                     while fs.exists(fs.concat(dir,newname)) do
-                        local point = newname:find(".")
-                        name = name:sub(1,point-1) .. " (" .. tostring(i) .. ")" .. name:sub(point)
+                        local point = name:find("%.")
+                        newname = name:sub(1,point-1) .. " (" .. tostring(i) .. ")" .. name:sub(point)
+                        i = i + 1
                     end
-                    os.execute("cp -rw " .. copyingFile .. " " .. fs.concat(dir,name))
+                    os.execute("cp -rw \"" .. copyingFile .. "\" \"" .. fs.concat(dir,newname) .. "\"")
                     if cutting then
                         os.execute("rm -rf " .. copyingFile)
                         copyingFile = nil
