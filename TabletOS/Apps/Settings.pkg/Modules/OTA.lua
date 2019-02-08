@@ -48,10 +48,10 @@ do
 		end
 	end
 	table.insert(updateChannelSelectScreen,{type="Label",name = function() 
-		return core.getLanguagePackages().Settings_currUpdateChannel .. tostring(channels[core.settings.updateChannel].name)
+		return core.getLanguagePackages().Settings_selectUpdateChannel
 	end})
 	for i = 1, #channels do
-		table.insert(updateChannelSelectScreen,{type="Button",name=function() return channels[i].name end,onClick = function() core.settings.updateChannel = i end})
+		table.insert(updateChannelSelectScreen,{type="Button",name=function() return (core.settings.updateChannel == i and core.getLanguagePackages().Settings_current or "") .. channels[i].name end,onClick = function() core.settings.updateChannel = i end})
 	end
 end
 

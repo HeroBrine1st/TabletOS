@@ -19,5 +19,6 @@
 "password" "Password"
 "screenLock" "Screen lock"
 "security" "Security"
-"currUpdateChannel" "Current update channel: "
 "updateChannel" "Update channels"
+"selectUpdatechannel" "Select update channel"
+"current" "Current: "
