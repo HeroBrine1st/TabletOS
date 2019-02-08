@@ -34,12 +34,11 @@ function contextMenu.contextMenuForThis(dir)
                             core.getLanguagePackages().OS_enterForEnd})
                         local path = fs.concat(dir,file)
                         if not fs.isDirectory(path) then  
-                            fs.makeDirectory(fs.name(path))
-                            local f = io.open(path,"w") 
+                            fs.makeDirectory(fs.path(path))
+                            local f = io.open(path,"w")
                             f:write("")
                             f:close()
                         end
-                        buffer.drawChanges(true) 
                         return true
                     end 
                 },
