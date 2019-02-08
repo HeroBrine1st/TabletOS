@@ -206,7 +206,10 @@ function graphics.openNotifications(y,noProcess)
 			local time = computer.uptime() - notifications[i].created
 			local hours,minutes,seconds = math.floor(time/3600),math.floor(time%3600/60),math.floor(time%3600%60)
 			time = padLeft(tostring(hours),2,"0") .. ":" .. padLeft(tostring(minutes),2,"0") .. ":" .. padLeft(tostring(seconds),2,"0")
-			local label2 = unicode.sub(label,1,sW-unicode.len(time)-1) .. " • " .. time
+			local label2 = label .. " • " .. time
+			if unicode.len(label2) > sW-2 then
+				label2 = unicode.sub(label,1,sW-unicode.len(time)-5) .. "… • " .. time
+			end
 			local text1 = tostring(notifications[i].description or "Nothing to display")
 			local text2 = ""
 			local textTbl = string.wrap(text1,sW)
