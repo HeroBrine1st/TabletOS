@@ -34,7 +34,7 @@
 "folderType" "Type: folder"
 "errorIn" "An error occurred in the file ?"
 "updateAvailable" "Update available"
-"updateServiceUnavailable" "Update service is unavailable."
+"updateServiceUnavailable" "Update service is unavailable"
 "cut" "Cut file"
 "copy" "Copy file"
 "paste" "Paste file"

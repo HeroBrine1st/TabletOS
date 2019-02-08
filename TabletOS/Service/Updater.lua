@@ -31,6 +31,7 @@ end
 if not metadata.channel then
 	metadata.channel = 1
 	metadata.build = 0
+	metadata.filelist = {}
 end
 local function request(options,handler)
 	local success,response = pcall(internet.request,options.url,options.post,options.headers)
