@@ -19,3 +19,5 @@
 "password" "Пароль"
 "screenLock" "Блокировка экрана"
 "security" "Безопасность"
+"currUpdateChannel" "Текущий канал обновлений: "
+"updateChannel" "Каналы обновления"

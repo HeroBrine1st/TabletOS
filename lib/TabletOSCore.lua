@@ -110,10 +110,10 @@ end
 
 function core.getEditTime(path)
   local t_correction = (tonumber(core.settings.timezone) or 0) * 3600
-    local lastmod = fs.lastModified(path) + t_correction
-    local data = os.date('%d.%m.%Y', lastmod)
-    local time = os.date('%X', lastmod)
-    return data, time, lastmod
+  local lastmod = fs.lastModified(path) + t_correction
+  local data = os.date('%d.%m.%Y', lastmod)
+  local time = os.date('%X', lastmod)
+  return data, time, lastmod
 end
 function core.getTime()
   local f = io.open("/.UNIX","w")
@@ -168,7 +168,7 @@ function core.pcall(...)
   local result = {pcall(...)}
   if not result[1] then
     local str = "ERROR IN "
-    for i = 1, #{...} do
+    for i = 2, #{...} do
       str = str .. tostring(({...})[i]) .. " "
     end
     str = str .. " REASON: " .. tostring(result[2]) .. "\n"

@@ -22,6 +22,11 @@ local graphics = {
 			foreground = 0xCCCCCC,
 			background = 0x610B5E,
 		},
+		-- notificationsCenter = {
+		-- 	background = 0xFFFFFF,
+		-- 	label = 0,
+		-- 	context = 0x444444,
+		-- },
 		contextMenu = {
 			foreground = 0x000000,
 			background = 0xFFFFFF,
@@ -202,7 +207,7 @@ function graphics.openNotifications(y,noProcess)
 			local hours,minutes,seconds = math.floor(time/3600),math.floor(time%3600/60),math.floor(time%3600%60)
 			time = padLeft(tostring(hours),2,"0") .. ":" .. padLeft(tostring(minutes),2,"0") .. ":" .. padLeft(tostring(seconds),2,"0")
 			local label2 = unicode.sub(label,1,sW-unicode.len(time)-1) .. " • " .. time
-			local text1 = notifications[i].description
+			local text1 = tostring(notifications[i].description or "Nothing to display")
 			local text2 = ""
 			local textTbl = string.wrap(text1,sW)
 			text1,text2 = textTbl[1] or "", textTbl[2] or ""
@@ -343,6 +348,63 @@ function graphics.processStatusBar(x,y)
 	end
 	preventDefault()
 end
+
+
+-- function graphics.drawNotificationCenter(y,options)
+-- 	local visible = {}
+-- 	local sW,sH = buffer.getResolution()
+-- 	local function drawNotification(x,y,notification,options)
+-- 		local label
+-- 		local height = options.height or 3
+-- 		local width = options.width or sW
+-- 		local textTbl = string.wrap(notification.description,width)
+-- 		do
+-- 			local time = computer.uptime() - notification.created
+-- 			local hours,minutes,seconds = math.floor(time/3600),math.floor(time%3600/60),math.floor(time%3600%60)
+-- 			time = padLeft(tostring(hours),2,"0") .. ":" .. padLeft(tostring(minutes),2,"0") .. ":" .. padLeft(tostring(seconds),2,"0")
+-- 			label = unicode.sub(notification.name,1,width-unicode.len(time)-3) .. " • " .. time
+-- 			if unicode.len(label) > width-2 then
+-- 				label = unicode.sub(label,1,width-unicode.len(time)-5) .. " • " .. time .. "…"
+-- 			end
+-- 		end
+-- 		buffer.drawRectangle(x,y,width,height,graphics.theme.notificationsCenter.background)
+--  		buffer.drawText(x+width-1,y,graphics.theme.notificationsCenter.label,"×")
+--  		buffer.drawText(x,y,graphics.theme.notificationsCenter.label,label)
+--  		for i = 1, #width do
+--  			local text = textTbl[i]
+--  			if text then
+--  				local textY = y+i
+--  				local textX = x
+--  				if i == #width and textTbl[i+1] then
+--  					text = unicode.sub(text,1,width-1) .. "…"
+--  				end
+--  				buffer.drawText(textX,textY,graphics.theme.notificationsCenter.content,text)
+--  			end
+--  		end
+-- 	end
+-- 	local notifications = core.getNotifications()
+-- 	local extended = options.extended
+-- 	local cacheY = 2
+-- 	local width = options.width or sW-4
+-- 	local x = math.floor(sW/2-width/2)+1
+-- 	graphics.drawBars({notifCenter = true})
+-- 	buffer.setDrawLimit(1,2,sW,y)
+-- 	for i = 1, notifications do
+-- 		local notification = notifications[i]
+-- 		notification.label = tostring(notification.label)
+-- 		notification.description = tostring(notification.description)
+-- 		local h = 3
+-- 		if i == extended then
+-- 			h = #string.wrap(notification.description,width)
+-- 		end
+-- 		drawNotification(x,cacheY,notification,{
+-- 			height = h,
+-- 			width = width,
+-- 		})
+-- 		cacheY = cacheY + h
+-- 	end
+-- 	buffer.resetDrawLimit()
+-- end
 
 function graphics.drawContextMenu(x,y,elements,...)
 	local w,h = 1, #elements
