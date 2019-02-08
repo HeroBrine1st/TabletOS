@@ -1,3 +1,3 @@
-# TabletOS Experimental Channel
+# TabletOS Stable Channel
 
-Канал обновлений раннего доступа.
+Стабильный канал обновлений. Подходит для обычного пользователя
