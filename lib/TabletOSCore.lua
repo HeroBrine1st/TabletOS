@@ -125,12 +125,15 @@ function core.getTime()
 end
 local notifications = {}
 function core.newNotification(priority,icon,name,description)
-  local notification = {priority=priority,icon=icon,name=name,description=description}
+  local notification = {priority=priority,icon=icon,name=name,description=description,created=computer.uptime()}
   table.insert(notifications,notification)
   table.sort(notifications,function(a,b) return a.priority > b.priority end)
 end
 
-function core.getNotifications() return notifications end
+
+function core.getNotifications() 
+  return notifications 
+end
 function core.removeNotification(index)
   table.remove(notifications,index)
 end

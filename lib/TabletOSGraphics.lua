@@ -171,6 +171,17 @@ function graphics.drawBars(options)
 	end
 end
 
+local function padLeft(value, length, symbol)
+  checkArg(1, value, "string", "nil")
+  checkArg(2, length, "number")
+  if not value or unicode.wlen(value) == 0 then
+    return string.rep(symbol, length)
+  else
+    return string.rep(symbol, length - unicode.wlen(value)) .. value
+  end
+end
+
+
 function graphics.openNotifications(y,noProcess)
 	local sW, sH = buffer.getResolution()
 	local notifications = core.getNotifications()
@@ -187,6 +198,10 @@ function graphics.openNotifications(y,noProcess)
 		for i = 1, #notifications do
 			local y1 = (i-1)*3+2
 			local label = notifications[i].name
+			local time = computer.uptime() - notifications[i].created
+			local hours,minutes,seconds = math.floor(time/3600),math.floor(time%3600/60),math.floor(time%3600%60)
+			time = padLeft(tostring(hours),2,"0") .. ":" .. padLeft(tostring(minutes),2,"0") .. ":" .. padLeft(tostring(seconds),2,"0")
+			local label2 = unicode.sub(label,1,sW-unicode.len(time)-1) .. " • " .. time
 			local text1 = notifications[i].description
 			local text2 = ""
 			local textTbl = string.wrap(text1,sW)
@@ -194,7 +209,7 @@ function graphics.openNotifications(y,noProcess)
 			if textTbl[3] then
 				text2 = unicode.sub(text2,1,sW-1) .. "…"
 			end
-			buffer.drawText(1,y1,graphics.theme.notifications.nameFore,label)
+			buffer.drawText(1,y1,graphics.theme.notifications.nameFore,label2)
 			buffer.drawText(sW,y1,graphics.theme.notifications.nameFore,"×")
 			buffer.drawText(1,y1+1,graphics.theme.notifications.foreground,text1)
 			buffer.drawText(1,y1+2,graphics.theme.notifications.foreground,text2)
@@ -352,6 +367,7 @@ function graphics.drawContextMenu(x,y,elements,...)
 		local contextMenu = element.contextMenu
 		if contextMenu then 
 			name = text.padRight(name,w-1).."▶"
+			if element.callback then core.showGuide("ContextMenuDoubleAction") end
 		end
 		elements[i].newname = name
 		local fore = graphics.theme.contextMenu.foreground
@@ -372,7 +388,6 @@ function graphics.drawContextMenu(x,y,elements,...)
 			local fore = selected and graphics.theme.contextMenu.pressedFore or graphics.theme.contextMenu.foreground
 			local useContext = isComplexElement(index)
 			if useContext then
-				core.showGuide("ContextMenuDoubleAction")
 				local recX = selected and (context and x+w-2 or x) or x
 				local recY = elementY
 				local recW = selected and (context and 2 or unicode.len(element.name) + 2) or w
