@@ -572,6 +572,7 @@ function graphics.drawEdit(label0,label,text)
 	buffer.drawRectangle(x,y,w,h,graphics.theme.editMenu.background,0x0," ")
 	buffer.drawRectangle(x,y,w,1,graphics.theme.editMenu.barBack,0x0," ")
 	buffer.drawText(x,y,graphics.theme.editMenu.barFore,label0)
+	local checkTouch = graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_continue,graphics.theme.editMenu.barBack,graphics.theme.editMenu.barFore)
 	for i = 1, #label do
 		graphics.centerText(sW/2,y+i,graphics.theme.editMenu.foreground,label[i])
 	end
@@ -616,9 +617,17 @@ function graphics.drawEdit(label0,label,text)
 			}
 			text = text .. tostring(eventData.value)
 		elseif eventName == "drop" then
-			buffer.paste(x,y,screen)
-			graphics.drawChanges()
-			return text
+			if checkTouch(meta1,meta2) then
+				buffer.paste(x,y,screen)
+				graphics.drawChanges()
+				return text
+			end
+		elseif eventName == "touch" then
+			if not graphics.clickedAtArea(x,y,x+w-1,y+h-1,meta1,meta2) then 
+				buffer.paste(x,y,screen)
+				graphics.drawChanges()
+				return
+			end
 		end
 	end
 end
@@ -643,13 +652,18 @@ function graphics.drawInfo(label,strTbl)
 		buffer.drawText(x+1,y+i,graphics.theme.infoWindow.foreground,strTbl[i])
 	end
 	graphics.drawButton(x,y,w,1,label,graphics.theme.infoWindow.background,graphics.theme.infoWindow.foreground)
-	graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,graphics.theme.infoWindow.buttonBack,graphics.theme.infoWindow.buttonFore)
+	local checkTouch = graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,graphics.theme.infoWindow.buttonBack,graphics.theme.infoWindow.buttonFore)
 	graphics.drawChanges()
 	while true do
 		graphics.drawBars(graphics.barOptions)
 		local e = {event.pull(0.5)}
-		if e[1] == "drop" then break end
-		if e[1] == "key_down" and e[4] == 28 then break end
+		if e[1] == "drop" then 
+			if checkTouch(e[3],e[4]) then
+				break
+			end
+		elseif e[1] == "touch" then
+			if not graphics.clickedAtArea(x,y,x+w-1,y+h-1,e[3],e[4]) then break end
+		elseif e[1] == "key_down" and e[4] == 28 then break end
 	end
 	buffer.paste(x,y,screen)
 	graphics.drawChanges()
@@ -673,7 +687,7 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 	local scroll = 0
 	buffer.drawRectangle(x,y,w,h,graphics.theme.infoWindow.background,0x0," ")
 	graphics.drawButton(x,y,w,1,label,graphics.theme.infoWindow.background,graphics.theme.infoWindow.foreground)
-	graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,graphics.theme.infoWindow.buttonBack,graphics.theme.infoWindow.buttonFore)
+	local checkTouch = graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,graphics.theme.infoWindow.buttonBack,graphics.theme.infoWindow.buttonFore)
 	for i = scroll+1, scroll+h-2 do
 		buffer.drawText(x+1,y+i,graphics.theme.infoWindow.foreground,textTable[i] or "")
 	end
@@ -681,7 +695,7 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 	buffer.drawChanges()
 	buffer.setDrawLimit(x,y+1,x+w-1,y+h-2)
 	while true do
-		local signal, _, _, _, direction = event.pull(0.5)
+		local signal, _, _x, _y, direction = event.pull(0.5)
 		graphics.drawBars(graphics.barOptions)
 		if signal == "scroll" then
 			scroll = scroll - direction
@@ -699,10 +713,19 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 			end
 			drawScrollBar(x+w-1,y+1,h-2,#textTable,scroll,h-2)
 		elseif signal == "drop" then
-			buffer.resetDrawLimit()
-			buffer.paste(x,y,screen)
-			graphics.drawChanges()
-			break
+			if checkTouch(_x,_y) then
+				buffer.resetDrawLimit()
+				buffer.paste(x,y,screen)
+				graphics.drawChanges()
+				break
+			end
+		elseif e[1] == "touch" then
+			if not graphics.clickedAtArea(x,y,x+w-1,y+h-1,_x,_y) then
+				buffer.resetDrawLimit()
+				buffer.paste(x,y,screen)
+				graphics.drawChanges()
+				break
+			end
 		end
 		graphics.drawChanges()
 	end
