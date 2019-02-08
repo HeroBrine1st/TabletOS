@@ -1,3 +1,3 @@
-# TabletOS
+# TabletOS Experimental Channel
 
-Операционная система для планшетов OpenComputers.
+Канал обновлений раннего доступа.

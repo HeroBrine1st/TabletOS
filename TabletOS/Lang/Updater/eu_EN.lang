@@ -1,0 +1,5 @@
+"downloadingUpdateStart" "Download update starts..."
+"downloadingUpdateStartDescription" "It will take a few minutes."
+"updateDownloaded" "Update downloaded."
+"rebootSystem" "Restart the system to automatically install the update"
+"updateDownloadError" "Error downloading update"
