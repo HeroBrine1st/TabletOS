@@ -624,14 +624,17 @@ function graphics.drawEdit(label0,label,text)
 end
 
 function graphics.drawInfo(label,strTbl)
+	local sW,sH = buffer.getResolution()
 	if type(strTbl) == "string" then strTbl = {strTbl} end
+	if unicode.len(label) > sW then
+		label = unicode.sub(label,1,sW-1) .. "…"
+	end
 	local h = #strTbl + 2
 	local w =  unicode.len(label)+2
 	for _, str in pairs(strTbl) do
 		w = math.max(w,unicode.len(str)+2)
 	end
 	w = w+w%2 --если число нечетное - добавится 1 и станет четным
-	local sW,sH = buffer.getResolution()
 	local x,y = (sW-w)/2+1,(sH-h)/2+1
 	x,y,w,h = math.floor(x+0.5),math.floor(y+0.5),math.floor(w+0.5),math.floor(h+0.5)
 	local screen = buffer.copy(x,y,w,h)
