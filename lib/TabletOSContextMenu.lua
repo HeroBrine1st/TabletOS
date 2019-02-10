@@ -117,7 +117,10 @@ function contextMenu.contextMenuForThis(dir)
             local command = graphics.drawEdit(core.getLanguagePackages().OS_executingCommand,{core.getLanguagePackages().OS_enterCommand,
                 "",
                 core.getLanguagePackages().OS_enterForEnd})
-            local success, reason = shell.execute(command)
+            local success, reason = true, nil
+            if command then
+                 success, reason = shell.execute(command)
+            end
             shell.setWorkingDirectory(_tmp)
             io.write = io_write
             if writtedToShell then
