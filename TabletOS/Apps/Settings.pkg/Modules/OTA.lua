@@ -29,7 +29,7 @@ local function request(options,handler)
       error("No response!")
     end
   else
-    error(tostring(responce))
+    error(tostring(response))
   end
 end
 
