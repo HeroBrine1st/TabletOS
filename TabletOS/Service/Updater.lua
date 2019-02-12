@@ -21,17 +21,16 @@ if fs.exists("/TabletOS/.vMetadata") then
 	metadata = assert(load("return " .. data))()
 end
 if not metadata then
-	metadata = {}
+	metadata = {
+		build = 0,
+		filelist = {},
+		channel = 1,
+	}
 end
 if not core.settings.updateChannel then
 	core.settings.updateChannel = metadata.channel
 else
 	metadata.channel = core.settings.updateChannel
-end
-if not metadata.channel then
-	metadata.channel = 1
-	metadata.build = 0
-	metadata.filelist = {}
 end
 local function request(options,handler)
 	local success,response = pcall(internet.request,options.url,options.post,options.headers)
