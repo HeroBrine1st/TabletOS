@@ -1,1 +1,16 @@
-None
+1.0.6 Updating system upgrade:
+Fixes:
+File associations did not work at all
+Now the "low level of free memory" - 64 kilobytes. With smaller values ​​there were problems.
+Pop-up windows are now located correctly.
+
+Added by:
+Hints to the user about some aspects of working with the system.
+The "Continue" button at the input field.
+The button for deleting the notification, as well as when clicking on the notification itself, will open completely.
+The files in the "All Programs" have a context menu.
+
+Changes:
+Full refactoring of the update system.
+
+Attention: you will receive two updates. One update will update the shell, and the second will initialize the update system.
