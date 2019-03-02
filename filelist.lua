@@ -1,6 +1,6 @@
 {
 	build = 20190208191701, --schematic:YEAR..MONTH..DAY..HOUR..MINUTE..VERSION
-	name = "1.0.6 Updating system upgrade",
+	name = "1.0.6 Updating system upgrade [Step two]",
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/autorun.lua",path="/autorun.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/OS.lua",path="/OS.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/crypt.lua",path="/lib/crypt.lua"},
