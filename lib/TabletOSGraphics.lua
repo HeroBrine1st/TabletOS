@@ -719,7 +719,7 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
 				graphics.drawChanges()
 				break
 			end
-		elseif e[1] == "touch" then
+		elseif signal == "touch" then
 			if not graphics.clickedAtArea(x,y,x+w-1,y+h-1,_x,_y) then
 				buffer.resetDrawLimit()
 				buffer.paste(x,y,screen)
