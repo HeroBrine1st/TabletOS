@@ -26,6 +26,9 @@ if not metadata then
 		filelist = {},
 		channel = 1,
 	}
+	local f = io.open("TabletOS/.vMetadata","w")
+	f:write(serialization.serialize(metadata))
+	f:close()
 end
 if not core.settings.updateChannel then
 	core.settings.updateChannel = metadata.channel
