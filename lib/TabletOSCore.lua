@@ -124,8 +124,8 @@ function core.getTime()
   return table.unpack(_1)
 end
 local notifications = {}
-function core.newNotification(priority,icon,name,description)
-  local notification = {priority=priority,icon=icon,name=name,description=description,created=computer.uptime()}
+function core.newNotification(priority,icon,name,description,qrcodewords)
+  local notification = {priority=priority,icon=icon,name=name,description=description,created=computer.uptime(),qrcodewords = qrcodewords}
   table.insert(notifications,notification)
   table.sort(notifications,function(a,b) return a.priority > b.priority end)
 end
@@ -142,7 +142,7 @@ function core.showGuide(name)
   if not core.settings["guide"..name.."Displayed"] and core.settings.userInit then
     local tbl = dofile(fs.concat(core.guidePath,name)..".lua")
     local guide = tbl[core.settings.language]
-    core.newNotification(0,guide.icon,guide.name,guide.description)
+    core.newNotification(0,guide.icon,guide.name,guide.description,guide.qrcodewords)
     core.settings["guide"..name.."Displayed"] = true
   end
 end

@@ -63,11 +63,12 @@ local graphics = {
   },
 }
 
-function graphics.drawButton(x,y,w,h,text,buttonColor,textColor)
+function graphics.drawButton(x,y,w,h,text,buttonColor,textColor,x1Mod)
+  x1Mod = x1Mod or 0
   buffer.drawRectangle(x,y,w,h,buttonColor,textColor," ")
   local textX = x + math.floor(w/2)
   local textY = y + math.floor(h/2)
-  graphics.centerText(textX,textY,textColor,text)
+  graphics.centerText(textX,textY,textColor,text,nil,x1Mod)
   local function checkTouch(touchX,touchY)
     local x,y,w,h = x,y,w,h
     local x2 = x+w-1
@@ -80,8 +81,8 @@ function graphics.drawButton(x,y,w,h,text,buttonColor,textColor)
   return checkTouch
 end
 
-function graphics.centerText(x,y,fore,text,trancparency)
-  local x1 = x - math.floor(unicode.len(text)/2+0.5)
+function graphics.centerText(x,y,fore,text,trancparency,x1Mod)
+  local x1 = x - math.floor(unicode.len(text)/2+0.5) + (tonumber(x1Mod) or 0)
   buffer.drawText(x1,y,fore,text,trancparency)
 end
 
@@ -215,6 +216,7 @@ function graphics.openNotifications(y,noProcess)
     for i = 1, #notifications do
       local y1 = (i-1)*3+2
       local label = notifications[i].name
+      local qrcodewords = notifications[i].qrcodewords
       local time = computer.uptime() - notifications[i].created
       local hours,minutes,seconds = math.floor(time/3600),math.floor(time%3600/60),math.floor(time%3600%60)
       time = padLeft(tostring(hours),2,"0") .. ":" .. padLeft(tostring(minutes),2,"0") .. ":" .. padLeft(tostring(seconds),2,"0")
@@ -233,7 +235,7 @@ function graphics.openNotifications(y,noProcess)
       buffer.drawText(sW,y1,graphics.theme.notifications.nameFore,"×")
       buffer.drawText(1,y1+1,graphics.theme.notifications.foreground,text1)
       buffer.drawText(1,y1+2,graphics.theme.notifications.foreground,text2)
-      local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i, text = textTbl, label = label}
+      local notif = {x1 = 1, x2 = sW, y1 = y1, y2 = y1+2, index = i, text = textTbl, label = label,qrcodewords = qrcodewords}
       local bX1, bY1, bX2, bY2 = buffer.getDrawLimit() 
       if notif.y2 < bY2 then 
         table.insert(visible,notif)
@@ -260,7 +262,7 @@ function graphics.openNotifications(y,noProcess)
               if x == e.x2 and y == e.y1 then
                 core.removeNotification(e.index)
               else
-                graphics.drawInfo(e.label,e.text)
+                graphics.drawInfo(e.label,e.text,e.qrcodewords)
               end
               break
             end
@@ -644,7 +646,31 @@ function graphics.drawEdit(label0,label,text)
   end
 end
 
-function graphics.drawInfo(label,strTbl)
+--Костыльная замена обычному string.find()
+--Работает медленнее, но хотя бы поддерживает юникод
+--by EliteClubSessions (тащить либу на 1к+ строк не хочу, я уже делал это в 0.X.X)
+function unicode.find(str, pattern, init, plain)
+	if init then
+		if init < 0 then
+			init = -#unicode.sub(str,init)
+		elseif init > 0 then
+			init = #unicode.sub(str,1,init-1)+1
+		end
+	end
+	
+	a, b = string.find(str, pattern, init, plain)
+	
+	if a then
+		local ap,bp = str:sub(1,a-1), str:sub(a,b)
+		a = unicode.len(ap)+1
+		b = a + unicode.len(bp)-1
+		return a,b
+	else
+		return a
+	end
+end
+
+function graphics.drawInfo(label,strTbl,toQrCodeStringTable)
   local sW,sH = buffer.getResolution()
   if type(strTbl) == "string" then strTbl = {strTbl} end
   if unicode.len(label) > sW then
@@ -672,6 +698,21 @@ function graphics.drawInfo(label,strTbl)
     if e[1] == "drop" then 
       if checkTouch(e[3],e[4]) then
         break
+      elseif toQrCodeStringTable and graphics.clickedAtArea(x,y,x+w-1,y+h-1,e[3],e[4]) then
+        local line = strTbl[e[4]-y]
+        if line then
+          for key, value in pairs(toQrCodeStringTable) do
+            local word = value
+            if type(key) == "string" then word = key end
+            local start, _end = unicode.find(line,word)
+            --TabletOSGraphics.drawInfo("123",{"echo","http"},{echo="123"})
+            if start then
+              if graphics.clickedAtArea(x+start,e[4],x+_end,e[4],e[3],e[4]) then
+                graphics.drawQRCodeWindow(value)
+              end
+            end
+          end
+        end
       end
     elseif e[1] == "touch" then
       if not graphics.clickedAtArea(x,y,x+w-1,y+h-1,e[3],e[4]) then break end
@@ -689,7 +730,7 @@ local function drawScrollBar(x,y,h,max,scroll,displayedH)
   buffer.drawRectangle(x,pos,1,scrH,graphics.theme.infoWindow.scrollBarFront,0x0," ")
 end
 
-function graphics.drawScrollingInfoWindow(w,h,label,text)
+function graphics.drawScrollingInfoWindow(w,h,label,text,toQrCodeStringTable)
   local sW, sH = buffer.getResolution()
   local x,y = (sW-w)/2+1,(sH-h)/2+1
   text = text:gsub("\\n","\n")
@@ -730,6 +771,23 @@ function graphics.drawScrollingInfoWindow(w,h,label,text)
         buffer.paste(x,y,screen)
         graphics.drawChanges()
         break
+      -- реализовать по потребности
+      --   elseif toQrCodeStringTable and graphics.clickedAtArea(x,y,x+w-1,y+h-1,e[3],e[4]) then
+      --   local line = strTbl[e[4]-y] -- тут пошаманить и норм будет
+      --   if line then
+      --     for key, value in pairs(toQrCodeStringTable) do
+      --       local word = value
+      --       if type(key) == "string" then word = key end
+      --       local start, _end = unicode.find(line,word)
+      --       --TabletOSGraphics.drawInfo("123",{"echo","http"},{echo="123"})
+      --       if start then
+      --         if graphics.clickedAtArea(x+start,e[4],x+_end,e[4],e[3],e[4]) then
+      --           graphics.drawQRCodeWindow(value)
+      --         end
+      --       end
+      --     end
+      --   end
+      -- end
       end
     elseif signal == "touch" then
       if not graphics.clickedAtArea(x,y,x+w-1,y+h-1,_x,_y) then
@@ -754,9 +812,9 @@ function graphics.drawQRCodeWindow(string,...) --uses braileMatrix
   buffer.drawRectangle(x,y,w,h,theme.commonBackground,0," ")
 --КОД ОДИНАКОВЫЙ КАКОГО ХРЕНА РЕЗУЛЬТАТ РАЗНЫЙ
 --graphics.drawButton(x,y,w,1,label,graphics.theme.infoWindow.background,graphics.theme.infoWindow.foreground)
-  graphics.drawButton(x,y,w,1,"QR Code",theme.titleBackground,theme.titleForeground)
+  graphics.drawButton(x,y,w,1,"QR Code",theme.titleBackground,theme.titleForeground,1)
 --local checkTouch = graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,graphics.theme.infoWindow.buttonBack,graphics.theme.infoWindow.buttonFore)
-  local close = graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,theme.buttonBack,theme.buttonFore)
+  local close = graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,theme.buttonBack,theme.buttonFore,1)
   -- QR CODE RENDERING --
   local braileMatrix = braile.matrix(#matrix,#matrix[1])
   do
