@@ -80,5 +80,5 @@ local f, r = loadfile(fs.concat(fs.path(path),"updater-script"),_,env)
 if not f then 
 	error(r) 
 end
-	local success, reason = pcall(f)
+local success, reason = pcall(f)
 if not success then  pcall(cache.onError) error(reason) end
