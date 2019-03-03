@@ -16,7 +16,7 @@ return {
 	["eu_EN"] = {
 		name = "Welcome to TabletOS GUI",
 		icon = "W",
-		description = [[Make yourself at home. Click on the notification.
+		description = [[Make yourself at home. Click on the notification to expand it.
 		To interact with a file/folder or current directory, right-click a file, folder or empty space.
 		To remove the notification - click on the cross in its corner.
 		You will receive additional instructions on the occurrence of situations where they can be used.
