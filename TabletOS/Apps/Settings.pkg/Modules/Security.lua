@@ -37,12 +37,14 @@ local mainScreen = {
 	{type="Button",name = function() return core.getLanguagePackages().Settings_screenLock end, onClick = function(event)
 		if event.action == "UP" then
 			local accept = false
-			if core.settings.lockHash and #core.settings.lockHash > 0 then
-				local password = graphics.drawEdit(core.getLanguagePackages().Settings_verificatingUser,{
-					core.getLanguagePackages().Settings_enterPassword,
-				})
-				local hash = crypt.md5(password)
-				accept = hash == core.settings.lockHash
+			if core.settings.lockType == "password" then
+				if core.settings.lockHash and #core.settings.lockHash > 0 then
+					local password = graphics.drawEdit(core.getLanguagePackages().Settings_verificatingUser,{
+						core.getLanguagePackages().Settings_enterPassword,
+					})
+					local hash = crypt.md5(password)
+					accept = hash == core.settings.lockHash
+				end
 			else
 				accept = true
 			end
