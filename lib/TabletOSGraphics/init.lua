@@ -833,7 +833,7 @@ function graphics.drawQRCodeWindow(string,...) --uses braileMatrix
       graphics.drawChanges()
       break
     end
-    graphics.drawBars(graphics.barOptions)
+    --graphics.drawBars(graphics.barOptions)
     graphics.drawChanges()
   end
 end
