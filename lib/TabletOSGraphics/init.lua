@@ -693,7 +693,7 @@ function graphics.drawInfo(label,strTbl,toQrCodeStringTable)
   local checkTouch = graphics.drawButton(x,y+h-1,w,1,core.getLanguagePackages().OS_close,graphics.theme.infoWindow.buttonBack,graphics.theme.infoWindow.buttonFore)
   graphics.drawChanges()
   while true do
-    graphics.drawBars(graphics.barOptions)
+    --raphics.drawBars(graphics.barOptions)
     local e = {event.pull(0.5)}
     if e[1] == "drop" then 
       if checkTouch(e[3],e[4]) then
