@@ -1,10 +1,12 @@
 {
-	build = 20190208191701, --schematic:YEAR..MONTH..DAY..HOUR..MINUTE..VERSION
-	name = "1.0.6 Updating system upgrade [Step two]",
+	build = 20190406000001, --schematic:YEAR..MONTH..DAY..HOUR..MINUTE..VERSION
+	name = "1.0.7 QR Codes",
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/autorun.lua",path="/autorun.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/OS.lua",path="/OS.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/crypt.lua",path="/lib/crypt.lua"},
-	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/TabletOSGraphics.lua",path="/lib/TabletOSGraphics.lua"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/TabletOSGraphics/init.lua",path="/lib/TabletOSGraphics/init.lua"},
+	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/TabletOSGraphics/braile.lua",path="/lib/TabletOSGraphics/braile.lua"},
+    	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/TabletOSGraphics/QRCode.lua",path="/lib/TabletOSGraphics/QRCode.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/TabletOSCore.lua",path="/lib/TabletOSCore.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/lib/TabletOSContextMenu.lua",path="/lib/TabletOSContextMenu.lua"},
 	{url="https://raw.githubusercontent.com/HeroBrine1st/TabletOS/Stable/TabletOS/Service/Updater.lua",path="/TabletOS/Service/Updater.lua"},
