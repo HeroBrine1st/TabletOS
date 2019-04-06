@@ -1,3 +1,9 @@
+1.0.7 QR Codes:
+Fixes:
+- The window with scrolling did not close on click
+Added by:
+- QR codes in pop-up windows. If you click on the clickable word (usually spelled “clickable”), a QR code appears that can be easily read.
+
 1.0.6 Updating system upgrade:
 Fixes:
 File associations did not work at all
